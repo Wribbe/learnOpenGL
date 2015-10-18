@@ -1,7 +1,8 @@
 #bin/sh
-flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -std=c++0x"
+flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -lasound"
 executable_dir="executables"
-compiler="g++"
+#compiler="g++"
+compiler="cc"
 file_ending=".c"
 
 if [ ! -d "$executable_dir" ]; then
