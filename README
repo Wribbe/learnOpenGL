@@ -1,0 +1,6 @@
+To compile glfw-dependencies on windows:
+  * clone glfw from github.
+  * run cmake from powershell with command:
+    cmake -G "MinGW Makefiles"
+  * then build with mingw32-make with command:
+    mingw32-make all
