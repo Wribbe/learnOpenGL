@@ -1,5 +1,5 @@
 #bin/sh
-flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -lasound"
+flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -lasound -lpthread -lportaudio"
 executable_dir="executables"
 #compiler="g++"
 compiler="cc"
