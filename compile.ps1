@@ -1,9 +1,12 @@
-$src = "."
+$src = ".\source"
 $file_type = "*.c"
+$include_dir = "include_compilation"
+$glfw_include = "$include_dir\glfw"
 
 $executables = "executables"
 $win_executables = "$executables\win"
-$flags = "-lglfw3 -Iglfw\include -Iglfw\deps -Iglfw\src -lgdi32 -lopengl32 -Wl,-subsystem,windows -I. libportaudio.dll.a libportaudio-2.dll -lpthread -std=c99 -pedantic -Wall -Wextra"
+
+$flags = "-lglfw3 -I$glfw_include\include -I$glfw_include\deps -I$glfw_include\src -lgdi32 -lopengl32 -Wl,-subsystem,windows -I. $include_dir\libportaudio.dll.a -lpthread -std=c99 -pedantic -Wall -Wextra -I$include_dir"
 
 $flag_list = $flags.split()
 
@@ -24,7 +27,7 @@ Try {
       Write-Output $executable_name
       $output_file = "$win_executables\$executable_name" 
       Write-Output $output_file
-      mingw32-gcc $_.Name -o $output_file $flag_list
+      mingw32-gcc "$src\$_" -o $output_file $flag_list
     }
   }
 }
