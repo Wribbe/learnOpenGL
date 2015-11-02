@@ -4,6 +4,7 @@ executable_dir="executables"
 linux_executables="linux"
 #compiler="g++"
 compiler="cc"
+source_folder="sources"
 file_ending=".c"
 
 if [ ! -d "$executable_dir" ]; then
@@ -29,7 +30,7 @@ if [ ! -z "$1" ]; then
   esac
 fi
 
-for file in ./*; do
+for file in $source_folder; do
   case "$file" in
     *"$file_ending"*)
       exec_name=$(echo $file | cut -c 2- | rev | cut -c 3- | rev)
