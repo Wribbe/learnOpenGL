@@ -3,3 +3,4 @@
 include_compilation/glfw
 include_compilation/glew/
 executables
+*.o
