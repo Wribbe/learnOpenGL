@@ -40,6 +40,12 @@ int main(void) {
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
+    glewExperimental = GL_TRUE;
+    if(glewInit() != GLEW_OK) {
+        fprintf(stderr, "Error: Could not initialize GLEW, aborting.\n");
+        return(EXIT_FAILURE);
+    }
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
