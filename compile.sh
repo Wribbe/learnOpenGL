@@ -1,10 +1,10 @@
 #bin/sh
-flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -lasound -lpthread -lportaudio"
+flags="-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lXxf86vm -lm -ldl -lXinerama -lXcursor -lrt -lasound -lpthread -lportaudio -Wall -Wextra -pedantic"
 executable_dir="executables"
 linux_executables="linux"
 #compiler="g++"
 compiler="cc"
-source_folder="sources"
+source_folder="source"
 file_ending=".c"
 
 if [ ! -d "$executable_dir" ]; then
@@ -30,11 +30,12 @@ if [ ! -z "$1" ]; then
   esac
 fi
 
-for file in $source_folder; do
+for file in $source_folder/*; do
+  echo $file
   case "$file" in
     *"$file_ending"*)
-      exec_name=$(echo $file | cut -c 2- | rev | cut -c 3- | rev)
-      $compiler "$file" -o "${executable_dir}/$linux_executables/${exec_name}.exe" $flags
+      exec_name=$(echo $file | cut -c 7- | rev | cut -c 3- | rev)
+      $compiler "$file" -o "${executable_dir}/$linux_executables/${exec_name}" $flags
       ;;
   esac
 done
