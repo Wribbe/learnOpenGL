@@ -3,6 +3,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#define UNUSED(x) (void)x
+
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    UNUSED(scancode);
+    UNUSED(mods);
+    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+}
+
 int main(void) {
 
     GLuint WIDTH, HEIGHT;
@@ -28,6 +38,7 @@ int main(void) {
         return(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(window);
+    glfwSetKeyCallback(window, key_callback);
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
