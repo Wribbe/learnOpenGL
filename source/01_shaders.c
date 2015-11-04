@@ -29,6 +29,14 @@ int main(void) {
     }
     glfwMakeContextCurrent(window);
 
-    printf("Hello.\n");
-    return 0;
+    while(!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
+        // Render here.
+
+        glfwSwapBuffers(window);
+    }
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    return EXIT_SUCCESS;
 }
