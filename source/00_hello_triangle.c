@@ -131,6 +131,8 @@ int main(void) {
 
     glBindVertexArray(0);
 
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     while(!glfwWindowShouldClose(window)) {
         /* Poll and process events */
         glfwPollEvents();
