@@ -23,7 +23,7 @@ int main(void) {
     GLFWwindow* window;
 
     if(!glfwInit()) {
-        fprintf(stderr, "Error: Could not load GLFW, aborting.\n");
+        fprintf(stderr, "Error: Could not initialize GLFW, aborting.\n");
         return(EXIT_FAILURE);
     }
 
