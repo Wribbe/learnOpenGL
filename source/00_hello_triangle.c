@@ -36,10 +36,16 @@ const GLchar* vertexShaderSource = "#version 330 core\n"
     "   gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
     "}\n";
 
-const GLchar* fragmentShaderSource = "#version 330 core\n"
+const GLchar* orange_fragmentShaderSource = "#version 330 core\n"
     "out vec4 color;\n"
     "void main() {\n"
     "   color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\n";
+
+const GLchar* yellow_fragmentShaderSource = "#version 330 core\n"
+    "out vec4 color;\n"
+    "void main() {\n"
+    "   color = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
     "}\n";
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -94,32 +100,57 @@ int main(void) {
         fprintf(stderr,"Error: Vertex shader failed with:\n  %s",infoLog);
     }
 
-    GLuint fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    GLuint orange_framgentShader;
+    orange_framgentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(orange_framgentShader, 1, &orange_fragmentShaderSource, NULL);
+    glCompileShader(orange_framgentShader);
+    glGetShaderiv(orange_framgentShader, GL_COMPILE_STATUS, &success);
 
     if(!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        glGetShaderInfoLog(orange_framgentShader, 512, NULL, infoLog);
         fprintf(stderr,"Error: Fragment shader failed with:\n %s",infoLog);
     }
 
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram();
+    GLuint yellow_framgentShader;
+    yellow_framgentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(yellow_framgentShader, 1, &yellow_fragmentShaderSource, NULL);
+    glCompileShader(yellow_framgentShader);
+    glGetShaderiv(yellow_framgentShader, GL_COMPILE_STATUS, &success);
 
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if(!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        glGetShaderInfoLog(yellow_framgentShader, 512, NULL, infoLog);
+        fprintf(stderr,"Error: Fragment shader failed with:\n %s",infoLog);
+    }
+
+    GLuint orange_shaderProrgam;
+    orange_shaderProrgam = glCreateProgram();
+
+    glAttachShader(orange_shaderProrgam, vertexShader);
+    glAttachShader(orange_shaderProrgam, orange_framgentShader);
+    glLinkProgram(orange_shaderProrgam);
+
+    glGetProgramiv(orange_shaderProrgam, GL_LINK_STATUS, &success);
+    if(!success) {
+        glGetProgramInfoLog(orange_shaderProrgam, 512, NULL, infoLog);
+        fprintf(stderr,"Error: Shader linkage failed with:\n  %s",infoLog);
+    }
+
+    GLuint yellow_shaderProrgam;
+    yellow_shaderProrgam = glCreateProgram();
+
+    glAttachShader(yellow_shaderProrgam, vertexShader);
+    glAttachShader(yellow_shaderProrgam, yellow_framgentShader);
+    glLinkProgram(yellow_shaderProrgam);
+
+    glGetProgramiv(yellow_shaderProrgam, GL_LINK_STATUS, &success);
+    if(!success) {
+        glGetProgramInfoLog(yellow_shaderProrgam, 512, NULL, infoLog);
         fprintf(stderr,"Error: Shader linkage failed with:\n  %s",infoLog);
     }
 
     glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glDeleteShader(orange_framgentShader);
+    glDeleteShader(yellow_framgentShader);
 
     // First triangle.
     GLuint VAO1;
@@ -163,9 +194,11 @@ int main(void) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+        glUseProgram(orange_shaderProrgam);
         glBindVertexArray(VAO2);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glUseProgram(yellow_shaderProrgam);
         glBindVertexArray(VAO1);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //glDrawArrays(GL_TRIANGLES, 0, 6);
