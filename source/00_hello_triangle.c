@@ -24,6 +24,9 @@ GLfloat vertices[] = {
     -0.5f,  0.5f, 0.0f,
      0.5f,  0.5f, 0.0f,
     -0.5f, -0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
 };
 
 const GLchar* vertexShaderSource = "#version 330 core\n"
