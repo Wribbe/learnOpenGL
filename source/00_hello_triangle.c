@@ -55,9 +55,14 @@ char* read_shader(char* filename) {
 int main(void) {
     GLFWwindow* window;
 
-    vertexShaderSource = read_shader("shaders/00.vert");
-    orange_fragmentShaderSource = read_shader("shaders/00_orange.frag");
-    yellow_fragmentShaderSource = read_shader("shaders/00_yellow.frag");
+    char *_vert, *_orange_frag, *_yellow_frag;
+
+    _vert = read_shader("shaders/00.vert");
+    _orange_frag = read_shader("shaders/00_orange.frag");
+    _yellow_frag = read_shader("shaders/00_yellow.frag");
+    vertexShaderSource = _vert;
+    orange_fragmentShaderSource = _orange_frag;
+    yellow_fragmentShaderSource = _yellow_frag;
 
     if(!glfwInit()) {
         return -1;
@@ -151,6 +156,9 @@ int main(void) {
     glDeleteShader(vertexShader);
     glDeleteShader(orange_framgentShader);
     glDeleteShader(yellow_framgentShader);
+    free(_vert);
+    free(_orange_frag);
+    free(_yellow_frag);
 
     // First triangle.
     GLuint VAO1;
