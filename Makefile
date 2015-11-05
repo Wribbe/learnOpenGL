@@ -6,7 +6,7 @@ GAMEDEV_DIR=Y:/gamedev
 
 LINUX_FLAGS = -lGLEW -lX11 -lXrandr -lXxf86vm -lXinerama -lXcursor -lasound -lportaudio -lXi -ldl -lrt -lGL
 
-WINDOWS_FLAGS = -lgdi32 -lopengl32 -Wl,-subsystem,windows
+WINDOWS_FLAGS = -lgdi32 -lopengl32 #-Wl,-subsystem,windows
 WINDOWS_INCLUDES = -I$(GLFW_INCLUDE)/include -I$(GLFW_INCLUDE)/deps -I$(GLFW_INCLUDE)/src
 WINDOWS_LIB = $(INCLUDE_DIR)/libportaudio.dll.a $(INCLUDE_DIR)/libglew32.a $(INCLUDE_DIR)/libglew32.dll.a
 
