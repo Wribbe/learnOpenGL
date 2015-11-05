@@ -2,28 +2,37 @@ CC = gcc
 
 INCLUDE_DIR=include_compilation
 GLFW_INCLUDE=$(INCLUDE_DIR)/glfw
-GLFW_INCLUDE=$(INCLUDE_DIR)/glew
 GAMEDEV_DIR=Y:/gamedev
 
-LINUX_FLAGS = -lX11 -lXrandr -lXxf86vm -lXinerama -lXcursor -lasound -lportaudio -lXi -ldl -lrt
+LINUX_FLAGS = -lGLEW -lX11 -lXrandr -lXxf86vm -lXinerama -lXcursor -lasound -lportaudio -lXi -ldl -lrt -lGL
 
 WINDOWS_FLAGS = -lgdi32 -lopengl32 -Wl,-subsystem,windows
 WINDOWS_INCLUDES = -I$(GLFW_INCLUDE)/include -I$(GLFW_INCLUDE)/deps -I$(GLFW_INCLUDE)/src
-wINDOWS_LIB = $(INCLUDE_DIR)/libportaudio.dll.a $(INCLUDE_DIR)/libglew32.a $(INCLUDE_DIR)/libglew32.dll.a
+WINDOWS_LIB = $(INCLUDE_DIR)/libportaudio.dll.a $(INCLUDE_DIR)/libglew32.a $(INCLUDE_DIR)/libglew32.dll.a
 
-COMMON_FLAGS = -lGLEW -lglfw3 -lGL -lpthread -lm -lpthread
+COMMON_FLAGS = -lglfw3 -lpthread -lm -lpthread
 COMMON_INCLUDES = -I$(INCLUDE_DIR)
 
 ERROR_FLAGS = -Wall -Wextra -pedantic -std=c99
 
 CFLAGS = $(COMMON_FLAGS)
 LD = $(CC)
-LDFLAGS = -I$(INCLUDE_DIR)
+LDFLAGS = -I$(INCLUDE_DIR) $(ERROR_FLAGS)
 SOURCE_DIR=source
+
+FILE_SUFFIX =
 
 ifeq ($(OS),Windows_NT)
 OBJECT_DIR = obj/win
 EXECUTABLES_DIR = executables/win
+
+CFLAGS += $(WINDOWS_FLAGS)
+CFLAGS += $(COMMON_INCLUDES)
+CFLAGS += $(WINDOWS_INCLUDES)
+CFLAGS += $(WINDOWS_LIB)
+LDFLAGS += $(WINDOWS_INCLUDES)
+
+FILE_SUFFIX = .exe
 else
 OBJECT_DIR = obj/linux
 EXECUTABLES_DIR = executables/linux
@@ -49,7 +58,11 @@ all: $(TARGETS)
 
 .SECONDEXPANSION:
 $(TARGETS): $(DEPENDENCIES) $(OBJECT_DIR)/$$@.o
-	$(CC) -o $(EXECUTABLES_DIR)/$@ $^ $(CFLAGS)
+	$(CC) -o $(EXECUTABLES_DIR)/$@$(FILE_SUFFIX) $^ $(ERROR_FLAGS) $(CFLAGS)
+ifeq ($(OS),Windows_NT)
+	@cp $(EXECUTABLES_DIR)/$@$(FILE_SUFFIX) $(GAMEDEV_DIR)
+endif
+
 
 .PHONY: clean
 clean:
