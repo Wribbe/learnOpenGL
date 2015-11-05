@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "file_utils.h"
 
 //GLfloat vertices[] = {
 //    -0.5f, -0.5f, 0.0f,
@@ -29,24 +30,9 @@ GLfloat vertices[] = {
      0.5f, -0.5f, 0.0f
 };
 
-const GLchar* vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 position;\n"
-    "\n"
-    "void main() {\n"
-    "   gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-    "}\n";
-
-const GLchar* orange_fragmentShaderSource = "#version 330 core\n"
-    "out vec4 color;\n"
-    "void main() {\n"
-    "   color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n";
-
-const GLchar* yellow_fragmentShaderSource = "#version 330 core\n"
-    "out vec4 color;\n"
-    "void main() {\n"
-    "   color = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
-    "}\n";
+const GLchar* vertexShaderSource;
+const GLchar* orange_fragmentShaderSource;
+const GLchar* yellow_fragmentShaderSource;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     (void) scancode;
@@ -56,8 +42,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+char* read_shader(char* filename) {
+    char* content = read_file(filename);
+    if (!content) {
+        fprintf(stderr, "Could not open shader: %s, aborting.\n",filename);
+        exit(0);
+    }
+    printf("Content read from %s:\n%s!ENDOFFILE!", filename, content);
+    return content;
+}
+
 int main(void) {
     GLFWwindow* window;
+
+    vertexShaderSource = read_shader("shaders/00.vert");
+    orange_fragmentShaderSource = read_shader("shaders/00_orange.frag");
+    yellow_fragmentShaderSource = read_shader("shaders/00_yellow.frag");
 
     if(!glfwInit()) {
         return -1;
