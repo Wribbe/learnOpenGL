@@ -19,6 +19,7 @@ CFLAGS = $(COMMON_FLAGS)
 LD = $(CC)
 LDFLAGS = -I$(INCLUDE_DIR) $(ERROR_FLAGS)
 SOURCE_DIR=source
+SHADERS = $(SOURCE_DIR)/shaders
 
 FILE_SUFFIX =
 
@@ -55,6 +56,11 @@ $(OBJECT_DIR)/%.o: $(INCLUDE_DIR)/%.c
 	$(CC) -c -o $@ $< $(LDFLAGS)
 
 all: $(TARGETS)
+	cp -r $(SHADERS) $(EXECUTABLES_DIR)
+ifeq ($(OS), Windows_NT)
+	unix2dos $(EXECUTABLES_DIR)/shaders/*
+	cp -r $(EXECUTABLES_DIR)/* $(GAMEDEV_DIR)
+endif
 
 .SECONDEXPANSION:
 $(TARGETS): $(DEPENDENCIES) $(OBJECT_DIR)/$$@.o
