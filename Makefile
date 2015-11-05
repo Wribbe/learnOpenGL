@@ -49,11 +49,11 @@ DEPENDENCIES = $(patsubst %.c, $(OBJECT_DIR)/%.o, $(_DEPENDENCIES:$(INCLUDE_DIR)
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
 	@mkdir -p $(OBJECT_DIR)
-	$(CC) -c -o $@ $< $(LDFLAGS)
+	@$(CC) -c -o $@ $< $(LDFLAGS)
 
 $(OBJECT_DIR)/%.o: $(INCLUDE_DIR)/%.c
 	@mkdir -p $(OBJECT_DIR)
-	$(CC) -c -o $@ $< $(LDFLAGS)
+	@$(CC) -c -o $@ $< $(LDFLAGS)
 
 all: $(TARGETS)
 	cp -r $(SHADERS) $(EXECUTABLES_DIR)
@@ -64,11 +64,8 @@ endif
 
 .SECONDEXPANSION:
 $(TARGETS): $(DEPENDENCIES) $(OBJECT_DIR)/$$@.o
-	$(CC) -o $(EXECUTABLES_DIR)/$@$(FILE_SUFFIX) $^ $(ERROR_FLAGS) $(CFLAGS)
-ifeq ($(OS),Windows_NT)
-	@cp $(EXECUTABLES_DIR)/$@$(FILE_SUFFIX) $(GAMEDEV_DIR)
-endif
-
+	@$(CC) -o $(EXECUTABLES_DIR)/$@$(FILE_SUFFIX) $^ $(ERROR_FLAGS) $(CFLAGS)
+	@echo "$@$(FILE_SUFFIX)"
 
 .PHONY: clean
 clean:
