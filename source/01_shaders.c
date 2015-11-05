@@ -21,6 +21,15 @@ GLfloat vertices[] = {
      0.5f, -0.5f, 0.0f,
 };
 
+char* read_shader(char* filename) {
+    char *contents = read_file(filename);
+    if(!contents) {
+        fprintf(stderr, "Could not load file: %s, aborting\n", filename);
+        exit(0);
+    }
+    return contents;
+}
+
 int main(void) {
 
     GLuint WIDTH, HEIGHT;
@@ -53,6 +62,12 @@ int main(void) {
         fprintf(stderr, "Error: Could not initialize GLEW, aborting.\n");
         return(EXIT_FAILURE);
     }
+
+    char* vert_source = read_shader("shaders/01.vert");
+    char* frag_source = read_shader("shaders/01.frag");
+
+    printf("vert: %s\n", vert_source);
+    printf("frag: %s\n", frag_source);
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
