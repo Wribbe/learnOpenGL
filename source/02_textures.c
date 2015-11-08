@@ -13,7 +13,7 @@ int main(void) {
 
     if(!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW, aborting.\n");
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
 
     GLint WIDTH, HEIGHT;
@@ -23,7 +23,7 @@ int main(void) {
     window = glfwCreateWindow(WIDTH, HEIGHT, "02 textures", NULL, NULL);
     if(!window) {
         fprintf(stderr, "Failed to create window, aborting.\n");
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
 
     while(!glfwWindowShouldClose(window)) {
