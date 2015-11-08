@@ -5,6 +5,8 @@
 
 #include "file_utils.h"
 
+#define UNUSED(x) (void)x
+
 int main(void) {
 
     GLFWwindow *window;
