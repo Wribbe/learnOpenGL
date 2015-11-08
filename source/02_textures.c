@@ -41,6 +41,8 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
+    glfwSetKeyCallback(window, key_callback);
+
     while(!glfwWindowShouldClose(window)) {
 
         glfwPollEvents();
