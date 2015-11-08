@@ -17,9 +17,10 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 GLfloat vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
+    // Positions         // Colors
+    -0.5f, -0.5f, 0.0f,  1.0f,  0.0f, 0.0f,
+     0.0f,  0.5f, 0.0f,  0.0f,  1.0f, 0.0f,
+     0.5f, -0.5f, 0.0f,  0.0f,  0.0f, 1.0f,
 };
 
 char* read_shader(char* filename) {
