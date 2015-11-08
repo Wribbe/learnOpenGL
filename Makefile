@@ -13,7 +13,7 @@ WINDOWS_LIB = $(INCLUDE_DIR)/libportaudio.dll.a $(INCLUDE_DIR)/libglew32.a $(INC
 COMMON_FLAGS = -lglfw3 -lpthread -lm -lpthread
 COMMON_INCLUDES = -I$(INCLUDE_DIR)
 
-ERROR_FLAGS = -Wall -Wextra -pedantic -std=c99
+ERROR_FLAGS = -Wall -Wextra -pedantic -std=c99 -Wwrite-strings
 
 CFLAGS = $(COMMON_FLAGS)
 LD = $(CC)
