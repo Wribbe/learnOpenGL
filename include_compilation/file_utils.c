@@ -47,5 +47,14 @@ GLuint compile_shader(char* vertex_source, GLenum shader_type) {
    return shader;
 }
 
+char* read_shader(const char* filename) {
+    char *contents = read_file(filename);
+    if(!contents) {
+        fprintf(stderr, "Could not load file: %s, aborting\n", filename);
+        exit(0);
+    }
+    return contents;
+}
+
 
 #endif

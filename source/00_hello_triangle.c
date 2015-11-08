@@ -42,16 +42,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
-char* read_shader(char* filename) {
-    char* content = read_file(filename);
-    if (!content) {
-        fprintf(stderr, "Could not open shader: %s, aborting.\n",filename);
-        exit(0);
-    }
-    printf("Content read from %s:\n%s!ENDOFFILE!", filename, content);
-    return content;
-}
-
 int main(void) {
     GLFWwindow* window;
 

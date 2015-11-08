@@ -23,15 +23,6 @@ GLfloat vertices[] = {
      0.5f, -0.5f, 0.0f,  0.0f,  0.0f, 1.0f,
 };
 
-char* read_shader(char* filename) {
-    char *contents = read_file(filename);
-    if(!contents) {
-        fprintf(stderr, "Could not load file: %s, aborting\n", filename);
-        exit(0);
-    }
-    return contents;
-}
-
 int main(void) {
 
     GLuint WIDTH, HEIGHT;

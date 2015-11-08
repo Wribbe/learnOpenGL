@@ -9,6 +9,8 @@ char info_log[info_log_size];
 GLint success;
 
 char *read_file(const char* filename);
+char *read_shader(const char* filename);
+
 GLuint compile_shader(char* vertex_source, GLenum shader_type);
 
 #endif
