@@ -128,10 +128,10 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    GLfloat time_value, green_value;
-    GLint vertex_color_location;
+//    GLfloat time_value, green_value;
+//    GLint vertex_color_location;
 
-    vertex_color_location = glGetUniformLocation(shader_program, "our_color");
+//    vertex_color_location = glGetUniformLocation(shader_program, "our_color");
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -140,11 +140,11 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Set some uniforms. */
-        time_value = glfwGetTime();
-        green_value = (sin(time_value) / 2) + 0.5;
+//        time_value = glfwGetTime();
+//        green_value = (sin(time_value) / 2) + 0.5;
 
         glUseProgram(shader_program);
-        glUniform4f(vertex_color_location, 0.0f, green_value, 0.0f, 1.0f);
+//        glUniform4f(vertex_color_location, 0.0f, green_value, 0.0f, 1.0f);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
