@@ -94,6 +94,10 @@ int main(void) {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
+    GLfloat x_offset, x_offset_location;
+    x_offset = 0.5f;
+    x_offset_location = glGetUniformLocation(shader_program, "x_offset");
+
     glBindVertexArray(0);
 
 //    GLfloat time_value, green_value;
@@ -112,6 +116,7 @@ int main(void) {
 //        green_value = (sin(time_value) / 2) + 0.5;
 
         glUseProgram(shader_program);
+        glUniform1f(x_offset_location, x_offset);
 //        glUniform4f(vertex_color_location, 0.0f, green_value, 0.0f, 1.0f);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
