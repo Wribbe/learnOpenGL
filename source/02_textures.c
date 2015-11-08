@@ -26,6 +26,13 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
+    glfwMakeContextCurrent(window);
+    glewExperimental = GL_TRUE;
+    if(glewInit() != GLEW_OK) {
+        fprintf(stderr, "Failed to initialize glew, aborting.\n");
+        return(EXIT_FAILURE);
+    }
+
     while(!glfwWindowShouldClose(window)) {
 
         glfwPollEvents();
