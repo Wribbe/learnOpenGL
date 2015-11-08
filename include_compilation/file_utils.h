@@ -3,10 +3,12 @@
 
 #include <GL/glew.h>
 
-int info_log_size;
-char* info_log;
+#define info_log_size 512
+
+char info_log[info_log_size];
 GLint success;
 
 char *read_file(const char* filename);
+GLuint compile_shader(char* vertex_source, GLenum shader_type);
 
 #endif
