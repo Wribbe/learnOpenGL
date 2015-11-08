@@ -70,31 +70,8 @@ int main(void) {
 
     GLuint vertex_shader, fragment_shader, shader_program;
 
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    glShaderSource(vertex_shader, 1, (const GLchar**) &vert_source, NULL);
-    glShaderSource(fragment_shader, 1, (const GLchar**) &frag_source, NULL);
-
-    int info_log_size = 512;
-    GLint success;
-    GLchar info_log[info_log_size];
-
-    glCompileShader(vertex_shader);
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-
-    if(!success) {
-        glGetShaderInfoLog(vertex_shader, info_log_size, NULL, info_log);
-        fprintf(stderr, "Error: Vertex shader compilation failed with:\n %s",info_log);
-    }
-
-    glCompileShader(fragment_shader);
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-
-    if(!success) {
-        glGetShaderInfoLog(fragment_shader, info_log_size, NULL, info_log);
-        fprintf(stderr, "Error: Fragment shader compilation failed with:\n %s",info_log);
-    }
+    vertex_shader = compile_shader(vert_source, GL_VERTEX_SHADER);
+    fragment_shader = compile_shader(frag_source, GL_FRAGMENT_SHADER);
 
     shader_program = glCreateProgram();
 
