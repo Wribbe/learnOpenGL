@@ -18,10 +18,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 GLfloat vertices[] = {
     // Position         // Colors           // Texture Coords
-    0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.05f, 0.05f, // Top Right
-    0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.05f, 0.05f, // Bottom Right
+    0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // Top Right
+    0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
-   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.05f  // Top Left
+   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // Top Left
 };
 
 GLfloat tex_coords[] = {
