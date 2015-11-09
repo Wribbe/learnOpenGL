@@ -111,22 +111,8 @@ int main(void) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture01);
 
-    int width, height;
-    unsigned char* image01 = SOIL_load_image("textures/02_container.jpg",
-                                           &width,
-                                           &height,
-                                           0,
-                                           SOIL_LOAD_RGB);
-    if (!image01) {
-        fprintf(stderr, "Could not load image01.\n");
-    }
-    fprintf(stderr, "result: %s\n",SOIL_last_result());
+    load_texture("textures/02_container.jpg");
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, image01);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    SOIL_free_image_data(image01);
     glUniform1i(glGetUniformLocation(shader_program, "our_texture_01"), 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -141,20 +127,8 @@ int main(void) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture02);
 
-    unsigned char* image02 = SOIL_load_image("textures/02_awesomeface.png",
-                                             &width,
-                                             &height,
-                                             0,
-                                             SOIL_LOAD_RGB);
-    if (!image02) {
-        fprintf(stderr, "Could not load image02.\n");
-    }
+    load_texture("textures/02_awesomeface.png");
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, image02);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    SOIL_free_image_data(image02);
     glUniform1i(glGetUniformLocation(shader_program, "our_texture_02"), 1);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

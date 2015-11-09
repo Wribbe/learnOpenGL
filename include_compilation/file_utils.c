@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "file_utils.h"
-
 #include <GL/glew.h>
+#include <SOIL.h>
+
+#include "file_utils.h"
 char *read_file(const char* filename) {
     FILE *file_pointer = fopen(filename, "rb");
     if (!file_pointer) {
@@ -47,7 +48,7 @@ GLuint compile_shader(char* vertex_source, GLenum shader_type) {
    return shader;
 }
 
-char* read_shader(const char* filename) {
+char* read_shader(const char *filename) {
     char *contents = read_file(filename);
     if(!contents) {
         fprintf(stderr, "Could not load file: %s, aborting\n", filename);
@@ -77,6 +78,25 @@ GLuint create_shader_program(char *vertex_source, char *fragment_source) {
     glDeleteShader(fragment_shader);
 
     return shader_program;
+}
+
+void load_texture(const char *filename) {
+    int width, height;
+    unsigned char* image = SOIL_load_image(filename,
+                                           &width,
+                                           &height,
+                                           0,
+                                           SOIL_LOAD_RGB);
+    if (!image) {
+        fprintf(stderr, "Could not load image: %s.\n",filename);
+        fprintf(stderr, "result: %s\n",SOIL_last_result());
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    SOIL_free_image_data(image);
 }
 
 

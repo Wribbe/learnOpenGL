@@ -13,5 +13,6 @@ char *read_shader(const char *filename);
 
 GLuint compile_shader(char *vertex_source, GLenum shader_type);
 GLuint create_shader_program(char *vertex_source, char *framgent_source);
+void load_texture(const char *filename);
 
 #endif
