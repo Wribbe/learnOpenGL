@@ -8,7 +8,7 @@
 
 #define UNUSED(x) (void)x
 
-GLfloat texture_reation;
+GLfloat texture_relation = 0.2f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
@@ -16,9 +16,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
        glfwSetWindowShouldClose(window, GL_TRUE);
     } else if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-        printf("PRESSED UP!\n");
+        texture_relation += 0.1f;
     } else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-        printf("PRESSED DOWN!\n");
+        texture_relation -= 0.1f;
     }
 }
 
@@ -179,6 +179,9 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    GLuint texture_relation_position = glGetUniformLocation(shader_program,
+                                                            "texture_relation");
+
     glfwSetKeyCallback(window, key_callback);
 
     while(!glfwWindowShouldClose(window)) {
@@ -193,6 +196,8 @@ int main(void) {
 
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture02);
+
+        glUniform1f(texture_relation_position, texture_relation);
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
