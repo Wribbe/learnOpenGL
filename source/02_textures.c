@@ -70,24 +70,7 @@ int main(void) {
     char* vertex_source = read_shader("shaders/02.vert");
     char* fragment_source = read_shader("shaders/02.frag");
 
-    GLuint vertex_shader, fragment_shader, shader_program;
-
-    vertex_shader = compile_shader(vertex_source, GL_VERTEX_SHADER);
-    fragment_shader = compile_shader(fragment_source, GL_FRAGMENT_SHADER);
-
-    shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
-
-    glGetProgramiv(shader_program, info_log_size, &success);
-    if(!success) {
-        glGetProgramInfoLog(shader_program, info_log_size, NULL, info_log);
-        fprintf(stderr, "Error: Shader linkage failed with:\n %s",info_log);
-    }
-
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    GLuint shader_program = create_shader_program(vertex_source, fragment_source);
 
     free(vertex_source);
     free(fragment_source);
