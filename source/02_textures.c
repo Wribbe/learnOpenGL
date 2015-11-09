@@ -18,10 +18,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 GLfloat vertices[] = {
     // Position         // Colors           // Texture Coords
-    0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   2.0f, 2.0f, // Top Right
-    0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   2.0f, 0.0f, // Bottom Right
+    0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.05f, 0.05f, // Top Right
+    0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.05f, 0.05f, // Bottom Right
    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
-   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 2.0f  // Top Left
+   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.05f  // Top Left
 };
 
 GLfloat tex_coords[] = {
@@ -139,8 +139,13 @@ int main(void) {
 
     SOIL_free_image_data(image01);
     glUniform1i(glGetUniformLocation(shader_program, "our_texture_01"), 0);
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenTextures(1, &texture02);
@@ -162,6 +167,10 @@ int main(void) {
 
     SOIL_free_image_data(image02);
     glUniform1i(glGetUniformLocation(shader_program, "our_texture_02"), 1);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glfwSetKeyCallback(window, key_callback);
