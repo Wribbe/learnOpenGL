@@ -8,11 +8,17 @@
 
 #define UNUSED(x) (void)x
 
+GLfloat texture_reation;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
        glfwSetWindowShouldClose(window, GL_TRUE);
+    } else if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+        printf("PRESSED UP!\n");
+    } else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+        printf("PRESSED DOWN!\n");
     }
 }
 
