@@ -4,8 +4,12 @@ in vec2 texture_coordinates;
 
 out vec4 color;
 
-uniform sampler2D our_texture;
+uniform sampler2D our_texture_01;
+uniform sampler2D our_texture_02;
 
 void main() {
-  color = vec4(our_color, 1.0f) * texture(our_texture, texture_coordinates);
+  color = mix(texture(our_texture_01, texture_coordinates),
+              texture(our_texture_02, vec2(texture_coordinates.x,
+                                           1.0f - texture_coordinates.y)),
+              0.2);
 }

@@ -114,26 +114,52 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glUseProgram(shader_program);
+
+    GLuint texture01, texture02;
+    glGenTextures(1, &texture01);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture01);
 
     int width, height;
-    unsigned char* image = SOIL_load_image("textures/02_container.jpg",
+    unsigned char* image01 = SOIL_load_image("textures/02_container.jpg",
                                            &width,
                                            &height,
                                            0,
                                            SOIL_LOAD_RGB);
-    if (!image) {
-        fprintf(stderr, "Could not load image.\n");
+    if (!image01) {
+        fprintf(stderr, "Could not load image01.\n");
     }
     fprintf(stderr, "result: %s\n",SOIL_last_result());
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                 GL_UNSIGNED_BYTE, image);
+                 GL_UNSIGNED_BYTE, image01);
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    SOIL_free_image_data(image);
+    SOIL_free_image_data(image01);
+    glUniform1i(glGetUniformLocation(shader_program, "our_texture_01"), 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glGenTextures(1, &texture02);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture02);
+
+    unsigned char* image02 = SOIL_load_image("textures/02_awesomeface.png",
+                                             &width,
+                                             &height,
+                                             0,
+                                             SOIL_LOAD_RGB);
+    if (!image02) {
+        fprintf(stderr, "Could not load image02.\n");
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, image02);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    SOIL_free_image_data(image02);
+    glUniform1i(glGetUniformLocation(shader_program, "our_texture_02"), 1);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glfwSetKeyCallback(window, key_callback);
@@ -145,8 +171,12 @@ int main(void) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shader_program);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture01);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture02);
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
