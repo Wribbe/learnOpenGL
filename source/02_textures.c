@@ -139,6 +139,8 @@ int main(void) {
 
     SOIL_free_image_data(image01);
     glUniform1i(glGetUniformLocation(shader_program, "our_texture_01"), 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenTextures(1, &texture02);
