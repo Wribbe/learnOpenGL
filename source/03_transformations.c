@@ -104,6 +104,16 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    float scale[][4] = {
+        {1.5f, 0.0f, 0.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 0.5f, 0.0f},
+        {0.0f, 0.0f, 0.0f, 1.0f},
+    };
+
+    GLuint transform_location = glGetUniformLocation(shader_program, "transform");
+    glUniformMatrix4fv(transform_location, 1, GL_FALSE, (GLfloat*)scale[0]);
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
