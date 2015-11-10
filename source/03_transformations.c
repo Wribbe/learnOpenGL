@@ -28,6 +28,58 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
+typedef struct Matrix4f {
+    float data[4][4];
+} Mat4f;
+
+void zero_Mat4f(Mat4f *matrix) {
+    int i, j;
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
+            matrix->data[i][j] = 0;
+        }
+    }
+}
+
+void create_Mat4f(Mat4f *matrix) {
+    matrix = malloc(sizeof(Mat4f));
+    if(!matrix) {
+        fprintf(stderr, "Could not allocate memory for Mat4f matrix.\n");
+        return NULL;
+    }
+    zero_Mat4f(matrix);
+}
+
+void scale_Mat4f(Mat4f *matrix, float x, float y, float z) {
+    int i, j;
+    for(i=0; i<4; i++) {
+        for(j=0; j<4; j++) {
+            if(i == j) {
+                switch(i) {
+                    case 0:
+                        matrix->data[i][j] = x;
+                        break;
+                    case 1:
+                        matrix->data[i][j] = y;
+                        break;
+                    case 2:
+                        matrix->data[i][j] = z;
+                        break;
+                    case 3:
+                        matrix->data[i][j] = 1.0f;
+                        break;
+                }
+            } else {
+                matrix->data[i][j] = 0;
+            }
+        }
+    }
+}
+
+GLvoid *pointer_Mat4f(Mat4f *matrix) {
+    return (GLvoid*)(matrix->data[0]);
+}
+
 int main(void) {
 
     GLFWwindow *window;
@@ -104,15 +156,12 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    float scale[][4] = {
-        {1.5f, 0.0f, 0.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f, 0.0f},
-        {0.0f, 0.0f, 0.5f, 0.0f},
-        {0.0f, 0.0f, 0.0f, 1.0f},
-    };
+    Mat4f scale;
+    create_Mat4f(&scale);
+    scale_Mat4f(&scale, 1.0f, 2.0f, 1.0f);
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
-    glUniformMatrix4fv(transform_location, 1, GL_FALSE, (GLfloat*)scale[0]);
+    glUniformMatrix4fv(transform_location, 1, GL_FALSE, pointer_Mat4f(&scale));
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
