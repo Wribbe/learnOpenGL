@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "file_utils.h"
+
 #define UNUSED(x) (void)x
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -42,6 +44,12 @@ int main(void) {
 
     glfwSetKeyCallback(window, key_callback);
     glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+
+    char* vertex_source = read_shader("shaders/03.vert");
+    char* fragment_source = read_shader("shaders/03.frag");
+
+    GLuint shader_program = create_shader_program(vertex_source, fragment_source);
+    UNUSED(shader_program);
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
