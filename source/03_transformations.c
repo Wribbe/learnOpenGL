@@ -60,6 +60,29 @@ void mat4f_scale(Mat4f *matrix, float x, float y, float z) {
     matrix->data[3][3] = 1.0f;
 }
 
+void mat4f_zero_col(Mat4f *matrix, int col) {
+    int i, j;
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
+            if (j == col) {
+                matrix->data[i][j] = 0;
+            }
+        }
+    }
+}
+
+void mat4f_zero_row(Mat4f *matrix, int row) {
+    int i, j;
+    for (i=0; i<4; i++) {
+        if (i == row) {
+            for (j=0; j<4; j++) {
+                matrix->data[i][j] = 0;
+            }
+            break;
+        }
+    }
+}
+
 void mat4f_basic_rotate(Mat4f *matrix, float radians) {
     int i, j, diff;
     float cos, sin;
@@ -196,8 +219,8 @@ int main(void) {
     mat4f_allocate(&scale);
     mat4f_allocate(&add2);
     mat4f_scale(&scale, 1.0f, 2.0f, 1.0f);
-    mat4f_scale(&add2, -0.7f, -0.2f, 1.0f);
-    mat4f_add(&scale, &add2, &scale);
+    mat4f_basic_rotate(&add2, 0);
+    mat4f_print(&add2);
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
     glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&scale));
