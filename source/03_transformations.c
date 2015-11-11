@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <math.h>
 
 #include "file_utils.h"
 
 #define UNUSED(x) (void)x
+#define M_PI 3.14159265358979323846264338327
 
 GLfloat vertices[] = {
     // Position         // Colors           // Texture Coords
@@ -55,6 +57,32 @@ void mat4f_scale(Mat4f *matrix, float x, float y, float z) {
     matrix->data[0][0] = x;
     matrix->data[1][1] = y;
     matrix->data[2][2] = z;
+    matrix->data[3][3] = 1.0f;
+}
+
+void mat4f_basic_rotate(Mat4f *matrix, float radians) {
+    int i, j, diff;
+    float cos, sin;
+
+    mat4f_zero(matrix);
+
+    cos = cosf(radians);
+    sin = sinf(radians);
+
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
+            diff = j-i;
+            if (diff == 0) {
+                matrix->data[i][j] = cos;
+            } else if (diff == 1) {
+                matrix->data[i][j] = (sin == 0.0f) ? 0.0f : -sin;
+            } else if (diff == 2) {
+                matrix->data[i][j] = sin;
+            } else {
+                matrix->data[i][j] = 0.0f;
+            }
+        }
+    }
     matrix->data[3][3] = 1.0f;
 }
 
