@@ -94,7 +94,7 @@ void mat4f_basic_rotate(Mat4f *matrix, float radians) {
 
     for (i=0; i<4; i++) {
         for (j=0; j<4; j++) {
-            diff = j-i;
+            diff = abs(j-i);
             if (diff == 0) {
                 matrix->data[i][j] = cos;
             } else if (diff == 1) {
