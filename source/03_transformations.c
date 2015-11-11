@@ -158,12 +158,15 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    Mat4f scale;
-    create_Mat4f(&scale);
-    scale_Mat4f(&scale, 1.0f, 2.0f, 1.0f);
+    Mat4f scale, add2;
+    mat4f_allocate(&scale);
+    mat4f_allocate(&add2);
+    mat4f_scale(&scale, 1.0f, 2.0f, 1.0f);
+    mat4f_scale(&add2, -0.7f, -0.2f, 1.0f);
+    mat4f_add(&scale, &add2, &scale);
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
-    glUniformMatrix4fv(transform_location, 1, GL_FALSE, pointer_Mat4f(&scale));
+    glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&scale));
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
