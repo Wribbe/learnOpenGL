@@ -97,10 +97,16 @@ void mat4f_add(Mat4f *mat_A, Mat4f *mat_B, Mat4f *mat_Res) {
 
 void mat4f_print(Mat4f *matrix) {
     int i, j;
+    float data;
     for(i=0; i<4; i++) {
         printf("[");
         for(j=0; j<4; j++) {
-            printf(" %f",matrix->data[i][j]);
+            data = matrix->data[i][j];
+            if (data < 0.0f) {
+                printf(" %f",data);
+            } else {
+                printf("  %f",data);
+            }
         }
         printf(" ]\n");
     }
