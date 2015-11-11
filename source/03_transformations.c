@@ -106,7 +106,34 @@ void mat4f_basic_rotate(Mat4f *matrix, float radians) {
             }
         }
     }
+    mat4f_zero_col(matrix, 3);
+    mat4f_zero_row(matrix, 3);
     matrix->data[3][3] = 1.0f;
+}
+
+void mat4f_rotate_x(Mat4f *matrix, float radians) {
+    mat4f_basic_rotate(matrix, radians);
+    mat4f_zero_col(matrix, 0);
+    mat4f_zero_row(matrix, 0);
+    matrix->data[0][0] = 1.0f;
+}
+
+void mat4f_rotate_y(Mat4f *matrix, float radians) {
+    mat4f_basic_rotate(matrix, radians);
+    mat4f_zero_col(matrix, 1);
+    mat4f_zero_row(matrix, 1);
+    matrix->data[1][1] = 1.0f;
+}
+
+void mat4f_rotate_z(Mat4f *matrix, float radians) {
+    mat4f_basic_rotate(matrix, radians);
+    mat4f_zero_col(matrix, 2);
+    mat4f_zero_row(matrix, 2);
+    matrix->data[2][2] = 1.0f;
+}
+
+void rotate_x(Mat4f *matrix) {
+    UNUSED(matrix);
 }
 
 void mat4f_add(Mat4f *mat_A, Mat4f *mat_B, Mat4f *mat_Res) {
@@ -219,8 +246,18 @@ int main(void) {
     mat4f_allocate(&scale);
     mat4f_allocate(&add2);
     mat4f_scale(&scale, 1.0f, 2.0f, 1.0f);
-    mat4f_basic_rotate(&add2, 0);
+
+    mat4f_rotate_x(&add2, M_PI/3);
     mat4f_print(&add2);
+    printf("\n");
+
+    mat4f_rotate_y(&add2, M_PI/3);
+    mat4f_print(&add2);
+    printf("\n");
+
+    mat4f_rotate_z(&add2, M_PI/3);
+    mat4f_print(&add2);
+    printf("\n");
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
     glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&scale));
