@@ -32,7 +32,7 @@ typedef struct Matrix4f {
     float data[4][4];
 } Mat4f;
 
-void zero_Mat4f(Mat4f *matrix) {
+void mat4f_zero(Mat4f *matrix) {
     int i, j;
     for (i=0; i<4; i++) {
         for (j=0; j<4; j++) {
@@ -41,42 +41,35 @@ void zero_Mat4f(Mat4f *matrix) {
     }
 }
 
-void create_Mat4f(Mat4f *matrix) {
+void mat4f_allocate(Mat4f *matrix) {
     matrix = malloc(sizeof(Mat4f));
     if(!matrix) {
         fprintf(stderr, "Could not allocate memory for Mat4f matrix.\n");
         return NULL;
     }
-    zero_Mat4f(matrix);
+    mat4f_zero(matrix);
 }
 
-void scale_Mat4f(Mat4f *matrix, float x, float y, float z) {
+void mat4f_scale(Mat4f *matrix, float x, float y, float z) {
+    mat4f_zero(matrix);
+    matrix->data[0][0] = x;
+    matrix->data[1][1] = y;
+    matrix->data[2][2] = z;
+    matrix->data[3][3] = 1.0f;
+}
+
+void mat4f_print(Mat4f *matrix) {
     int i, j;
     for(i=0; i<4; i++) {
+        printf("[");
         for(j=0; j<4; j++) {
-            if(i == j) {
-                switch(i) {
-                    case 0:
-                        matrix->data[i][j] = x;
-                        break;
-                    case 1:
-                        matrix->data[i][j] = y;
-                        break;
-                    case 2:
-                        matrix->data[i][j] = z;
-                        break;
-                    case 3:
-                        matrix->data[i][j] = 1.0f;
-                        break;
-                }
-            } else {
-                matrix->data[i][j] = 0;
-            }
+            printf(" %f",matrix->data[i][j]);
         }
+        printf(" ]\n");
     }
 }
 
-GLvoid *pointer_Mat4f(Mat4f *matrix) {
+GLvoid *mat4f_pointer(Mat4f *matrix) {
     return (GLvoid*)(matrix->data[0]);
 }
 
