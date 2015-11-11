@@ -58,6 +58,15 @@ void mat4f_scale(Mat4f *matrix, float x, float y, float z) {
     matrix->data[3][3] = 1.0f;
 }
 
+void mat4f_add(Mat4f *mat_A, Mat4f *mat_B, Mat4f *mat_Res) {
+    int i, j;
+    for(i=0; i<4; i++) {
+        for(j=0; j<4; j++) {
+            mat_Res->data[i][j] = mat_A->data[i][j] + mat_B->data[i][j];
+        }
+    }
+}
+
 void mat4f_print(Mat4f *matrix) {
     int i, j;
     for(i=0; i<4; i++) {
