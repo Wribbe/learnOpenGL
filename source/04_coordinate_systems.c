@@ -16,6 +16,11 @@ GLfloat vertices[] = {
    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // Top Left
 };
 
+GLuint indices[] = {
+    0, 1, 2,
+    1, 2, 3,
+};
+
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
