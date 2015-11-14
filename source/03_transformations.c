@@ -277,6 +277,7 @@ int main(void) {
     mat4f_allocate(&transform);
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
+    float scale;
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -290,6 +291,11 @@ int main(void) {
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture00);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        scale = sin(fmodf(glfwGetTime(),(float)M_PI));
+        mat4f_scale(&transform, scale, scale, scale);
+        glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&transform));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glBindTexture(GL_TEXTURE_2D, 0);
