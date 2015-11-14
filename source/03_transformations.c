@@ -136,10 +136,6 @@ void mat4f_rotate_z(Mat4f *matrix, float radians) {
     matrix->data[2][2] = 1.0f;
 }
 
-void rotate_x(Mat4f *matrix) {
-    UNUSED(matrix);
-}
-
 void mat4f_add(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
     int i, j;
     for (i=0; i<4; i++) {
@@ -236,7 +232,6 @@ int main(void) {
     char* fragment_source = read_shader("shaders/03.frag");
 
     GLuint shader_program = create_shader_program(vertex_source, fragment_source);
-    UNUSED(shader_program);
 
     GLuint VAO, VBO, EBO;
 
