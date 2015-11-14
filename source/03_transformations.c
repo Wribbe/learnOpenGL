@@ -136,11 +136,11 @@ void rotate_x(Mat4f *matrix) {
     UNUSED(matrix);
 }
 
-void mat4f_add(Mat4f *matA, Mat4f *matB, Mat4f *mat_Res) {
+void mat4f_add(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
     int i, j;
     for(i=0; i<4; i++) {
         for(j=0; j<4; j++) {
-            mat_Res->data[i][j] = matA->data[i][j] + matB->data[i][j];
+            matRes->data[i][j] = matA->data[i][j] + matB->data[i][j];
         }
     }
 }
