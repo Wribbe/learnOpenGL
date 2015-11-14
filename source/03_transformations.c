@@ -34,6 +34,10 @@ typedef struct Matrix4f {
     float data[4][4];
 } Mat4f;
 
+typedef struct Vec4f {
+    float data[4];
+} Vec4f;
+
 void mat4f_zero(Mat4f *matrix) {
     int i, j;
     for (i=0; i<4; i++) {
@@ -142,6 +146,13 @@ void mat4f_add(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
         for(j=0; j<4; j++) {
             matRes->data[i][j] = matA->data[i][j] + matB->data[i][j];
         }
+    }
+}
+
+void vec4f_add(Vec4f *vecA, Vec4f *vecB,  Vec4f *vecRes) {
+    int i;
+    for (i=0; i < 4; i++) {
+        vecRes->data[i] = vecA->data[i] + vecB->data[i];
     }
 }
 
