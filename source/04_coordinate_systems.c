@@ -18,7 +18,7 @@ int main(void) {
     WIDTH = 800;
     HEIGHT = 600;
 
-    glfwCreateWindow(WIDTH, HEIGHT, "04 coordinate systems.", NULL, window);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "04 coordinate systems.", NULL, NULL);
     if (!window) {
         fprintf(stderr, "Could not create window, aborting.\n");
         return(EXIT_FAILURE);
