@@ -142,8 +142,8 @@ void rotate_x(Mat4f *matrix) {
 
 void mat4f_add(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
     int i, j;
-    for(i=0; i<4; i++) {
-        for(j=0; j<4; j++) {
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
             matRes->data[i][j] = matA->data[i][j] + matB->data[i][j];
         }
     }
@@ -159,25 +159,30 @@ void vec4f_add(Vec4f *vecA, Vec4f *vecB,  Vec4f *vecRes) {
 void mat4f_mul(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
     int i, j, k;
     float temp_array[4];
-    for(i=0; i<4; i++) {
-        for(j=0; j<4; j++) {
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
             temp_array[j] = 0;
-            for(k=0; k<4; k++) {
+            for (k=0; k<4; k++) {
                 temp_array[j] += matA->data[i][k] * matB->data[k][j];
             }
         }
-        for(j=0; j<4; j++) {
+        for (j=0; j<4; j++) {
             matRes->data[i][j] = temp_array[j];
         }
     }
 }
 
+void mat4f_mulf(Mat4f *matrix, float scalar) {
+    int i, j;
+    for (i=0
+}
+
 void mat4f_print(Mat4f *matrix) {
     int i, j;
     float data;
-    for(i=0; i<4; i++) {
+    for (i=0; i<4; i++) {
         printf("[");
-        for(j=0; j<4; j++) {
+        for (j=0; j<4; j++) {
             data = matrix->data[i][j];
             if (data < 0.0f) {
                 printf(" %f",data);
