@@ -30,6 +30,15 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
-    printf("Hello.\n");
+    glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
+    while(!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwSwapBuffers(window);
+    }
+
+    glfwTerminate();
     return EXIT_SUCCESS;
 }
