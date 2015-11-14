@@ -98,7 +98,7 @@ void mat4f_basic_rotate(Mat4f *matrix, float radians) {
             if (diff == 0) {
                 matrix->data[i][j] = cos;
             } else if (diff == 1) {
-                matrix->data[i][j] = (sin == 0.0f) ? 0.0f : -sin;
+                matrix->data[i][j] = (sin == 0.0f) ? 0.0f : (j-i) < 0 ? sin : -sin;
             } else if (diff == 2) {
                 matrix->data[i][j] = sin;
             } else {
