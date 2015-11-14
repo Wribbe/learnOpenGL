@@ -55,6 +55,11 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
+    GLuint VAO, VBO, EBO;
+    glGenVertexArrays(1 ,&VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
