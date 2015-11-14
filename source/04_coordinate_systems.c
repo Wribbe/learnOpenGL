@@ -89,13 +89,27 @@ int main(void) {
 
     glUseProgram(shader_program);
 
+    GLuint texture;
+
+    glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    load_texture("textures/02_container.jpg");
+    glUniform1i(glGetUniformLocation(shader_program, "texture"), 0);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         glClear(GL_COLOR_BUFFER_BIT);
         glBindVertexArray(VAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
