@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "file_utils.h"
 
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
 
-GLsizei stride = 8;
+GLsizei stride = 8 * sizeof(GLfloat);
 
 GLfloat vertices[] = {
     // Position         // Colors           // Texture Coords
@@ -17,7 +18,7 @@ GLfloat vertices[] = {
 };
 
 GLuint indices[] = {
-    0, 1, 2,
+    0, 1, 3,
     1, 2, 3,
 };
 
