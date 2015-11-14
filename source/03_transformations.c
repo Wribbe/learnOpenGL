@@ -174,7 +174,11 @@ void mat4f_mul(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
 
 void mat4f_mulf(Mat4f *matrix, float scalar) {
     int i, j;
-    for (i=0
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++){
+            matrix->data[i][j] *= scalar;
+        }
+    }
 }
 
 void mat4f_print(Mat4f *matrix) {
@@ -274,30 +278,10 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    Mat4f scale, rot, scale2;
-    mat4f_allocate(&scale);
-    mat4f_allocate(&scale2);
-    mat4f_allocate(&rot);
-    mat4f_scale(&scale, 1.0f, 0.5f, 1.0f);
-    mat4f_scale(&scale2, 0.5f, 0.5f, 0.5f);
-
-    mat4f_rotate_x(&rot, M_PI/3);
-    mat4f_print(&rot);
-    printf("\n");
-
-    mat4f_rotate_y(&rot, M_PI/3);
-    mat4f_print(&rot);
-    printf("\n");
-
-    mat4f_rotate_z(&rot, M_PI/3);
-    mat4f_basic_rotate(&rot, M_PI/3);
-    mat4f_print(&rot);
-    printf("\n");
-
-    mat4f_mul(&scale, &rot, &scale);
+    Mat4f transform;
+    mat4f_allocate(&transform);
 
     GLuint transform_location = glGetUniformLocation(shader_program, "transform");
-    glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&scale));
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -305,6 +289,9 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(VAO);
+
+        mat4f_rotate_z(&transform, (GLfloat)glfwGetTime());
+        glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&transform));
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture00);
