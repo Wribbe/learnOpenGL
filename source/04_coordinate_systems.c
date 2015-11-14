@@ -5,6 +5,14 @@
 
 #define UNUSED(x) (void)x
 
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    UNUSED(scancode);
+    UNUSED(mods);
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+}
+
 int main(void) {
 
     if (!glfwInit()) {
@@ -19,6 +27,7 @@ int main(void) {
     HEIGHT = 600;
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "04 coordinate systems.", NULL, NULL);
+    glfwSetKeyCallback(window, key_callback);
     if (!window) {
         fprintf(stderr, "Could not create window, aborting.\n");
         return(EXIT_FAILURE);
