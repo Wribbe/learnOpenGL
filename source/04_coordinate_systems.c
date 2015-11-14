@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #define UNUSED(x) (void)x
+#define M_PI 3.14159265358979323846264338327
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
