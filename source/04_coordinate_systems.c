@@ -6,7 +6,7 @@
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
 
-GLint stride = 8;
+GLsizei stride = 8;
 
 GLfloat vertices[] = {
     // Position         // Colors           // Texture Coords
