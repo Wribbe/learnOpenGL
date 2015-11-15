@@ -117,7 +117,7 @@ int main(void) {
 
     int WIDTH, HEIGHT;
     WIDTH = 800;
-    HEIGHT = 800;
+    HEIGHT = 600;
 
     // Define the viewport dimensions
     glViewport(0, 0, WIDTH, HEIGHT);
