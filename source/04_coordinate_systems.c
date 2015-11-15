@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "file_utils.h"
+#include <math.h>
 
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
@@ -21,6 +22,21 @@ GLuint indices[] = {
     0, 1, 3,
     1, 2, 3,
 };
+
+void mat4f_perspective(float fov, float aspect, float near, float far, Mat4f* result) {
+    float frustum_depth, one_over_depth;
+
+    frustum_depth = far - near;
+    one_over_depth = 1 / frustum_depth;
+
+    mat4f_zero(result);
+
+    result->data[1][1] = 1 / tan(0.5f * fov);
+    result->data[0][0] = -1 * result->data[1][1] / aspect;
+    result->data[2][2] = far * one_over_depth;
+    result->data[3][2] = (-far * near) * one_over_depth;
+    result->data[2][3] = 1;
+}
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
