@@ -249,6 +249,7 @@ void mat4f_print(Mat4f *matrix) {
         }
         printf(" ]\n");
     }
+    printf("\n");
 }
 
 GLvoid *mat4f_pointer(Mat4f *matrix) {
