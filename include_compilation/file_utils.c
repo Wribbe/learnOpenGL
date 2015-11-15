@@ -209,9 +209,9 @@ void vec4f_add(Vec4f *vecA, Vec4f *vecB,  Vec4f *vecRes) {
     }
 }
 
-void mat4f_mul(Mat4f *matA, Mat4f *matB, Mat4f *matRes) {
+void mat4f_mul(Mat4f *matRes, Mat4f *matA, Mat4f *matB) {
     int i, j, k;
-    float temp_array[4];
+    double temp_array[4];
     for (i=0; i<4; i++) {
         for (j=0; j<4; j++) {
             temp_array[j] = 0;
