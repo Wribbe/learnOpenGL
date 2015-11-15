@@ -150,7 +150,6 @@ void mat4f_zero_row(Mat4f *matrix, int row) {
 }
 
 void mat4f_basic_rotate(Mat4f *matrix, float radians) {
-    int i, j, diff;
     float cos, sin;
 
     mat4f_zero(matrix);
@@ -158,22 +157,18 @@ void mat4f_basic_rotate(Mat4f *matrix, float radians) {
     cos = cosf(radians);
     sin = sinf(radians);
 
-    for (i=0; i<4; i++) {
-        for (j=0; j<4; j++) {
-            diff = abs(j-i);
-            if (diff == 0) {
-                matrix->data[i][j] = cos;
-            } else if (diff == 1) {
-                matrix->data[i][j] = (sin == 0.0f) ? 0.0f : (j-i) < 0 ? sin : -sin;
-            } else if (diff == 2) {
-                matrix->data[i][j] = sin;
-            } else {
-                matrix->data[i][j] = 0.0f;
-            }
-        }
-    }
-    mat4f_zero_col(matrix, 3);
-    mat4f_zero_row(matrix, 3);
+    matrix->data[0][0] = cos;
+    matrix->data[1][1] = cos;
+    matrix->data[2][2] = cos;
+
+    matrix->data[0][1] = (sin == 0) ? sin : -sin;
+    matrix->data[1][2] = (sin == 0) ? sin : -sin;
+    matrix->data[2][0] = (sin == 0) ? sin : -sin;
+
+    matrix->data[0][2] = sin;
+    matrix->data[1][0] = sin;
+    matrix->data[2][1] = sin;
+
     matrix->data[3][3] = 1.0f;
 }
 
