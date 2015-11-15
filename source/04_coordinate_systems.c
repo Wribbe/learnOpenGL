@@ -8,7 +8,7 @@
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
 
-GLsizei stride = 8 * sizeof(GLfloat);
+GLsizei stride = 5 * sizeof(GLfloat);
 
 GLfloat vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -151,17 +151,14 @@ int main(void) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
                           (GLvoid*)(3*sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-                          (GLvoid*)(6*sizeof(GLfloat)));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                  GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
 
