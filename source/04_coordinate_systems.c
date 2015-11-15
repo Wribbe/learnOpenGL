@@ -122,9 +122,6 @@ int main(void) {
     // Define the viewport dimensions
     glViewport(0, 0, WIDTH, HEIGHT);
 
-    // Setup OpenGL options
-    glEnable(GL_DEPTH_TEST);
-
     GLFWwindow* window;
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "04 coordinate systems.", NULL, NULL);
@@ -139,6 +136,8 @@ int main(void) {
         fprintf(stderr, "Could not initialize GLEW, aborting.\n");
         return(EXIT_FAILURE);
     }
+
+    glEnable(GL_DEPTH_TEST);
 
     GLuint VAO, VBO, EBO;
     glGenVertexArrays(1 ,&VAO);
@@ -158,7 +157,6 @@ int main(void) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                  GL_STATIC_DRAW);
-
 
     glBindVertexArray(0);
 
@@ -207,7 +205,7 @@ int main(void) {
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(VAO);
 
