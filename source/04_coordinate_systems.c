@@ -116,16 +116,27 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    Mat4f model;
+    mat4f_allocate(&model);
+
+    mat4f_rotate_x(&model, -M_PI/4);
+    GLuint transform_location = glGetUniformLocation(shader_program, "transform");
+
+
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         glClear(GL_COLOR_BUFFER_BIT);
+
         glBindVertexArray(VAO);
+
+        glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&model));
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
