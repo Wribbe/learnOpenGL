@@ -23,19 +23,40 @@ GLuint indices[] = {
     1, 2, 3,
 };
 
-void mat4f_perspective(float fov, float aspect, float near, float far, Mat4f* result) {
-    float frustum_depth, one_over_depth;
+void mat4f_unity(Mat4f *matrix) {
+    int i, j;
+    for (i=0; i<4; i++) {
+        for (j=0; j<4; j++) {
+            if (i==j) {
+                matrix->data[i][j] = 1.0f;
+            } else {
+                matrix->data[i][j] = 0.0f;
+            }
+        }
+    }
+}
 
-    frustum_depth = far - near;
-    one_over_depth = 1 / frustum_depth;
+void mat4f_translate(Mat4f *matrix, float x, float y, float z) {
+    mat4f_unity(matrix);
+    matrix->data[0][3] = x;
+    matrix->data[1][3] = y;
+    matrix->data[2][3] = z;
+}
+
+void mat4f_perspective(Mat4f* result, float fov, float aspect, float near, float far) {
+    float tan_half_fov;
 
     mat4f_zero(result);
 
-    result->data[1][1] = 1 / tan(0.5f * fov);
-    result->data[0][0] = -1 * result->data[1][1] / aspect;
-    result->data[2][2] = far * one_over_depth;
-    result->data[3][2] = (-far * near) * one_over_depth;
-    result->data[2][3] = 1;
+    tan_half_fov = tan(fov/2); // t/n
+
+    result->data[0][0] = 1 / (aspect * tan_half_fov); // n/r
+    result->data[1][1] = 1 / tan_half_fov; // n/t
+    result->data[2][2] = -(far + near)/(far-near);
+    result->data[2][3] = -2*(far * near)/(far - near);
+
+    result->data[3][2] = -1.0f;
+
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -53,11 +74,22 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
-    GLFWwindow* window;
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     int WIDTH, HEIGHT;
     WIDTH = 800;
-    HEIGHT = 600;
+    HEIGHT = 800;
+
+    // Define the viewport dimensions
+    glViewport(0, 0, WIDTH, HEIGHT);
+
+    // Setup OpenGL options
+    glEnable(GL_DEPTH_TEST);
+
+    GLFWwindow* window;
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "04 coordinate systems.", NULL, NULL);
     glfwSetKeyCallback(window, key_callback);
@@ -116,11 +148,21 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    Mat4f model;
+    Mat4f model, view, projection;
     mat4f_allocate(&model);
+    mat4f_allocate(&view);
+    mat4f_allocate(&projection);
 
+    mat4f_translate(&view, 0.0f, 0.0f, -3.0f);
     mat4f_rotate_x(&model, -M_PI/4);
-    GLuint transform_location = glGetUniformLocation(shader_program, "transform");
+    mat4f_perspective(&projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT, 0.1f, 100.0f);
+
+    mat4f_print(&projection);
+
+    GLuint model_location, view_location, projection_location;
+    model_location = glGetUniformLocation(shader_program, "model");
+    view_location = glGetUniformLocation(shader_program, "view");
+    projection_location = glGetUniformLocation(shader_program, "projection");
 
 
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
@@ -131,7 +173,10 @@ int main(void) {
 
         glBindVertexArray(VAO);
 
-        glUniformMatrix4fv(transform_location, 1, GL_FALSE, mat4f_pointer(&model));
+        glUniformMatrix4fv(model_location, 1, GL_TRUE, mat4f_pointer(&model));
+        glUniformMatrix4fv(view_location, 1, GL_TRUE, mat4f_pointer(&view));
+        glUniformMatrix4fv(projection_location, 1, GL_TRUE, mat4f_pointer(&projection));
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
