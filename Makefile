@@ -12,7 +12,7 @@ WINDOWS_INCLUDES = -I$(GLFW_INCLUDE)/include -I$(GLFW_INCLUDE)/deps -I$(GLFW_INC
 WINDOWS_LIB = $(INCLUDE_DIR)/libportaudio.dll.a $(INCLUDE_DIR)/libglew32.a $(INCLUDE_DIR)/libglew32.dll.a \
 	      $(INCLUDE_DIR)/win/libSOIL.a
 
-COMMON_FLAGS = -lglfw3 -lpthread -lm -lpthread
+COMMON_FLAGS = -lglfw3 -lpthread -lm -lpthread -g
 COMMON_INCLUDES = -I$(INCLUDE_DIR)
 
 ERROR_FLAGS = -Wall -Wextra -pedantic -std=c99 -Wwrite-strings

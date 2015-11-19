@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "file_utils.h"
+
 #define UNUSED(x) (void)x
 
 GLsizei stride = 5*sizeof(GLfloat);
@@ -89,9 +91,10 @@ int main(void) {
     GLuint VAO, VBO;
 
     glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
     glBindVertexArray(VAO);
 
-    glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(VBO, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
@@ -102,14 +105,28 @@ int main(void) {
 
     glBindVertexArray(0);
 
+    char* vertex_source = read_shader("shaders/05.vert");
+    char* fragment_source = read_shader("shaders/05.frag");
+
+    GLuint shader_program;
+    shader_program = create_shader_program(vertex_source, fragment_source);
+
+    glUseProgram(shader_program);
+
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
+        glBindVertexArray(VAO);
+
         glClear(GL_COLOR_BUFFER_BIT);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
     }
+    glfwTerminate();
 
     return(EXIT_SUCCESS);
 }
