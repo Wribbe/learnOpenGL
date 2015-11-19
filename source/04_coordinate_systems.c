@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "file_utils.h"
 #include <math.h>
+#include <time.h>
 
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
@@ -180,26 +181,41 @@ int main(void) {
     glBindTexture(GL_TEXTURE_2D, 0);
 
     float rotation_step;
-    rotation_step = M_PI/128;
+    rotation_step = M_PI/6;
 
-    Mat4f model, view, projection, rotation;
+    Mat4f model, view, projection, rotation, temp;
     mat4f_allocate(&model);
     mat4f_allocate(&view);
     mat4f_allocate(&projection);
     mat4f_allocate(&rotation);
-
-    mat4f_rotate_x(&rotation, rotation_step);
-    mat4f_rotate_y(&model, rotation_step);
-    mat4f_mul(&rotation, &rotation, &model);
+    mat4f_allocate(&temp);
 
     mat4f_translate(&view, 0.0f, 0.0f, -3.0f);
-    mat4f_rotate_x(&model, -M_PI/4);
     mat4f_perspective(&projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT, 0.1f, 100.0f);
 
     GLuint model_location, view_location, projection_location;
     model_location = glGetUniformLocation(shader_program, "model");
     view_location = glGetUniformLocation(shader_program, "view");
     projection_location = glGetUniformLocation(shader_program, "projection");
+
+    int num_cubes = 10;
+    srand (time(NULL));
+    Vec4f positions[num_cubes];
+    float a = 4.0f;
+    for (int i = 0; i < num_cubes; i++) {
+        Vec4f vector;
+        for (int j = 0; j < 4; j++) {
+            if (j == 2) {
+                vector.data[j] = ((float)rand()/(float)(RAND_MAX/1.0f)-2.0f);
+            } else {
+                vector.data[j] = ((float)rand()/(float)(RAND_MAX/a))-2.0f;
+                //vector.data[j] = 1.0f*i*j;
+            }
+            printf("%f, ",vector.data[j]);
+        }
+        printf("\n");
+        positions[i] = vector;
+    };
 
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
@@ -208,19 +224,30 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(VAO);
+        float time = glfwGetTime();
+        for(int i = 0; i < num_cubes; i++) {
+            float *pos = positions[i].data;
 
-        glUniformMatrix4fv(model_location, 1, GL_TRUE, mat4f_pointer(&model));
-        glUniformMatrix4fv(view_location, 1, GL_TRUE, mat4f_pointer(&view));
-        glUniformMatrix4fv(projection_location, 1, GL_TRUE, mat4f_pointer(&projection));
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
 
-        mat4f_mul(&model, &model, &rotation);
+            mat4f_rotate_x(&rotation, rotation_step*time*(i+1));
+            mat4f_rotate_y(&temp, rotation_step*time*(i+1));
+            mat4f_mul(&rotation, &rotation, &temp);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+            mat4f_translate(&temp, pos[0], pos[1], pos[2]);
+            mat4f_rotate_x(&model, -M_PI/4);
+            mat4f_mul(&model, &model, &temp);
+            mat4f_mul(&model, &model, &rotation);
+
+            glUniformMatrix4fv(model_location, 1, GL_TRUE, mat4f_pointer(&model));
+            glUniformMatrix4fv(view_location, 1, GL_TRUE, mat4f_pointer(&view));
+            glUniformMatrix4fv(projection_location, 1, GL_TRUE, mat4f_pointer(&projection));
+
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
