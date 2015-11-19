@@ -46,4 +46,8 @@ void mat4f_mulf(Mat4f *matrix, float scalar);
 void mat4f_print(Mat4f *matrix);
 
 GLvoid *mat4f_pointer(Mat4f *matrix);
+
+void mat4f_unity(Mat4f *matrix);
+void mat4f_translate(Mat4f *matrix, float x, float y, float z);
+void mat4f_perspective(Mat4f* result, float fov, float aspect, float near, float far);
 #endif

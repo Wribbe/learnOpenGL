@@ -60,42 +60,6 @@ GLuint indices[] = {
     1, 2, 3,
 };
 
-void mat4f_unity(Mat4f *matrix) {
-    int i, j;
-    for (i=0; i<4; i++) {
-        for (j=0; j<4; j++) {
-            if (i==j) {
-                matrix->data[i][j] = 1.0f;
-            } else {
-                matrix->data[i][j] = 0.0f;
-            }
-        }
-    }
-}
-
-void mat4f_translate(Mat4f *matrix, float x, float y, float z) {
-    mat4f_unity(matrix);
-    matrix->data[0][3] = x;
-    matrix->data[1][3] = y;
-    matrix->data[2][3] = z;
-}
-
-void mat4f_perspective(Mat4f* result, float fov, float aspect, float near, float far) {
-    float tan_half_fov;
-
-    mat4f_zero(result);
-
-    tan_half_fov = tan(fov/2); // t/n
-
-    result->data[0][0] = 1 / (aspect * tan_half_fov); // n/r
-    result->data[1][1] = 1 / tan_half_fov; // n/t
-    result->data[2][2] = -(far + near)/(far-near);
-    result->data[2][3] = -2*(far * near)/(far - near);
-
-    result->data[3][2] = -1.0f;
-
-}
-
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
