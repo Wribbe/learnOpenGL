@@ -6,6 +6,7 @@
 #include "file_utils.h"
 
 #define UNUSED(x) (void)x
+#define M_PI 3.14159265358979323846264338327
 
 GLsizei stride = 5*sizeof(GLfloat);
 
@@ -124,16 +125,41 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    Mat4f projection, model, view;
+    mat4f_allocate(&projection);
+    mat4f_allocate(&model);
+    mat4f_allocate(&view);
+
+    mat4f_translate(&view, 0.0f, 0.0f, -3.0f);
+    mat4f_perspective(&projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT,
+                      0.1f, 100.0f);
+    mat4f_rotate_x(&model, -M_PI/4);
+
+    GLuint model_location, projection_location, view_location;
+    model_location = glGetUniformLocation(shader_program, "model");
+    projection_location = glGetUniformLocation(shader_program, "perspective");
+    view_location = glGetUniformLocation(shader_program, "view");
+
+    glEnable(GL_DEPTH_TEST);
+
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(VAO);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
-        glClear(GL_COLOR_BUFFER_BIT);
+        glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                           mat4f_pointer(&model));
+        glUniformMatrix4fv(view_location, 1, GL_TRUE,
+                           mat4f_pointer(&view));
+        glUniformMatrix4fv(projection_location, 1, GL_TRUE,
+                           mat4f_pointer(&projection));
+
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindTexture(GL_TEXTURE_2D, 0);
