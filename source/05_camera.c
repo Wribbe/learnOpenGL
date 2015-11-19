@@ -96,7 +96,7 @@ int main(void) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(VBO, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride,
