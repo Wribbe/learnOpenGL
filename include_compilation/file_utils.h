@@ -24,6 +24,10 @@ typedef struct Vec4f {
     float data[4];
 } Vec4f;
 
+typedef struct Vec3f {
+    float data[3];
+} Vec3f;
+
 /* Helper matrix functions. */
 void mat4f_zero(Mat4f *matrix);
 void mat4f_zero_col(Mat4f *matrix, int col);
