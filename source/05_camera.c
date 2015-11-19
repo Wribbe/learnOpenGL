@@ -5,6 +5,8 @@
 
 #define UNUSED(x) (void)x
 
+GLsizei stride = 5*sizeof(GLfloat);
+
 GLfloat vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -83,6 +85,22 @@ int main(void) {
         fprintf(stderr, "Could not initialize GLEW, aborting.\n");
         return(EXIT_FAILURE);
     }
+
+    GLuint VAO, VBO;
+
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(VBO, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride,
+                          (GLvoid*)(3*sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
 
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
