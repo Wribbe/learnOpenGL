@@ -109,13 +109,13 @@ void mat4f_zero(Mat4f *matrix) {
     }
 }
 
-void mat4f_allocate(Mat4f *matrix) {
-    matrix = malloc(sizeof(Mat4f));
+void mat4f_allocate(Mat4f **matrix) {
+    *matrix = malloc(sizeof(Mat4f));
     if(!matrix) {
         fprintf(stderr, "Could not allocate memory for Mat4f matrix.\n");
         return NULL;
     }
-    mat4f_zero(matrix);
+    mat4f_zero(*matrix);
 }
 
 void mat4f_scale(Mat4f *matrix, float x, float y, float z) {

@@ -35,7 +35,7 @@ void mat4f_zero_row(Mat4f *matrix, int row);
 void mat4f_basic_rotate(Mat4f *matrix, float radians);
 
 /* Useful matrix functions. */
-void mat4f_allocate(Mat4f *matrix);
+void mat4f_allocate(Mat4f **matrix);
 
 void mat4f_scale(Mat4f *matrix, float x, float y, float z);
 
