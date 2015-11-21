@@ -123,6 +123,31 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
+void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
+                   Vec3f *camera_up) {
+
+    Vec3f *camera_direction, *camera_right;
+
+    vec3f_allocate(&camera_direction);
+    vec3f_allocate(&camera_right);
+
+    vec3f_sub(camera_direction, camera_pos, camera_target);
+    vec3f_normalize(camera_direction, camera_direction);
+
+    vec3f_cross(camera_right, camera_up, camera_direction);
+    vec3f_cross(camera_up, camera_direction, camera_right);
+
+    int i;
+    for(i=0; i<3; i++) {
+        result->data[0][i] = camera_right->data[i];
+        result->data[1][i] = camera_up->data[i];
+        result->data[2][i] = camera_direction->data[i];
+        result->data[i][3] = -camera_pos->data[i];
+    }
+    free(camera_direction);
+    free(camera_right);
+}
+
 int main(void) {
 
     if(!glfwInit()) {
