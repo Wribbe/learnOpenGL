@@ -186,15 +186,15 @@ int main(void) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    Mat4f projection, model, view;
+    Mat4f *projection, *model, *view;
     mat4f_allocate(&projection);
     mat4f_allocate(&model);
     mat4f_allocate(&view);
 
-    mat4f_translate(&view, 0.0f, 0.0f, -3.0f);
-    mat4f_perspective(&projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT,
+    mat4f_translate(view, 0.0f, 0.0f, -3.0f);
+    mat4f_perspective(projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT,
                       0.1f, 100.0f);
-    mat4f_rotate_x(&model, -M_PI/4);
+    mat4f_rotate_x(model, -M_PI/4);
 
     GLuint model_location, projection_location, view_location;
     model_location = glGetUniformLocation(shader_program, "model");
@@ -215,11 +215,11 @@ int main(void) {
         glBindTexture(GL_TEXTURE_2D, texture);
 
         glUniformMatrix4fv(model_location, 1, GL_TRUE,
-                           mat4f_pointer(&model));
+                           mat4f_pointer(model));
         glUniformMatrix4fv(view_location, 1, GL_TRUE,
-                           mat4f_pointer(&view));
+                           mat4f_pointer(view));
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
-                           mat4f_pointer(&projection));
+                           mat4f_pointer(projection));
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
