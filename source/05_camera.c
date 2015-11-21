@@ -228,6 +228,19 @@ int main(void) {
 
     glEnable(GL_DEPTH_TEST);
 
+    Vec3f *camera_pos, *camera_target, *camera_up;
+    vec3f_allocate(&camera_pos);
+    vec3f_allocate(&camera_target);
+    vec3f_allocate(&camera_up);
+
+    vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
+    vec3f_set(camera_target, 0.0f, 0.0f, 0.0f);
+    vec3f_set(camera_up, 0.0f, 1.0f, 0.0f);
+
+    mat4f_print(view);
+    mat4f_look_at(view, camera_pos, camera_target, camera_up);
+    mat4f_print(view);
+
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
