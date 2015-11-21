@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <math.h>
 
 #include "file_utils.h"
 
@@ -53,6 +54,66 @@ GLfloat vertices[] = {
     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
+
+int vec3f_allocate(Vec3f **vector) {
+    *vector = malloc(sizeof(struct Vec3f));
+    if (!*vector) {
+        return EXIT_FAILURE;
+    }
+    int i;
+    for(i=0; i<3; i++) {
+        (*vector)->data[i] = 0;
+    }
+    return EXIT_SUCCESS;
+}
+
+void vec3f_set(Vec3f *vector, float x, float y, float z) {
+    vector->data[0] = x;
+    vector->data[1] = y;
+    vector->data[2] = z;
+}
+
+void vec3f_sub(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
+    int i;
+    for(i = 0; i<3; i++) {
+        result->data[i] = vecA->data[i] - vecB->data[i];
+    }
+}
+
+void vec3f_normalize(Vec3f* result, Vec3f *vector) {
+    int i;
+    float sum, temp;
+    for(i=0; i<3; i++) {
+        temp = vector->data[i];
+        sum += temp*temp;
+    }
+    sum = sqrtf(sum);
+    for(i=0; i<3; i++) {
+        result->data[i] = vector->data[i]/sum;
+    }
+}
+
+void vec3f_cross(Vec3f* result, Vec3f *vecA, Vec3f *vecB) {
+    float temp[3];
+    int i;
+    for (i=0; i<3; i++) {
+        temp[i] = vecA->data[(i+1)%3]*vecB->data[(i+2)%3] - \
+                  vecA->data[(i+2)%3]*vecB->data[(i+1)%3];
+    }
+    for (i=0; i<3; i++) {
+        result->data[i] = temp[i];
+    }
+}
+
+void vec3f_print(Vec3f* vector) {
+    printf("[ ");
+    int i;
+    for(i=0; i<2; i++) {
+        printf("%f, ",vector->data[i]);
+    }
+    printf("%f ]\n",vector->data[2]);
+    printf("\n");
+}
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
