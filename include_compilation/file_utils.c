@@ -291,4 +291,106 @@ void mat4f_perspective(Mat4f* result, float fov, float aspect, float near, float
     result->data[3][2] = -1.0f;
 
 }
+
+int vec3f_allocate(Vec3f **vector) {
+    *vector = malloc(sizeof(struct Vec3f));
+    if (!*vector) {
+        return EXIT_FAILURE;
+    }
+    int i;
+    for(i=0; i<3; i++) {
+        (*vector)->data[i] = 0;
+    }
+    return EXIT_SUCCESS;
+}
+
+void vec3f_set(Vec3f *vector, GLfloat x, GLfloat y, GLfloat z) {
+    vector->data[0] = x;
+    vector->data[1] = y;
+    vector->data[2] = z;
+}
+
+void vec3f_sub(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
+    int i;
+    for(i = 0; i<3; i++) {
+        result->data[i] = vecA->data[i] - vecB->data[i];
+    }
+}
+
+void vec3f_normalize(Vec3f* result, Vec3f *vector) {
+    int i;
+    float sum, temp;
+    for(i=0; i<3; i++) {
+        temp = vector->data[i];
+        sum += temp*temp;
+    }
+    sum = sqrtf(sum);
+    for(i=0; i<3; i++) {
+        result->data[i] = (vector->data[i])/sum;
+    }
+}
+
+void vec3f_cross(Vec3f* result, Vec3f *vecA, Vec3f *vecB) {
+    float temp[3], pos, neg;
+    int i;
+    for (i=0; i<3; i++) {
+        pos = vecA->data[(i+1)%3]*vecB->data[(i+2)%3];
+        neg = vecA->data[(i+2)%3]*vecB->data[(i+1)%3];
+        temp[i] = pos-neg;
+    }
+    for (i=0; i<3; i++) {
+        result->data[i] = temp[i];
+    }
+}
+
+void vec3f_print(Vec3f* vector) {
+    printf("[ ");
+    int i;
+    for(i=0; i<2; i++) {
+        printf("%f, ",vector->data[i]);
+    }
+    printf("%f ]\n",vector->data[2]);
+    printf("\n");
+}
+
+void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
+                   Vec3f *camera_up) {
+
+    Vec3f *camera_direction, *camera_right, *crossed_up;
+    Mat4f *unity, *right_up_down;
+
+    vec3f_allocate(&camera_direction);
+    vec3f_allocate(&camera_right);
+    vec3f_allocate(&crossed_up);
+
+    mat4f_allocate(&unity);
+    mat4f_allocate(&right_up_down);
+
+    vec3f_sub(camera_direction, camera_pos, camera_target);
+    vec3f_normalize(camera_direction, camera_direction);
+
+    vec3f_cross(camera_right, camera_up, camera_direction);
+    vec3f_normalize(camera_right, camera_right);
+    vec3f_cross(crossed_up, camera_direction, camera_right);
+
+    mat4f_unity(unity);
+    mat4f_translate(unity,
+                    -camera_pos->data[0],
+                    -camera_pos->data[1],
+                    -camera_pos->data[2]);
+    int i;
+    for(i=0; i<3; i++) {
+        right_up_down->data[0][i] = camera_right->data[i];
+        right_up_down->data[1][i] = crossed_up->data[i];
+        right_up_down->data[2][i] = camera_direction->data[i];
+    }
+    right_up_down->data[3][3] = 1.0f;
+    mat4f_mul(result, right_up_down, unity);
+
+    free(camera_direction);
+    free(camera_right);
+    free(crossed_up);
+    free(unity);
+}
+
 #endif

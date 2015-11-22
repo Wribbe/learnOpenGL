@@ -54,4 +54,14 @@ GLvoid *mat4f_pointer(Mat4f *matrix);
 void mat4f_unity(Mat4f *matrix);
 void mat4f_translate(Mat4f *matrix, float x, float y, float z);
 void mat4f_perspective(Mat4f* result, float fov, float aspect, float near, float far);
+
+int vec3f_allocate(Vec3f **vector);
+void vec3f_set(Vec3f *vector, GLfloat x, GLfloat y, GLfloat z);
+void vec3f_sub(Vec3f *result, Vec3f *vecA, Vec3f *vecB);
+void vec3f_normalize(Vec3f* result, Vec3f *vector);
+void vec3f_cross(Vec3f* result, Vec3f *vecA, Vec3f *vecB);
+void vec3f_print(Vec3f* vector);
+void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
+                   Vec3f *camera_up);
+
 #endif
