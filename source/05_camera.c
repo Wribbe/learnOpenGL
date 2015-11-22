@@ -11,6 +11,7 @@
 #define M_PI 3.14159265358979323846264338327
 
 Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
+GLfloat delta_time, last_frame, current_frame;
 bool keys[1024];
 
 GLsizei stride = 5 * sizeof(GLfloat);
@@ -102,7 +103,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 void do_movement() {
-    GLfloat camera_speed = 0.05f;
+    GLfloat camera_speed;
+    camera_speed = 5.0f * delta_time;
     if(keys[GLFW_KEY_W]) {
         vec3f_muls(temp_vec3f, camera_front, camera_speed);
         vec3f_add(camera_pos, camera_pos, temp_vec3f);
@@ -219,8 +221,13 @@ int main(void) {
     vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
 
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+    current_frame = 0.0f;
+    last_frame = 0.0f;
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+        current_frame = glfwGetTime();
+        delta_time = current_frame - last_frame;
+        last_frame = current_frame;
         do_movement();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
