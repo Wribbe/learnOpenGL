@@ -11,5 +11,5 @@ out vec2 vertex_texture_coords;
 
 void main() {
   vertex_texture_coords = texture_coord;
-  gl_Position = perspective * view * model * vec4 (position, 1.0f);
+  gl_Position = perspective * view * model * vec4(position, 1.0f);
 }

@@ -9,6 +9,8 @@
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
 
+Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
+
 GLsizei stride = 5 * sizeof(GLfloat);
 GLfloat vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -54,11 +56,62 @@ GLfloat vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
+void vec3f_add(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
+    int i;
+    float res;
+    for (i=0; i<3; i++) {
+        res = (vecA->data[i]) + (vecB->data[i]);
+        result->data[i] = res;
+    }
+}
+
+void vec3f_adds(Vec3f *result, Vec3f *vector, float scalar) {
+    int i;
+    for (i=0; i<3; i++) {
+        result->data[i] = vector->data[i] + scalar;
+    }
+}
+
+void vec3f_subs(Vec3f *result, Vec3f *vector, float scalar) {
+    int i;
+    for (i=0; i<3; i++) {
+        result->data[i] = vector->data[i] - scalar;
+    }
+}
+
+void vec3f_muls(Vec3f *result, Vec3f *vector, float scalar) {
+    int i;
+    for (i=0; i<3; i++) {
+        result->data[i] = vector->data[i] * scalar;
+    }
+}
+
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
+    GLfloat camera_speed = 0.05f;
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+    if(key == GLFW_KEY_W) {
+        vec3f_muls(temp_vec3f, camera_front, camera_speed);
+        vec3f_add(camera_pos, camera_pos, temp_vec3f);
+    }
+    if(key == GLFW_KEY_S) {
+        vec3f_muls(temp_vec3f, camera_front, camera_speed);
+        vec3f_sub(camera_pos, camera_pos, temp_vec3f);
+    }
+    if(key == GLFW_KEY_A) {
+        vec3f_cross(temp_vec3f, camera_front, camera_up);
+        vec3f_normalize(temp_vec3f, temp_vec3f);
+        vec3f_muls(temp_vec3f, temp_vec3f, camera_speed);
+        vec3f_sub(camera_pos, camera_pos, temp_vec3f);
+    }
+    if(key == GLFW_KEY_D) {
+        vec3f_cross(temp_vec3f, camera_front, camera_up);
+        vec3f_normalize(temp_vec3f, temp_vec3f);
+        vec3f_muls(temp_vec3f, temp_vec3f, camera_speed);
+        vec3f_add(camera_pos, camera_pos, temp_vec3f);
     }
 }
 
@@ -144,17 +197,18 @@ int main(void) {
     view_location = glGetUniformLocation(shader_program, "view");
 
 
-    Vec3f *camera_pos, *camera_target, *camera_up;
     vec3f_allocate(&camera_pos);
     vec3f_allocate(&camera_target);
     vec3f_allocate(&camera_up);
+    vec3f_allocate(&camera_front);
+    vec3f_allocate(&temp_vec3f);
 
     vec3f_set(camera_target, 0.0f, 0.0f, 0.0f);
     vec3f_set(camera_up, 0.0f, 1.0f, 0.0f);
+    vec3f_set(camera_front, 0.0f, 0.0f, -1.0f);
+    vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
 
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
-    GLfloat radius, cam_x, cam_z, time;
-    radius = 10.0f;
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
@@ -165,13 +219,10 @@ int main(void) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
-        cam_x = sinf(time) * radius;
-        cam_z = cosf(time) * radius;
-        vec3f_set(camera_pos, cam_x, 0.0f, cam_z);
+//        cam_x = sinf(time) * radius;
+//        cam_z = cosf(time) * radius;
+        vec3f_add(camera_target, camera_pos, camera_front);
         mat4f_look_at(view, camera_pos, camera_target, camera_up);
-
-        time = glfwGetTime();
-
 
         //mat4f_rotate_x(model, sinf(time) * M_PI);
         glUniformMatrix4fv(model_location, 1, GL_TRUE,
