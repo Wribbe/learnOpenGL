@@ -320,6 +320,7 @@ void vec3f_sub(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
 void vec3f_normalize(Vec3f* result, Vec3f *vector) {
     int i;
     float sum, temp;
+    sum = 0;
     for(i=0; i<3; i++) {
         temp = vector->data[i];
         sum += temp*temp;
