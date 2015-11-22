@@ -102,6 +102,11 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
+void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+    UNUSED(window);
+    printf("x: %f y: %f\n",xpos,ypos);
+}
+
 void do_movement() {
     GLfloat camera_speed;
     camera_speed = 5.0f * delta_time;
@@ -148,6 +153,7 @@ int main(void) {
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
     glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK) {
         fprintf(stderr, "Could not initialize GLEW, aborting.\n");
