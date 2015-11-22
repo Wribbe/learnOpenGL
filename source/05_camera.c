@@ -9,8 +9,7 @@
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
 
-GLsizei stride = 5*sizeof(GLfloat);
-
+GLsizei stride = 5 * sizeof(GLfloat);
 GLfloat vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -55,97 +54,12 @@ GLfloat vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
-int vec3f_allocate(Vec3f **vector) {
-    *vector = malloc(sizeof(struct Vec3f));
-    if (!*vector) {
-        return EXIT_FAILURE;
-    }
-    int i;
-    for(i=0; i<3; i++) {
-        (*vector)->data[i] = 0;
-    }
-    return EXIT_SUCCESS;
-}
-
-void vec3f_set(Vec3f *vector, float x, float y, float z) {
-    vector->data[0] = x;
-    vector->data[1] = y;
-    vector->data[2] = z;
-}
-
-void vec3f_sub(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
-    int i;
-    for(i = 0; i<3; i++) {
-        result->data[i] = vecA->data[i] - vecB->data[i];
-    }
-}
-
-void vec3f_normalize(Vec3f* result, Vec3f *vector) {
-    int i;
-    float sum, temp;
-    for(i=0; i<3; i++) {
-        temp = vector->data[i];
-        sum += temp*temp;
-    }
-    sum = sqrtf(sum);
-    for(i=0; i<3; i++) {
-        result->data[i] = vector->data[i]/sum;
-    }
-}
-
-void vec3f_cross(Vec3f* result, Vec3f *vecA, Vec3f *vecB) {
-    float temp[3];
-    int i;
-    for (i=0; i<3; i++) {
-        temp[i] = vecA->data[(i+1)%3]*vecB->data[(i+2)%3] - \
-                  vecA->data[(i+2)%3]*vecB->data[(i+1)%3];
-    }
-    for (i=0; i<3; i++) {
-        result->data[i] = temp[i];
-    }
-}
-
-void vec3f_print(Vec3f* vector) {
-    printf("[ ");
-    int i;
-    for(i=0; i<2; i++) {
-        printf("%f, ",vector->data[i]);
-    }
-    printf("%f ]\n",vector->data[2]);
-    printf("\n");
-}
-
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-}
-
-void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
-                   Vec3f *camera_up) {
-
-    Vec3f *camera_direction, *camera_right;
-
-    vec3f_allocate(&camera_direction);
-    vec3f_allocate(&camera_right);
-
-    vec3f_sub(camera_direction, camera_pos, camera_target);
-    vec3f_normalize(camera_direction, camera_direction);
-
-    vec3f_cross(camera_right, camera_up, camera_direction);
-    vec3f_cross(camera_up, camera_direction, camera_right);
-
-    int i;
-    for(i=0; i<3; i++) {
-        result->data[0][i] = camera_right->data[i];
-        result->data[1][i] = camera_up->data[i];
-        result->data[2][i] = camera_direction->data[i];
-        result->data[i][3] = -camera_pos->data[i];
-    }
-    free(camera_direction);
-    free(camera_right);
 }
 
 int main(void) {
@@ -175,6 +89,8 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
+    glEnable(GL_DEPTH_TEST);
+
     GLuint VAO, VBO;
 
     glGenVertexArrays(1, &VAO);
@@ -184,10 +100,10 @@ int main(void) {
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, sizeof(GLfloat), GL_FLOAT, GL_FALSE, stride,
-                          (GLvoid*)(3*sizeof(GL_FLOAT)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
+                          (GLvoid*)(3*sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
@@ -219,29 +135,26 @@ int main(void) {
     mat4f_translate(view, 0.0f, 0.0f, -3.0f);
     mat4f_perspective(projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT,
                       0.1f, 100.0f);
-    mat4f_rotate_x(model, -M_PI/4);
+    //mat4f_rotate_x(model, -M_PI/4);
+    mat4f_rotate_x(model, 0.0f);
 
     GLuint model_location, projection_location, view_location;
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
     view_location = glGetUniformLocation(shader_program, "view");
 
-    glEnable(GL_DEPTH_TEST);
 
     Vec3f *camera_pos, *camera_target, *camera_up;
     vec3f_allocate(&camera_pos);
     vec3f_allocate(&camera_target);
     vec3f_allocate(&camera_up);
 
-    vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
     vec3f_set(camera_target, 0.0f, 0.0f, 0.0f);
     vec3f_set(camera_up, 0.0f, 1.0f, 0.0f);
 
-    mat4f_print(view);
-    mat4f_look_at(view, camera_pos, camera_target, camera_up);
-    mat4f_print(view);
-
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+    GLfloat radius, cam_x, cam_z, time;
+    radius = 10.0f;
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
@@ -252,6 +165,15 @@ int main(void) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
+        cam_x = sinf(time) * radius;
+        cam_z = cosf(time) * radius;
+        vec3f_set(camera_pos, cam_x, 0.0f, cam_z);
+        mat4f_look_at(view, camera_pos, camera_target, camera_up);
+
+        time = glfwGetTime();
+
+
+        //mat4f_rotate_x(model, sinf(time) * M_PI);
         glUniformMatrix4fv(model_location, 1, GL_TRUE,
                            mat4f_pointer(model));
         glUniformMatrix4fv(view_location, 1, GL_TRUE,
