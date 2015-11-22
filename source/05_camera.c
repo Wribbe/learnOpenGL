@@ -11,7 +11,7 @@
 #define M_PI 3.14159265358979323846264338327
 
 Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
-GLfloat delta_time, last_frame, current_frame, last_x, last_y, yaw, pitch;
+GLfloat delta_time, last_frame, current_frame, last_x, last_y, yaw, pitch, fov;
 bool keys[1024], first_mouse;
 
 GLsizei stride = 5 * sizeof(GLfloat);
@@ -142,6 +142,29 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     vec3f_normalize(camera_front, camera_front);
 }
 
+void scroll_callback(GLFWwindow *window, double x_offset, double y_offset) {
+
+    UNUSED(window);
+    UNUSED(x_offset);
+
+    float fov_min, fov_max;
+    fov_min = (float)M_PI*(1.0f/180.0f);
+    fov_max = (float)M_PI/4.0f;
+
+    if(fov >= fov_min && fov <= fov_max) {
+        fov -= fov_min*(float)y_offset;
+    }
+    if(fov <= fov_min) {
+        fov = fov_min;
+    }
+    if(fov >= fov_max) {
+        fov = fov_max;
+    }
+    printf("fov: %f\n",fov);
+    printf("y_offset: %f\n",y_offset);
+    printf("fov_min: %f\n",fov_min);
+}
+
 void do_movement() {
     GLfloat camera_speed;
     camera_speed = 5.0f * delta_time;
@@ -189,6 +212,7 @@ int main(void) {
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK) {
         fprintf(stderr, "Could not initialize GLEW, aborting.\n");
@@ -240,8 +264,6 @@ int main(void) {
     mat4f_allocate(&view);
 
     mat4f_translate(view, 0.0f, 0.0f, -3.0f);
-    mat4f_perspective(projection, (float)M_PI/4, (float)WIDTH/(float)HEIGHT,
-                      0.1f, 100.0f);
     //mat4f_rotate_x(model, -M_PI/4);
     mat4f_rotate_x(model, 0.0f);
 
@@ -267,9 +289,11 @@ int main(void) {
     last_frame = 0.0f;
     last_x = WIDTH / 2.0f;
     last_y = HEIGHT / 2.0f;
+    fov = M_PI/4;
     yaw = -M_PI/2;
     pitch = 0.0f;
     first_mouse = true;
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         current_frame = glfwGetTime();
@@ -288,6 +312,9 @@ int main(void) {
 //        cam_z = cosf(time) * radius;
         vec3f_add(camera_target, camera_pos, camera_front);
         mat4f_look_at(view, camera_pos, camera_target, camera_up);
+
+        mat4f_perspective(projection, fov, (float)WIDTH/(float)HEIGHT,
+                          0.1f, 100.0f);
 
         //mat4f_rotate_x(model, sinf(time) * M_PI);
         glUniformMatrix4fv(model_location, 1, GL_TRUE,
