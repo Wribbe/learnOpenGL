@@ -140,7 +140,7 @@ int main(void) {
     glBindTexture(GL_TEXTURE_2D, texture);
 
     load_texture("textures/02_container.jpg");
-    glUniform1i(glGetUniformLocation(shader_program, "texture"), 0);
+    glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
