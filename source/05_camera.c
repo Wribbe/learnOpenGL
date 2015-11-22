@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <math.h>
+#include <stdbool.h>
 
 #include "file_utils.h"
 
@@ -10,6 +11,7 @@
 #define M_PI 3.14159265358979323846264338327
 
 Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
+bool keys[1024];
 
 GLsizei stride = 5 * sizeof(GLfloat);
 GLfloat vertices[] = {
@@ -89,25 +91,33 @@ void vec3f_muls(Vec3f *result, Vec3f *vector, float scalar) {
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
-    GLfloat camera_speed = 0.05f;
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    if(key == GLFW_KEY_W) {
+    if (action == GLFW_PRESS) {
+        keys[key] = true;
+    } else if (action == GLFW_RELEASE) {
+        keys[key] = false;
+    }
+}
+
+void do_movement() {
+    GLfloat camera_speed = 0.05f;
+    if(keys[GLFW_KEY_W]) {
         vec3f_muls(temp_vec3f, camera_front, camera_speed);
         vec3f_add(camera_pos, camera_pos, temp_vec3f);
     }
-    if(key == GLFW_KEY_S) {
+    if(keys[GLFW_KEY_S]) {
         vec3f_muls(temp_vec3f, camera_front, camera_speed);
         vec3f_sub(camera_pos, camera_pos, temp_vec3f);
     }
-    if(key == GLFW_KEY_A) {
+    if(keys[GLFW_KEY_A]) {
         vec3f_cross(temp_vec3f, camera_front, camera_up);
         vec3f_normalize(temp_vec3f, temp_vec3f);
         vec3f_muls(temp_vec3f, temp_vec3f, camera_speed);
         vec3f_sub(camera_pos, camera_pos, temp_vec3f);
     }
-    if(key == GLFW_KEY_D) {
+    if(keys[GLFW_KEY_D]) {
         vec3f_cross(temp_vec3f, camera_front, camera_up);
         vec3f_normalize(temp_vec3f, temp_vec3f);
         vec3f_muls(temp_vec3f, temp_vec3f, camera_speed);
@@ -211,6 +221,7 @@ int main(void) {
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+        do_movement();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
