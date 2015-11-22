@@ -155,6 +155,7 @@ int main(void) {
     }
 
     glEnable(GL_DEPTH_TEST);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     GLuint VAO, VBO;
 
