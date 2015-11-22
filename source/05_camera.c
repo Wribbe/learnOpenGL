@@ -11,8 +11,8 @@
 #define M_PI 3.14159265358979323846264338327
 
 Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
-GLfloat delta_time, last_frame, current_frame;
-bool keys[1024];
+GLfloat delta_time, last_frame, current_frame, last_x, last_y, yaw, pitch;
+bool keys[1024], first_mouse;
 
 GLsizei stride = 5 * sizeof(GLfloat);
 GLfloat vertices[] = {
@@ -103,8 +103,43 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+    GLfloat x_offset, y_offset, sensitivity, x, y, z;
+
     UNUSED(window);
-    printf("x: %f y: %f\n",xpos,ypos);
+
+    xpos = (float)xpos;
+    ypos = (float)ypos;
+
+    if(first_mouse) {
+        last_x = xpos;
+        last_y = ypos;
+        first_mouse = false;
+    }
+
+    x_offset = xpos - last_x;
+    y_offset = last_y - ypos;
+    last_x = xpos;
+    last_y = ypos;
+
+    sensitivity = 0.001f;
+    x_offset *= sensitivity;
+    y_offset *= sensitivity;
+
+    yaw += x_offset;
+    pitch += y_offset;
+
+    if(pitch > M_PI/2) {
+        pitch = M_PI/2;
+    }
+    if(pitch < -M_PI/2) {
+        pitch = -M_PI/2;
+    }
+
+    x = cosf(yaw) * cosf(pitch);
+    y = sinf(pitch);
+    z = sinf(yaw) * cosf(pitch);
+    vec3f_set(camera_front, x, y, z);
+    vec3f_normalize(camera_front, camera_front);
 }
 
 void do_movement() {
@@ -230,6 +265,11 @@ int main(void) {
     glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
     current_frame = 0.0f;
     last_frame = 0.0f;
+    last_x = WIDTH / 2.0f;
+    last_y = HEIGHT / 2.0f;
+    yaw = -M_PI/2;
+    pitch = 0.0f;
+    first_mouse = true;
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         current_frame = glfwGetTime();
