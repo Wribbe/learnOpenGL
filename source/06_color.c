@@ -222,7 +222,7 @@ int main(void) {
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    GLuint VAO, VBO;
+    GLuint VAO, VBO, lightVAO;
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -237,6 +237,15 @@ int main(void) {
     //                      (GLvoid*)(3*sizeof(GLfloat)));
     //glEnableVertexAttribArray(1);
 
+    glBindVertexArray(0);
+
+    /* LightVAO definition. */
+
+    glGenVertexArrays(1, &lightVAO);
+    glBindVertexArray(lightVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO); // Same vertex data as cube.
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
+    glEnableVertexAttribArray(0);
     glBindVertexArray(0);
 
     char* vertex_source = read_shader("shaders/06.vert");
