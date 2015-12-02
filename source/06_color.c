@@ -239,8 +239,8 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    char* vertex_source = read_shader("shaders/05.vert");
-    char* fragment_source = read_shader("shaders/05.frag");
+    char* vertex_source = read_shader("shaders/06.vert");
+    char* fragment_source = read_shader("shaders/06.frag");
 
     GLuint shader_program;
     shader_program = create_shader_program(vertex_source, fragment_source);
