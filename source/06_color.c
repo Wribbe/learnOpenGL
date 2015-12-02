@@ -233,9 +233,9 @@ int main(void) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
-                          (GLvoid*)(3*sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
+    //                      (GLvoid*)(3*sizeof(GLfloat)));
+    //glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
@@ -247,16 +247,16 @@ int main(void) {
 
     glUseProgram(shader_program);
 
-    GLuint texture;
+    //GLuint texture;
 
-    glActiveTexture(GL_TEXTURE0);
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    //glActiveTexture(GL_TEXTURE0);
+    //glGenTextures(1, &texture);
+    //glBindTexture(GL_TEXTURE_2D, texture);
 
-    load_texture("textures/02_container.jpg");
-    glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
+    //load_texture("textures/02_container.jpg");
+    //glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
 
     Mat4f *projection, *model, *view;
     mat4f_allocate(&projection);
@@ -305,8 +305,8 @@ int main(void) {
 
         glBindVertexArray(VAO);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+     //   glActiveTexture(GL_TEXTURE0);
+     //   glBindTexture(GL_TEXTURE_2D, texture);
 
 //        cam_x = sinf(time) * radius;
 //        cam_z = cosf(time) * radius;
@@ -326,7 +326,7 @@ int main(void) {
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        glBindTexture(GL_TEXTURE_2D, 0);
+     //   glBindTexture(GL_TEXTURE_2D, 0);
 
         glBindVertexArray(0);
 
