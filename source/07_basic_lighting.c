@@ -325,7 +325,7 @@ int main(void) {
     vec3f_set(camera_front, 0.0f, 0.0f, -1.0f);
     vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
 
-    glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     current_frame = 0.0f;
     last_frame = 0.0f;
     last_x = WIDTH / 2.0f;
