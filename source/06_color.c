@@ -276,11 +276,21 @@ int main(void) {
     //mat4f_rotate_x(model, -M_PI/4);
     mat4f_rotate_x(model, 0.0f);
 
+    /* shader locations */
+
     GLuint model_location, projection_location, view_location;
+
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
     view_location = glGetUniformLocation(shader_program, "view");
 
+    GLuint object_color_location, light_color_location;
+
+    object_color_location = glGetUniformLocation(shader_program, "object_color");
+    light_color_location = glGetUniformLocation(shader_program, "light_color");
+
+    glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
+    glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
 
     vec3f_allocate(&camera_pos);
     vec3f_allocate(&camera_target);
