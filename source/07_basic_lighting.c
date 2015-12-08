@@ -246,6 +246,8 @@ int main(void) {
     glBindBuffer(GL_ARRAY_BUFFER, VBO); // Same vertex data as cube.
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
     glBindVertexArray(0);
 
     char* vertex_source = read_shader("shaders/07.vert");
@@ -284,21 +286,29 @@ int main(void) {
 
     /* shader locations */
 
-    GLuint model_location, projection_location, view_location;
+    GLuint model_location, projection_location, view_location, light_position_location;
 
     glUseProgram(shader_program);
 
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
     view_location = glGetUniformLocation(shader_program, "view");
+    light_position_location = glGetUniformLocation(shader_program, "light_position");
 
     GLuint object_color_location, light_color_location;
 
     object_color_location = glGetUniformLocation(shader_program, "object_color");
     light_color_location = glGetUniformLocation(shader_program, "light_color");
 
+    Vec3f *light_position;
+    vec3f_allocate(&light_position);
+    vec3f_set(light_position, 4.0f, 4.0f, 0.0f);
+
     glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
     glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
+    glUniform3f(light_position_location, light_position->data[0],
+                                         light_position->data[1],
+                                         light_position->data[2]);
 
     glUseProgram(0);
 
@@ -309,10 +319,6 @@ int main(void) {
     lamp_model_location = glGetUniformLocation(lamp_program, "model");
     lamp_projection_location = glGetUniformLocation(lamp_program, "perspective");
     lamp_view_location = glGetUniformLocation(lamp_program, "view");
-
-    Vec3f *light_position;
-    vec3f_allocate(&light_position);
-    vec3f_set(light_position, 3.0f, 3.0f, 0.0f);
 
     vec3f_allocate(&camera_pos);
     vec3f_allocate(&camera_target);
