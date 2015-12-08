@@ -269,6 +269,12 @@ void mat4f_unity(Mat4f *matrix) {
     }
 }
 
+void mat4f_translate_vec3f(Mat4f *matrix, Vec3f *vector) {
+    mat4f_translate(matrix, vector->data[0],
+                            vector->data[1],
+                            vector->data[2]);
+}
+
 void mat4f_translate(Mat4f *matrix, float x, float y, float z) {
     mat4f_unity(matrix);
     matrix->data[0][3] = x;

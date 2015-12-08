@@ -64,4 +64,6 @@ void vec3f_print(Vec3f* vector);
 void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
                    Vec3f *camera_up);
 
+void mat4f_translate_vec3f(Mat4f *matrix, Vec3f *vector);
+
 #endif
