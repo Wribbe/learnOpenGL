@@ -250,11 +250,15 @@ int main(void) {
 
     char* vertex_source = read_shader("shaders/06.vert");
     char* fragment_source = read_shader("shaders/06.frag");
+    char* lamp_fragment_source = read_shader("shaders/06_lamp.frag");
 
-    GLuint shader_program;
+    GLuint shader_program, lamp_program;
     shader_program = create_shader_program(vertex_source, fragment_source);
+    lamp_program = create_shader_program(vertex_source, lamp_fragment_source);
 
-    glUseProgram(shader_program);
+    free(vertex_source);
+    free(fragment_source);
+    free(lamp_fragment_source);
 
     //GLuint texture;
 
@@ -267,10 +271,12 @@ int main(void) {
 
     //glBindTexture(GL_TEXTURE_2D, 0);
 
-    Mat4f *projection, *model, *view;
+    Mat4f *projection, *model, *view, *temp, *temp2;
     mat4f_allocate(&projection);
     mat4f_allocate(&model);
     mat4f_allocate(&view);
+    mat4f_allocate(&temp);
+    mat4f_allocate(&temp2);
 
     mat4f_translate(view, 0.0f, 0.0f, -3.0f);
     //mat4f_rotate_x(model, -M_PI/4);
@@ -279,6 +285,8 @@ int main(void) {
     /* shader locations */
 
     GLuint model_location, projection_location, view_location;
+
+    glUseProgram(shader_program);
 
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
@@ -291,6 +299,20 @@ int main(void) {
 
     glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
     glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
+
+    glUseProgram(0);
+
+    glUseProgram(lamp_program);
+
+    GLuint lamp_model_location, lamp_projection_location, lamp_view_location;
+
+    lamp_model_location = glGetUniformLocation(lamp_program, "model");
+    lamp_projection_location = glGetUniformLocation(lamp_program, "perspective");
+    lamp_view_location = glGetUniformLocation(lamp_program, "view");
+
+    Vec3f *light_position;
+    vec3f_allocate(&light_position);
+    vec3f_set(light_position, 3.0f, 3.0f, 0.0f);
 
     vec3f_allocate(&camera_pos);
     vec3f_allocate(&camera_target);
@@ -322,7 +344,8 @@ int main(void) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glBindVertexArray(VAO);
+        glUseProgram(shader_program);
+
 
      //   glActiveTexture(GL_TEXTURE0);
      //   glBindTexture(GL_TEXTURE_2D, texture);
@@ -343,13 +366,39 @@ int main(void) {
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
                            mat4f_pointer(projection));
 
+        glBindVertexArray(VAO);
+
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
      //   glBindTexture(GL_TEXTURE_2D, 0);
 
         glBindVertexArray(0);
 
+        glUseProgram(lamp_program);
+        //glUseProgram(shader_program);
+
+
+        mat4f_translate_vec3f(temp, light_position);
+        mat4f_mul(temp, model, temp);
+        mat4f_scale(temp2, 0.2f, 0.2f, 0.2f);
+        mat4f_mul(temp2, temp2, temp);
+        mat4f_print(temp2);
+
+        glUniformMatrix4fv(lamp_model_location, 1, GL_TRUE,
+                           mat4f_pointer(temp2));
+        glUniformMatrix4fv(lamp_view_location, 1, GL_TRUE,
+                           mat4f_pointer(view));
+        glUniformMatrix4fv(lamp_projection_location, 1, GL_TRUE,
+                           mat4f_pointer(projection));
+
+        glBindVertexArray(lightVAO);
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        glBindVertexArray(0);
+
         glfwSwapBuffers(window);
+
     }
     glfwTerminate();
 
