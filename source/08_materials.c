@@ -302,7 +302,8 @@ int main(void) {
     /* shader locations */
 
     GLuint model_location, projection_location, view_location, light_position_location,
-           view_position_location;
+           view_position_location, mat_ambient_location, mat_diffuse_location,
+           mat_specular_location, mat_shininess_location;
 
     glUseProgram(shader_program);
 
@@ -311,6 +312,10 @@ int main(void) {
     view_location = glGetUniformLocation(shader_program, "view");
     light_position_location = glGetUniformLocation(shader_program, "light_position");
     view_position_location = glGetUniformLocation(shader_program, "view_position");
+    mat_ambient_location = glGetUniformLocation(shader_program, "material.ambient");
+    mat_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
+    mat_specular_location = glGetUniformLocation(shader_program, "material.specular");
+    mat_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
 
     GLuint object_color_location, light_color_location;
 
@@ -322,6 +327,12 @@ int main(void) {
     glUniform3f(light_position_location, light_position->data[0],
                                          light_position->data[1],
                                          light_position->data[2]);
+
+    glUniform3f(mat_ambient_location, 1.0f, 0.5f, 0.31f);
+    glUniform3f(mat_diffuse_location, 1.0f, 0.5f, 0.31f);
+    glUniform3f(mat_specular_location, 0.5f, 0.5f, 0.5f);
+    glUniform1f(mat_shininess_location, 32.0f);
+
     glUseProgram(0);
 
     glUseProgram(lamp_program);
