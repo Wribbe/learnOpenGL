@@ -248,6 +248,13 @@ int main(void) {
 
     glBindVertexArray(0);
 
+    GLuint diffuse_map;
+    glGenTextures(1, &diffuse_map);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuse_map);
+    load_texture("textures/container_diffuse.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     /* LightVAO definition. */
 
     glGenVertexArrays(1, &lightVAO);
@@ -297,7 +304,6 @@ int main(void) {
 
     /* shader locations */
 
-    glUseProgram(shader_program);
 
     GLuint model_location, projection_location, view_location,
            light_position_location, view_position_location,
@@ -321,27 +327,21 @@ int main(void) {
 
     sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
 
+    /* set non updating uniform values */
+
+    glUseProgram(shader_program);
+
     glUniform3f(light_position_location, light_position->data[0],
                                          light_position->data[1],
                                          light_position->data[2]);
 
     glUniform3f(material_specular_location, 0.5f, 0.5f, 0.5f);
     glUniform1f(material_shininess_location, 32.0f);
-
-
-    glUniform1i(sampler_diffuse_location, 0);
-    // Can you move this to after the texture stuff?
-
-    GLuint diffuse_map;
-    glGenTextures(1, &diffuse_map);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, diffuse_map);
-    load_texture("textures/container_diffuse.png");
-    glBindTexture(GL_TEXTURE_2D, 0);
-
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
+    glUniform1i(sampler_diffuse_location, 0);
 
     glUseProgram(0);
+
 
     glUseProgram(lamp_program);
 
