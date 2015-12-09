@@ -341,18 +341,6 @@ int main(void) {
 
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
 
-
-    //GLuint texture;
-
-    //glActiveTexture(GL_TEXTURE0);
-    //glGenTextures(1, &texture);
-    //glBindTexture(GL_TEXTURE_2D, texture);
-
-    //load_texture("textures/02_container.jpg");
-    //glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
-
-    //glBindTexture(GL_TEXTURE_2D, 0);
-
     glUseProgram(0);
 
     glUseProgram(lamp_program);
@@ -442,14 +430,11 @@ int main(void) {
         glBindVertexArray(0);
 
         glUseProgram(lamp_program);
-        //glUseProgram(shader_program);
-
 
         mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
         mat4f_mul(temp, temp, model);
         mat4f_translate_vec3f(temp2, light_position);
         mat4f_mul(temp2, temp2, temp);
-        //mat4f_print(temp);
 
         glUniformMatrix4fv(lamp_model_location, 1, GL_TRUE,
                            mat4f_pointer(temp2));
