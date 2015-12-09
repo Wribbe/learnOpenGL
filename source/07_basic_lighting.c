@@ -302,7 +302,7 @@ int main(void) {
 
     Vec3f *light_position;
     vec3f_allocate(&light_position);
-    vec3f_set(light_position, 4.0f, 4.0f, 0.0f);
+    vec3f_set(light_position, 1.2f, 1.0f, 2.0f);
 
     glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
     glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
