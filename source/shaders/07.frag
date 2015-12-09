@@ -10,15 +10,14 @@ uniform vec3 light_position;
 
 void main() {
 
-  vec3 norm = normalize(Normal);
-  vec3 light_direction = normalize((light_position/4.0) - Frag_position);
+  float ambient_strength = 0.1f;
+  vec3 ambient = ambient_strength * light_color;
 
+  vec3 norm = normalize(Normal);
+  vec3 light_direction = normalize(light_position - Frag_position);
   float diff = max(dot(norm, light_direction), 0.0f);
   vec3 diffuse = diff * light_color;
 
-  float ambient_strength = 0.1f;
-  vec3 ambient = (diffuse + ambient_strength) * light_color;
-
-  vec3 result = ambient * object_color;
+  vec3 result = (ambient + diffuse) * object_color;
   color = vec4(result, 1.0f);
 }

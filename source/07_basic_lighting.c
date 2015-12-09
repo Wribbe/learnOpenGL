@@ -284,6 +284,21 @@ int main(void) {
     //mat4f_rotate_x(model, -M_PI/4);
     mat4f_rotate_x(model, 0.0f);
 
+    Vec3f *light_position;
+    vec3f_allocate(&light_position);
+
+    vec3f_allocate(&camera_pos);
+    vec3f_allocate(&camera_target);
+    vec3f_allocate(&camera_up);
+    vec3f_allocate(&camera_front);
+    vec3f_allocate(&temp_vec3f);
+
+    vec3f_set(camera_target, 0.0f, 0.0f, 0.0f);
+    vec3f_set(camera_up, 0.0f, 1.0f, 0.0f);
+    vec3f_set(camera_front, 0.0f, 0.0f, -1.0f);
+    vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
+    vec3f_set(light_position, 1.2f, 1.0f, 2.0f);
+
     /* shader locations */
 
     GLuint model_location, projection_location, view_location, light_position_location;
@@ -299,10 +314,6 @@ int main(void) {
 
     object_color_location = glGetUniformLocation(shader_program, "object_color");
     light_color_location = glGetUniformLocation(shader_program, "light_color");
-
-    Vec3f *light_position;
-    vec3f_allocate(&light_position);
-    vec3f_set(light_position, 1.2f, 1.0f, 2.0f);
 
     glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
     glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
@@ -320,16 +331,8 @@ int main(void) {
     lamp_projection_location = glGetUniformLocation(lamp_program, "perspective");
     lamp_view_location = glGetUniformLocation(lamp_program, "view");
 
-    vec3f_allocate(&camera_pos);
-    vec3f_allocate(&camera_target);
-    vec3f_allocate(&camera_up);
-    vec3f_allocate(&camera_front);
-    vec3f_allocate(&temp_vec3f);
+    glUseProgram(0);
 
-    vec3f_set(camera_target, 0.0f, 0.0f, 0.0f);
-    vec3f_set(camera_up, 0.0f, 1.0f, 0.0f);
-    vec3f_set(camera_front, 0.0f, 0.0f, -1.0f);
-    vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     current_frame = 0.0f;
