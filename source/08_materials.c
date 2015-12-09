@@ -337,8 +337,6 @@ int main(void) {
     glUniform3f(material_specular_location, 0.5f, 0.5f, 0.5f);
     glUniform1f(material_shininess_location, 32.0f);
 
-    glUniform3f(light_ambient_location, 0.2f, 0.2f, 0.2f);
-    glUniform3f(light_diffuse_location, 0.5f, 0.5f, 0.5f);
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
 
     glUseProgram(0);
@@ -364,12 +362,21 @@ int main(void) {
     pitch = 0.0f;
     first_mouse = true;
 
+    Vec3f *light_color;
+    vec3f_allocate(&light_color);
+    float time, ambient_factor, diffuse_factor;
+
+    ambient_factor = 0.2f;
+    diffuse_factor = 0.5f;
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         current_frame = glfwGetTime();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
         do_movement();
+
+        time = glfwGetTime();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -398,6 +405,20 @@ int main(void) {
         glUniform3f(view_position_location, camera_pos->data[0],
                                             camera_pos->data[1],
                                             camera_pos->data[2]);
+
+        vec3f_set(light_color, sinf(time * 2.0f), sinf(time * 0.7f), sinf(time * 1.3f));
+        vec3f_copy(temp_vec3f, light_color);
+
+        vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
+        glUniform3f(light_ambient_location, temp_vec3f->data[0],
+                                            temp_vec3f->data[1],
+                                            temp_vec3f->data[2]);
+
+        vec3f_copy(temp_vec3f, light_color);
+        vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
+        glUniform3f(light_diffuse_location, temp_vec3f->data[0],
+                                            temp_vec3f->data[1],
+                                            temp_vec3f->data[2]);
 
         glBindVertexArray(VAO);
 
