@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "file_utils.h"
 
@@ -381,6 +382,8 @@ int main(void) {
     //ambient_factor = 0.2f;
     //diffuse_factor = 0.5f;
 
+    srand(time(NULL));
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         current_frame = glfwGetTime();
@@ -428,6 +431,8 @@ int main(void) {
         glUniform3f(light_diffuse_location, temp_vec3f->data[0],
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
+
+        printf("random int: %d\n",rand());
 
         glBindVertexArray(VAO);
 
