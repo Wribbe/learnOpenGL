@@ -68,6 +68,13 @@ void vec3f_add(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
     }
 }
 
+void vec3f_copy(Vec3f *destination, Vec3f *source) {
+    int i;
+    for (i=0; i<3; i++) {
+        destination->data[i] = source->data[i];
+    }
+}
+
 void vec3f_adds(Vec3f *result, Vec3f *vector, float scalar) {
     int i;
     for (i=0; i<3; i++) {
