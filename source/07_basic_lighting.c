@@ -301,7 +301,8 @@ int main(void) {
 
     /* shader locations */
 
-    GLuint model_location, projection_location, view_location, light_position_location;
+    GLuint model_location, projection_location, view_location, light_position_location,
+           view_position_location;
 
     glUseProgram(shader_program);
 
@@ -309,6 +310,7 @@ int main(void) {
     projection_location = glGetUniformLocation(shader_program, "perspective");
     view_location = glGetUniformLocation(shader_program, "view");
     light_position_location = glGetUniformLocation(shader_program, "light_position");
+    view_position_location = glGetUniformLocation(shader_program, "view_position");
 
     GLuint object_color_location, light_color_location;
 
@@ -320,7 +322,6 @@ int main(void) {
     glUniform3f(light_position_location, light_position->data[0],
                                          light_position->data[1],
                                          light_position->data[2]);
-
     glUseProgram(0);
 
     glUseProgram(lamp_program);
@@ -374,6 +375,10 @@ int main(void) {
                            mat4f_pointer(view));
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
                            mat4f_pointer(projection));
+
+        glUniform3f(view_position_location, camera_pos->data[0],
+                                            camera_pos->data[1],
+                                            camera_pos->data[2]);
 
         glBindVertexArray(VAO);
 

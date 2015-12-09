@@ -7,6 +7,7 @@ in vec3 Frag_position;
 uniform vec3 object_color;
 uniform vec3 light_color;
 uniform vec3 light_position;
+uniform vec3 view_position;
 
 void main() {
 
