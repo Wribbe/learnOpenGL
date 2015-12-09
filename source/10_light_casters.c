@@ -315,7 +315,8 @@ int main(void) {
            light_position_location, view_position_location,
            material_shininess_location, light_ambient_location,
            light_diffuse_location, light_specular_location,
-           sampler_diffuse_location, sampler_specular_location;
+           sampler_diffuse_location, sampler_specular_location,
+           location_light_direction;
 
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
@@ -333,6 +334,8 @@ int main(void) {
     sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
     sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
 
+    location_light_direction = glGetUniformLocation(shader_program, "light.direction");
+
     /* set non updating uniform values */
 
     glUseProgram(shader_program);
@@ -345,6 +348,8 @@ int main(void) {
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
     glUniform1i(sampler_diffuse_location, 0);
     glUniform1i(sampler_specular_location, 1);
+
+    glUniform3f(location_light_direction, -0.2f, -1.0f, -0.3f);
 
     glUseProgram(0);
 
