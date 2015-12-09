@@ -313,9 +313,9 @@ int main(void) {
 
     GLuint model_location, projection_location, view_location,
            light_position_location, view_position_location,
-           material_specular_location, material_shininess_location,
-           light_ambient_location, light_diffuse_location,
-           light_specular_location, sampler_diffuse_location;
+           material_shininess_location, light_ambient_location,
+           light_diffuse_location, light_specular_location,
+           sampler_diffuse_location, sampler_specular_location;
 
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
@@ -324,7 +324,6 @@ int main(void) {
     light_position_location = glGetUniformLocation(shader_program, "light_position");
     view_position_location = glGetUniformLocation(shader_program, "view_position");
 
-    material_specular_location = glGetUniformLocation(shader_program, "material.specular");
     material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
 
     light_ambient_location = glGetUniformLocation(shader_program, "light.ambient");
@@ -332,6 +331,7 @@ int main(void) {
     light_specular_location = glGetUniformLocation(shader_program, "light.specular");
 
     sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
+    sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
 
     /* set non updating uniform values */
 
@@ -341,10 +341,10 @@ int main(void) {
                                          light_position->data[1],
                                          light_position->data[2]);
 
-    glUniform3f(material_specular_location, 0.5f, 0.5f, 0.5f);
     glUniform1f(material_shininess_location, 32.0f);
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
     glUniform1i(sampler_diffuse_location, 0);
+    glUniform1i(sampler_specular_location, 1);
 
     glUseProgram(0);
 
@@ -428,10 +428,13 @@ int main(void) {
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuse_map);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specular_map);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindTexture(GL_TEXTURE_2D, 0);
+        glActiveTexture(0);
 
         glBindVertexArray(0);
 
