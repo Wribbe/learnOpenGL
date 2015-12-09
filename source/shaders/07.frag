@@ -19,6 +19,12 @@ void main() {
   float diff = max(dot(norm, light_direction), 0.0f);
   vec3 diffuse = diff * light_color;
 
-  vec3 result = (ambient + diffuse) * object_color;
+  vec3 view_direction = normalize(view_position - Frag_position);
+  vec3 reflect_direction = reflect(-light_direction, norm);
+  float specular_strength = 0.5f;
+  float specular_value = pow(max(dot(view_direction, reflect_direction), 0.0f), 32);
+  vec3 specular = specular_strength * specular_value * light_color;
+
+  vec3 result = (ambient + diffuse + specular) * object_color;
   color = vec4(result, 1.0f);
 }
