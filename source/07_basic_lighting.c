@@ -384,10 +384,11 @@ int main(void) {
         //glUseProgram(shader_program);
 
 
-        mat4f_translate_vec3f(temp, light_position);
-        mat4f_mul(temp, model, temp);
-        mat4f_scale(temp2, 0.2f, 0.2f, 0.2f);
+        mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
+        mat4f_mul(temp, temp, model);
+        mat4f_translate_vec3f(temp2, light_position);
         mat4f_mul(temp2, temp2, temp);
+        //mat4f_print(temp);
 
         glUniformMatrix4fv(lamp_model_location, 1, GL_TRUE,
                            mat4f_pointer(temp2));
