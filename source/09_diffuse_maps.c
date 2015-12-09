@@ -248,11 +248,17 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    GLuint diffuse_map;
+    GLuint diffuse_map, specular_map;
     glGenTextures(1, &diffuse_map);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuse_map);
     load_texture("textures/container_diffuse.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glGenTextures(1, &specular_map);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specular_map);
+    load_texture("textures/container_specular.png");
     glBindTexture(GL_TEXTURE_2D, 0);
 
     /* LightVAO definition. */
