@@ -20,20 +20,19 @@ uniform Material material;
 
 void main() {
 
-  float ambient_strength = 0.1f;
-  vec3 ambient = ambient_strength * light_color;
+  vec3 ambient = light_color * material.ambient;
 
   vec3 norm = normalize(Normal);
   vec3 light_direction = normalize(light_position - Frag_position);
   float diff = max(dot(norm, light_direction), 0.0f);
-  vec3 diffuse = diff * light_color;
+  vec3 diffuse = light_color * (diff * material.diffuse);
 
   vec3 view_direction = normalize(view_position - Frag_position);
   vec3 reflect_direction = reflect(-light_direction, norm);
-  float specular_strength = 0.5f;
-  float specular_value = pow(max(dot(view_direction, reflect_direction), 0.0f), 32);
-  vec3 specular = specular_strength * specular_value * light_color;
+  float specular_value = pow(max(dot(view_direction, reflect_direction), 0.0f),
+                                     material.shininess);
+  vec3 specular = (specular_value * material.specular) * light_color;
 
-  vec3 result = (ambient + diffuse + specular) * object_color;
+  vec3 result = ambient + diffuse + specular;
   color = vec4(result, 1.0f);
 }
