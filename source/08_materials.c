@@ -250,9 +250,9 @@ int main(void) {
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
 
-    char* vertex_source = read_shader("shaders/07.vert");
-    char* fragment_source = read_shader("shaders/07.frag");
-    char* lamp_fragment_source = read_shader("shaders/07_lamp.frag");
+    char* vertex_source = read_shader("shaders/08.vert");
+    char* fragment_source = read_shader("shaders/08.frag");
+    char* lamp_fragment_source = read_shader("shaders/08_lamp.frag");
 
     GLuint shader_program, lamp_program;
     shader_program = create_shader_program(vertex_source, fragment_source);
