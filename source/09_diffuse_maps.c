@@ -395,8 +395,8 @@ int main(void) {
         glUseProgram(shader_program);
 
 
-     //   glActiveTexture(GL_TEXTURE0);
-     //   glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuse_map);
 
 //        time = glfwGetTime();
 //        cam_x = sinf(time) * radius;
@@ -438,7 +438,7 @@ int main(void) {
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-     //   glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         glBindVertexArray(0);
 
