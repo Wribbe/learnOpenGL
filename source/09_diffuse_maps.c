@@ -269,17 +269,6 @@ int main(void) {
     free(fragment_source);
     free(lamp_fragment_source);
 
-    //GLuint texture;
-
-    //glActiveTexture(GL_TEXTURE0);
-    //glGenTextures(1, &texture);
-    //glBindTexture(GL_TEXTURE_2D, texture);
-
-    //load_texture("textures/02_container.jpg");
-    //glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
-
-    //glBindTexture(GL_TEXTURE_2D, 0);
-
     Mat4f *projection, *model, *view, *temp, *temp2;
     mat4f_allocate(&projection);
     mat4f_allocate(&model);
@@ -308,36 +297,61 @@ int main(void) {
 
     /* shader locations */
 
-    GLuint model_location, projection_location, view_location, light_position_location,
-           view_position_location, material_ambient_location, material_diffuse_location,
-           material_specular_location, material_shininess_location, light_ambient_location,
-           light_diffuse_location, light_specular_location;
-
     glUseProgram(shader_program);
+
+    GLuint model_location, projection_location, view_location,
+           light_position_location, view_position_location,
+           material_specular_location, material_shininess_location,
+           light_ambient_location, light_diffuse_location,
+           light_specular_location, sampler_diffuse_location;
 
     model_location = glGetUniformLocation(shader_program, "model");
     projection_location = glGetUniformLocation(shader_program, "perspective");
     view_location = glGetUniformLocation(shader_program, "view");
+
     light_position_location = glGetUniformLocation(shader_program, "light_position");
     view_position_location = glGetUniformLocation(shader_program, "view_position");
-    material_ambient_location = glGetUniformLocation(shader_program, "material.ambient");
-    material_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
+
     material_specular_location = glGetUniformLocation(shader_program, "material.specular");
     material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
+
     light_ambient_location = glGetUniformLocation(shader_program, "light.ambient");
     light_diffuse_location = glGetUniformLocation(shader_program, "light.diffuse");
     light_specular_location = glGetUniformLocation(shader_program, "light.specular");
+
+    sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
 
     glUniform3f(light_position_location, light_position->data[0],
                                          light_position->data[1],
                                          light_position->data[2]);
 
-    glUniform3f(material_ambient_location, 1.0f, 0.5f, 0.31f);
-    glUniform3f(material_diffuse_location, 1.0f, 0.5f, 0.31f);
     glUniform3f(material_specular_location, 0.5f, 0.5f, 0.5f);
     glUniform1f(material_shininess_location, 32.0f);
 
+
+    glUniform1i(sampler_diffuse_location, 0);
+    // Can you move this to after the texture stuff?
+
+    GLuint diffuse_map;
+    glGenTextures(1, &diffuse_map);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuse_map);
+    load_texture("textures/container_diffuse.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
+
+
+    //GLuint texture;
+
+    //glActiveTexture(GL_TEXTURE0);
+    //glGenTextures(1, &texture);
+    //glBindTexture(GL_TEXTURE_2D, texture);
+
+    //load_texture("textures/02_container.jpg");
+    //glUniform1i(glGetUniformLocation(shader_program, "texture_sampler"), 0);
+
+    //glBindTexture(GL_TEXTURE_2D, 0);
 
     glUseProgram(0);
 
