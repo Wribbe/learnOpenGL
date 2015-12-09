@@ -328,13 +328,6 @@ int main(void) {
     light_diffuse_location = glGetUniformLocation(shader_program, "light.diffuse");
     light_specular_location = glGetUniformLocation(shader_program, "light.specular");
 
-    GLuint object_color_location, light_color_location;
-
-    object_color_location = glGetUniformLocation(shader_program, "object_color");
-    light_color_location = glGetUniformLocation(shader_program, "light_color");
-
-    glUniform3f(object_color_location, 1.0f, 0.5f, 0.31f);
-    glUniform3f(light_color_location, 1.0f, 1.0f, 1.0);
     glUniform3f(light_position_location, light_position->data[0],
                                          light_position->data[1],
                                          light_position->data[2]);
