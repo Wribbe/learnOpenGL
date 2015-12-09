@@ -378,10 +378,9 @@ int main(void) {
 
     Vec3f *light_color;
     vec3f_allocate(&light_color);
-    float time, ambient_factor, diffuse_factor;
-
-    ambient_factor = 0.2f;
-    diffuse_factor = 0.5f;
+    //float time, ambient_factor, diffuse_factor;
+    //ambient_factor = 0.2f;
+    //diffuse_factor = 0.5f;
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -390,7 +389,6 @@ int main(void) {
         last_frame = current_frame;
         do_movement();
 
-        time = glfwGetTime();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -400,6 +398,7 @@ int main(void) {
      //   glActiveTexture(GL_TEXTURE0);
      //   glBindTexture(GL_TEXTURE_2D, texture);
 
+//        time = glfwGetTime();
 //        cam_x = sinf(time) * radius;
 //        cam_z = cosf(time) * radius;
         vec3f_add(camera_target, camera_pos, camera_front);
@@ -420,16 +419,17 @@ int main(void) {
                                             camera_pos->data[1],
                                             camera_pos->data[2]);
 
-        vec3f_set(light_color, sinf(time * 2.0f), sinf(time * 0.7f), sinf(time * 1.3f));
+        //vec3f_set(light_color, sinf(time * 2.0f), sinf(time * 0.7f), sinf(time * 1.3f));
+        vec3f_set(light_color, 1.0f, 1.0f, 1.0f);
         vec3f_copy(temp_vec3f, light_color);
 
-        vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
+        //vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
         glUniform3f(light_ambient_location, temp_vec3f->data[0],
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
 
         vec3f_copy(temp_vec3f, light_color);
-        vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
+        //vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
         glUniform3f(light_diffuse_location, temp_vec3f->data[0],
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
