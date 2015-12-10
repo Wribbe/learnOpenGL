@@ -384,6 +384,31 @@ int main(void) {
 
     srand(time(NULL));
 
+    int num_cubes;
+
+    num_cubes = 10;
+
+    float cube_locations[num_cubes][3];
+    float cube_rotations[num_cubes][3];
+    int i;
+    float x_max, y_max, z_max;
+
+    x_max = 4.0f;
+    y_max = 4.0f;
+    z_max = 25.0f;
+
+    for (i=0; i<num_cubes; i++) {
+
+        cube_locations[i][0] = ((x_max*2.0) * ((float)rand()/(float)RAND_MAX)) - x_max;
+        cube_locations[i][1] = ((y_max*2.0) * ((float)rand()/(float)RAND_MAX)) - y_max;
+        cube_locations[i][2] = -(z_max * ((float)rand()/(float)RAND_MAX));
+
+        cube_rotations[i][0] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+        cube_rotations[i][1] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+        cube_rotations[i][2] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+    }
+
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         current_frame = glfwGetTime();
@@ -432,7 +457,6 @@ int main(void) {
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
 
-        printf("random int: %d\n",rand());
 
         glBindVertexArray(VAO);
 
@@ -441,7 +465,17 @@ int main(void) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specular_map);
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for(i=0; i<10; i++) {
+            mat4f_translate(temp, cube_locations[i][0],
+                                  cube_locations[i][1],
+                                  cube_locations[i][2]);
+            mat4f_mul(temp2, temp, model);
+            glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp2));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glActiveTexture(0);
