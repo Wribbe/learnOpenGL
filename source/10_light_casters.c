@@ -465,11 +465,17 @@ int main(void) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specular_map);
 
-        for(i=0; i<10; i++) {
+        for(i=0; i<num_cubes; i++) {
             mat4f_translate(temp, cube_locations[i][0],
                                   cube_locations[i][1],
                                   cube_locations[i][2]);
             mat4f_mul(temp2, temp, model);
+            mat4f_rotate_x(temp, cube_rotations[i][0]);
+            mat4f_mul(temp2, temp2, temp);
+            mat4f_rotate_y(temp, cube_rotations[i][1]);
+            mat4f_mul(temp2, temp2, temp);
+            mat4f_rotate_z(temp, cube_rotations[i][2]);
+            mat4f_mul(temp2, temp2, temp);
             glUniformMatrix4fv(model_location, 1, GL_TRUE,
                                mat4f_pointer(temp2));
             glDrawArrays(GL_TRIANGLES, 0, 36);
