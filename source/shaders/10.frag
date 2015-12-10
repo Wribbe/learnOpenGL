@@ -32,10 +32,16 @@ void main() {
                                       texture_coordinates));
 
   vec3 norm = normalize(Normal);
-  vec3 light_direction = normalize(light_position - Frag_position);
+  vec3 light_distance = light_position - Frag_position;
+
+  vec3 light_direction = normalize(light_distance);
+
   float diff = max(dot(norm, light_direction), 0.0f);
+
+  float falloff = 1.0f/dot(light_distance, light_distance);
+
   vec3 diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
-  vec3 diffuse = light.diffuse * (diff * diffuse_map);
+  vec3 diffuse = (light.diffuse * (diff * diffuse_map))*falloff;
 
   vec3 view_direction = normalize(view_position - Frag_position);
   vec3 reflect_direction = reflect(-light_direction, norm);
@@ -43,7 +49,8 @@ void main() {
                                      material.shininess);
 
   vec3 specular_map = vec3(texture(material.specular, texture_coordinates));
-  vec3 specular = light.specular * specular_value * specular_map;
+  vec3 specular = (light.specular * specular_value * specular_map);
+  specular *= falloff*10.0f;
 
   vec3 result = ambient + diffuse + specular;
   color = vec4(result, 1.0f);
