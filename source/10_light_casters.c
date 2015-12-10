@@ -311,31 +311,26 @@ int main(void) {
 
     /* shader locations */
 
+    GLuint model_location = glGetUniformLocation(shader_program, "model");
+    GLuint projection_location = glGetUniformLocation(shader_program, "perspective");
+    GLuint view_location = glGetUniformLocation(shader_program, "view");
 
-    GLuint model_location, projection_location, view_location,
-           light_position_location, view_position_location,
-           material_shininess_location, light_ambient_location,
-           light_diffuse_location, light_specular_location,
-           sampler_diffuse_location, sampler_specular_location,
-           location_light_direction;
+    GLuint light_position_location = glGetUniformLocation(shader_program, "light_position");
+    GLuint view_position_location = glGetUniformLocation(shader_program, "view_position");
 
-    model_location = glGetUniformLocation(shader_program, "model");
-    projection_location = glGetUniformLocation(shader_program, "perspective");
-    view_location = glGetUniformLocation(shader_program, "view");
+    GLuint material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
 
-    light_position_location = glGetUniformLocation(shader_program, "light_position");
-    view_position_location = glGetUniformLocation(shader_program, "view_position");
+    GLuint light_ambient_location = glGetUniformLocation(shader_program, "light.ambient");
+    GLuint light_diffuse_location = glGetUniformLocation(shader_program, "light.diffuse");
+    GLuint light_specular_location = glGetUniformLocation(shader_program, "light.specular");
 
-    material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
+    GLuint sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
+    GLuint sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
 
-    light_ambient_location = glGetUniformLocation(shader_program, "light.ambient");
-    light_diffuse_location = glGetUniformLocation(shader_program, "light.diffuse");
-    light_specular_location = glGetUniformLocation(shader_program, "light.specular");
-
-    sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
-    sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
-
-    location_light_direction = glGetUniformLocation(shader_program, "light.direction");
+    GLuint location_light_direction = glGetUniformLocation(shader_program, "light.direction");
+    GLuint location_light_constant = glGetUniformLocation(shader_program, "light.constant");
+    GLuint location_light_linear = glGetUniformLocation(shader_program, "light.linear");
+    GLuint location_light_quadratic = glGetUniformLocation(shader_program, "light.quadratic");
 
     /* set non updating uniform values */
 
