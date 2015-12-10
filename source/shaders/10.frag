@@ -9,6 +9,7 @@ uniform vec3 object_color;
 uniform vec3 light_color;
 uniform vec3 light_position;
 uniform vec3 view_position;
+uniform vec3 camera_front;
 
 struct Material {
   sampler2D diffuse;
@@ -68,6 +69,8 @@ void main() {
   diffuse *= falloff;
   ambient *= falloff;
 
-  vec3 result = ambient + diffuse + specular;
+  vec3 result;
+  //result = ambient + diffuse + specular;
+  result = camera_front;
   color = vec4(result, 1.0f);
 }

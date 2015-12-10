@@ -331,6 +331,7 @@ int main(void) {
     GLuint location_light_constant = glGetUniformLocation(shader_program, "light.constant");
     GLuint location_light_linear = glGetUniformLocation(shader_program, "light.linear");
     GLuint location_light_quadratic = glGetUniformLocation(shader_program, "light.quadratic");
+    GLuint location_camera_front = glGetUniformLocation(shader_program, "camera_front");
 
     /* set non updating uniform values */
 
@@ -455,6 +456,9 @@ int main(void) {
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
 
+        glUniform3f(location_camera_front, camera_front->data[0],
+                                           camera_front->data[1],
+                                           camera_front->data[2]);
 
         glBindVertexArray(VAO);
 
