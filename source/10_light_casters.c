@@ -346,6 +346,9 @@ int main(void) {
     glUniform1i(sampler_specular_location, 1);
 
     glUniform3f(location_light_direction, -0.2f, -1.0f, -0.3f);
+    glUniform1f(location_light_constant, 1.0f);
+    glUniform1f(location_light_linear, 0.09f);
+    glUniform1f(location_light_quadratic, 0.032f);
 
     glUseProgram(0);
 
