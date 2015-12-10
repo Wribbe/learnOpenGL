@@ -378,9 +378,9 @@ int main(void) {
 
     Vec3f *light_color;
     vec3f_allocate(&light_color);
-    //float time, ambient_factor, diffuse_factor;
-    //ambient_factor = 0.2f;
-    //diffuse_factor = 0.5f;
+    float ambient_factor, diffuse_factor;
+    ambient_factor = 0.01f;
+    diffuse_factor = 20.0f;
 
     srand(time(NULL));
 
@@ -446,13 +446,13 @@ int main(void) {
         vec3f_set(light_color, 1.0f, 1.0f, 1.0f);
         vec3f_copy(temp_vec3f, light_color);
 
-        //vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
+        vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
         glUniform3f(light_ambient_location, temp_vec3f->data[0],
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
 
         vec3f_copy(temp_vec3f, light_color);
-        //vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
+        vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
         glUniform3f(light_diffuse_location, temp_vec3f->data[0],
                                             temp_vec3f->data[1],
                                             temp_vec3f->data[2]);
