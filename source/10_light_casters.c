@@ -386,7 +386,7 @@ int main(void) {
 
     int num_cubes;
 
-    num_cubes = 10;
+    num_cubes = 500;
 
     float cube_locations[num_cubes][3];
     float cube_rotations[num_cubes][3];
