@@ -332,6 +332,7 @@ int main(void) {
     GLuint location_light_linear = glGetUniformLocation(shader_program, "light.linear");
     GLuint location_light_quadratic = glGetUniformLocation(shader_program, "light.quadratic");
     GLuint location_camera_front = glGetUniformLocation(shader_program, "camera_front");
+    GLuint location_cutoff_angle = glGetUniformLocation(shader_program, "light.cutoff_angle");
 
     /* set non updating uniform values */
 
@@ -350,6 +351,7 @@ int main(void) {
     glUniform1f(location_light_constant, 1.0f);
     glUniform1f(location_light_linear, 0.09f);
     glUniform1f(location_light_quadratic, 0.032f);
+    glUniform1f(location_cutoff_angle, cosf(M_PI/16.0));
 
     glUseProgram(0);
 
@@ -378,7 +380,7 @@ int main(void) {
     Vec3f *light_color;
     vec3f_allocate(&light_color);
     float ambient_factor, diffuse_factor;
-    ambient_factor = 0.01f;
+    ambient_factor = 0.1f;
     diffuse_factor = 1.0f;
 
     srand(time(NULL));

@@ -18,15 +18,21 @@ struct Material {
 };
 
 struct Light {
+  // Directional light.
   vec3 direction;
+
   vec3 position;
   vec3 ambient;
   vec3 diffuse;
   vec3 specular;
 
+  // Point light.
   float constant;
   float linear;
   float quadratic;
+
+  // Spotlight.
+  float cutoff_angle;
 };
 
 uniform Material material;
@@ -37,11 +43,13 @@ void main() {
   vec3 ambient = light.ambient * vec3(texture(material.diffuse,
                                       texture_coordinates));
   vec3 norm = normalize(Normal);
-  vec3 light_distance_vector = light_position - Frag_position;
+  vec3 light_distance_vector = view_position - Frag_position;
 
   vec3 light_direction = normalize(light_distance_vector);
   //vec3 light_direction = normalize(-light.direction);
 
+
+  vec3 view_direction = normalize(view_position - Frag_position);
   float diff = max(dot(norm, light_direction), 0.0f);
 
   //float falloff = 1.0f/dot(light_distance_vector, light_distance_vector);
@@ -54,10 +62,11 @@ void main() {
 
   float falloff = 1.0f/(linear_falloff + quadratic_falloff + constant_falloff);
 
+  float theta = dot(normalize(view_direction), normalize(-camera_front));
+
   vec3 diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
   vec3 diffuse = (light.diffuse * (diff * diffuse_map));
 
-  vec3 view_direction = normalize(view_position - Frag_position);
   vec3 reflect_direction = reflect(-light_direction, norm);
   float specular_value = pow(max(dot(view_direction, reflect_direction), 0.0f),
                                      material.shininess);
@@ -70,7 +79,11 @@ void main() {
   ambient *= falloff;
 
   vec3 result;
-  //result = ambient + diffuse + specular;
-  result = camera_front;
+  if (theta > light.cutoff_angle) {
+    result = ambient + diffuse + specular;
+  } else {
+    result = light.ambient * vec3(texture(material.diffuse,
+                                  texture_coordinates));
+  }
   color = vec4(result, 1.0f);
 }
