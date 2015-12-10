@@ -17,6 +17,7 @@ struct Material {
 };
 
 struct Light {
+  vec3 direction;
   vec3 position;
   vec3 ambient;
   vec3 diffuse;
@@ -34,11 +35,13 @@ void main() {
   vec3 norm = normalize(Normal);
   vec3 light_distance = light_position - Frag_position;
 
-  vec3 light_direction = normalize(light_distance);
+  //vec3 light_direction = normalize(light_distance);
+  vec3 light_direction = normalize(-light.direction);
 
   float diff = max(dot(norm, light_direction), 0.0f);
 
-  float falloff = 1.0f/dot(light_distance, light_distance);
+  //float falloff = 1.0f/dot(light_distance, light_distance);
+  float falloff = 1.0f;
 
   vec3 diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
   vec3 diffuse = (light.diffuse * (diff * diffuse_map))*falloff;
@@ -50,7 +53,7 @@ void main() {
 
   vec3 specular_map = vec3(texture(material.specular, texture_coordinates));
   vec3 specular = (light.specular * specular_value * specular_map);
-  specular *= falloff*10.0f;
+  //specular *= falloff*10.0f;
 
   vec3 result = ambient + diffuse + specular;
   color = vec4(result, 1.0f);

@@ -380,7 +380,7 @@ int main(void) {
     vec3f_allocate(&light_color);
     float ambient_factor, diffuse_factor;
     ambient_factor = 0.01f;
-    diffuse_factor = 20.0f;
+    diffuse_factor = 1.0f;
 
     srand(time(NULL));
 
