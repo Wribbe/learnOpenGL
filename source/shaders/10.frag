@@ -36,8 +36,19 @@ struct Light {
   float outer_cutoff_angle;
 };
 
+struct Direct_Light {
+  vec3 direction;
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular
+}
+
+
 uniform Material material;
 uniform Light light;
+uniform Direct_Light direct_light;
+
+vec3 direct_light(Direct_Light light, vec3 normal, vec3 view_direction);
 
 void main() {
 
@@ -88,4 +99,25 @@ void main() {
   vec3 result;
   result = ambient + diffuse + specular;
   color = vec4(result, 1.0f);
+}
+
+vec3 direct_light(Direct_Light light, vec3 normal, vec3 view_direction) {
+  vec3 light_direction = normalize(-light.direction);
+  // Diffuse shading.
+  float diffuse_factor = max(dot(normal, light_direction), 0.0);
+  // Specular shading.
+  vec3 reflection_direction = reflect(-light_direction, normal);
+  float specular_factor = pow(max(dot(view_direction, reflection_direction),
+                                  0.0), material.shininess);
+  // Combine results.
+  vec3 ambient, diffuse, specular;
+  vec3 diffuse_map, specular_map;
+
+  diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
+  specular_map = vec3(texture(material.specular, texture_coordinates));
+
+  ambient = light.ambient * diffuse_map;
+  diffuse = light.diffuse * diffuse_factor * diffuse_map;
+  specular = light.specular * specular_factor * specular_map;
+  return ambient + diffuse + specular;
 }
