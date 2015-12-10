@@ -33,6 +33,7 @@ struct Light {
 
   // Spotlight.
   float cutoff_angle;
+  float outer_cutoff_angle;
 };
 
 uniform Material material;
@@ -63,6 +64,9 @@ void main() {
   float falloff = 1.0f/(linear_falloff + quadratic_falloff + constant_falloff);
 
   float theta = dot(normalize(view_direction), normalize(-camera_front));
+  float epsilon = light.cutoff_angle - light.outer_cutoff_angle;
+  float intensity = clamp((theta - light.outer_cutoff_angle) / epsilon, 0.0,
+  1.0f);
 
   vec3 diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
   vec3 diffuse = (light.diffuse * (diff * diffuse_map));
@@ -78,12 +82,10 @@ void main() {
   diffuse *= falloff;
   ambient *= falloff;
 
+  diffuse *= intensity;
+  specular *= intensity;
+
   vec3 result;
-  if (theta > light.cutoff_angle) {
-    result = ambient + diffuse + specular;
-  } else {
-    result = light.ambient * vec3(texture(material.diffuse,
-                                  texture_coordinates));
-  }
+  result = ambient + diffuse + specular;
   color = vec4(result, 1.0f);
 }
