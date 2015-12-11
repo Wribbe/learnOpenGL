@@ -10,10 +10,12 @@
 
 #define UNUSED(x) (void)x
 #define M_PI 3.14159265358979323846264338327
+#define POINT_LIGHTS 4
 
 Vec3f *camera_pos, *camera_target, *camera_up, *camera_front, *temp_vec3f;
 GLfloat delta_time, last_frame, current_frame, last_x, last_y, yaw, pitch, fov;
 bool keys[1024], first_mouse;
+int i;
 
 GLsizei stride = 8 * sizeof(GLfloat);
 GLfloat vertices[] = {
@@ -335,25 +337,88 @@ int main(void) {
     GLuint location_cutoff_angle = glGetUniformLocation(shader_program, "light.cutoff_angle");
     GLuint location_outer_cutoff_angle = glGetUniformLocation(shader_program, "light.outer_cutoff_angle");
 
+    GLuint location_POINT_LIGHTS = glGetUniformLocation(shader_program, "POINT_LIGHTS");
+
+    enum {POSITION, AMBIENT, DIFFUSE, SPECULAR, CONSTANT, LINEAR, QUADRATIC, NUM_TYPES};
+    const char *types[NUM_TYPES] = {"position","ambient","diffuse","specular","constant","linear","quadratic"};
+
+    char uniform_string[256];
+    GLuint point_light_position[POINT_LIGHTS][NUM_TYPES];
+    for(i=0; i<POINT_LIGHTS; i++) {
+        for(int j=0; j<NUM_TYPES; j++) {
+            snprintf(&uniform_string[0], sizeof(uniform_string), "point_lights[%d].%s",i,types[j]);
+            point_light_position[i][j] = glGetUniformLocation(shader_program, uniform_string);
+        }
+    }
     /* set non updating uniform values */
 
     glUseProgram(shader_program);
 
-    glUniform3f(light_position_location, light_position->data[0],
-                                         light_position->data[1],
-                                         light_position->data[2]);
+    //glUniform3f(light_position_location, light_position->data[0],
+    //                                     light_position->data[1],
+    //                                     light_position->data[2]);
+
+    glUniform3fv(light_position_location, 3, (GLvoid*)(&light_position->data[0]));
 
     glUniform1f(material_shininess_location, 32.0f);
     glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
     glUniform1i(sampler_diffuse_location, 0);
     glUniform1i(sampler_specular_location, 1);
 
-    glUniform3f(location_light_direction, -0.2f, -1.0f, -0.3f);
-    glUniform1f(location_light_constant, 1.0f);
-    glUniform1f(location_light_linear, 0.09f);
-    glUniform1f(location_light_quadratic, 0.032f);
-    glUniform1f(location_cutoff_angle, cosf(M_PI/64.0));
-    glUniform1f(location_outer_cutoff_angle, cosf(M_PI/8.0));
+    //glUniform3f(location_light_direction, -0.2f, -1.0f, -0.3f);
+    //glUniform1f(location_light_constant, 1.0f);
+    //glUniform1f(location_light_linear, 0.09f);
+    //glUniform1f(location_light_quadratic, 0.032f);
+    //glUniform1f(location_cutoff_angle, cosf(M_PI/64.0));
+    //glUniform1f(location_outer_cutoff_angle, cosf(M_PI/8.0));
+    glUniform1d(location_POINT_LIGHTS, POINT_LIGHTS);
+
+    float point_positions[POINT_LIGHTS][3] = {
+        { 0.0f,  0.0f,  1.0f},
+        { 2.3f, -3.3f, -4.0f},
+        {-4.0f,  2.0f, -12.0f},
+        { 0.0f,  0.0f, -3.0f},
+    };
+
+    float ambient_color[POINT_LIGHTS][3] = {
+        {1.0f, 0.5f, 1.0f},
+        {0.3f, 1.0f, 0.2f},
+        {1.0f, 1.0f, 1.0f},
+        {0.0f, 0.5f, 0.5f},
+    };
+
+    float diffuse_color[POINT_LIGHTS][3] = {
+        {1.0f, 0.5f, 1.0f},
+        {0.3f, 1.0f, 0.2f},
+        {1.0f, 1.0f, 1.0f},
+        {0.0f, 0.5f, 0.5f},
+    };
+
+    float specular_color[3] = {1.0,1.0,1.0};
+
+    float constant, linear, quadratic;
+    constant = 1.0f;
+    linear = 0.09f;
+    quadratic = 0.032f;
+
+    for(i=0; i<POINT_LIGHTS; i++) {
+        glUniform3fv(point_light_position[i][POSITION], 1, (GLvoid*)(&point_positions[i][0]));
+        glUniform3fv(point_light_position[i][AMBIENT], 1, (GLvoid*)(&ambient_color[i][0]));
+        glUniform3fv(point_light_position[i][DIFFUSE], 1, (GLvoid*)(&diffuse_color[i][0]));
+        glUniform3fv(point_light_position[i][SPECULAR], 1, (GLvoid*)(&specular_color[0]));
+        glUniform1f(point_light_position[i][CONSTANT], constant);
+        glUniform1f(point_light_position[i][LINEAR], linear);
+        glUniform1f(point_light_position[i][QUADRATIC], quadratic);
+    }
+
+    GLuint first_position = glGetUniformLocation(shader_program, "point_lights[0].position");
+
+    GLfloat test[3] = {1.0f,0.0f,0.0f};
+    printf("%f\n",test[0]);
+    //glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&diffuse_color[0][0]));
+    //*glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&test));
+    //glUniform3f(point_light_position[0][POSITION], 1.0f,0.0f,0.0f);
+    //glUniform3f(first_position, 1.0f,1.0f,1.0f);
 
     glUseProgram(0);
 
@@ -387,13 +452,10 @@ int main(void) {
 
     srand(time(NULL));
 
-    int num_cubes;
-
-    num_cubes = 500;
+    int num_cubes = 500;
 
     float cube_locations[num_cubes][3];
     float cube_rotations[num_cubes][3];
-    int i;
     float x_max, y_max, z_max;
 
     x_max = 4.0f;
@@ -410,7 +472,6 @@ int main(void) {
         cube_rotations[i][1] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
         cube_rotations[i][2] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
     }
-
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
