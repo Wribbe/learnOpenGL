@@ -420,9 +420,6 @@ int main(void) {
 
     Vec3f *light_color;
     vec3f_allocate(&light_color);
-    float ambient_factor, diffuse_factor;
-    ambient_factor = 0.1f;
-    diffuse_factor = 1.0f;
 
     srand(time(NULL));
 
@@ -459,16 +456,12 @@ int main(void) {
 
         glUseProgram(shader_program);
 
-//        time = glfwGetTime();
-//        cam_x = sinf(time) * radius;
-//        cam_z = cosf(time) * radius;
         vec3f_add(camera_target, camera_pos, camera_front);
         mat4f_look_at(view, camera_pos, camera_target, camera_up);
 
         mat4f_perspective(projection, fov, (float)WIDTH/(float)HEIGHT,
                           0.1f, 100.0f);
 
-        //mat4f_rotate_x(model, sinf(time) * M_PI);
         glUniformMatrix4fv(model_location, 1, GL_TRUE,
                            mat4f_pointer(model));
         glUniformMatrix4fv(view_location, 1, GL_TRUE,
@@ -506,8 +499,6 @@ int main(void) {
                                mat4f_pointer(temp2));
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
-
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glActiveTexture(0);
