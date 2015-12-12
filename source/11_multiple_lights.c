@@ -322,17 +322,9 @@ int main(void) {
 
     GLuint material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
 
-    GLuint light_ambient_location = glGetUniformLocation(shader_program, "light.ambient");
-    GLuint light_diffuse_location = glGetUniformLocation(shader_program, "light.diffuse");
-    GLuint light_specular_location = glGetUniformLocation(shader_program, "light.specular");
-
     GLuint sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
     GLuint sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
 
-    GLuint location_light_direction = glGetUniformLocation(shader_program, "light.direction");
-    GLuint location_light_constant = glGetUniformLocation(shader_program, "light.constant");
-    GLuint location_light_linear = glGetUniformLocation(shader_program, "light.linear");
-    GLuint location_light_quadratic = glGetUniformLocation(shader_program, "light.quadratic");
     GLuint location_camera_front = glGetUniformLocation(shader_program, "camera_front");
     GLuint location_cutoff_angle = glGetUniformLocation(shader_program, "light.cutoff_angle");
     GLuint location_outer_cutoff_angle = glGetUniformLocation(shader_program, "light.outer_cutoff_angle");
@@ -361,16 +353,8 @@ int main(void) {
     glUniform3fv(light_position_location, 3, (GLvoid*)(&light_position->data[0]));
 
     glUniform1f(material_shininess_location, 32.0f);
-    glUniform3f(light_specular_location, 1.0f, 1.0f, 1.0f);
     glUniform1i(sampler_diffuse_location, 0);
     glUniform1i(sampler_specular_location, 1);
-
-    //glUniform3f(location_light_direction, -0.2f, -1.0f, -0.3f);
-    //glUniform1f(location_light_constant, 1.0f);
-    //glUniform1f(location_light_linear, 0.09f);
-    //glUniform1f(location_light_quadratic, 0.032f);
-    //glUniform1f(location_cutoff_angle, cosf(M_PI/64.0));
-    //glUniform1f(location_outer_cutoff_angle, cosf(M_PI/8.0));
     glUniform1d(location_POINT_LIGHTS, POINT_LIGHTS);
 
     float point_positions[POINT_LIGHTS][3] = {
@@ -411,15 +395,7 @@ int main(void) {
         glUniform1f(point_light_position[i][QUADRATIC], quadratic);
     }
 
-    GLuint first_position = glGetUniformLocation(shader_program, "point_lights[0].position");
-
-    //glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&diffuse_color[0][0]));
-    //*glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&test));
-    //glUniform3f(point_light_position[0][POSITION], 1.0f,0.0f,0.0f);
-    //glUniform3f(first_position, 1.0f,1.0f,1.0f);
-
     glUseProgram(0);
-
 
     glUseProgram(lamp_program);
 
@@ -503,21 +479,6 @@ int main(void) {
         glUniform3f(view_position_location, camera_pos->data[0],
                                             camera_pos->data[1],
                                             camera_pos->data[2]);
-
-        //vec3f_set(light_color, sinf(time * 2.0f), sinf(time * 0.7f), sinf(time * 1.3f));
-        vec3f_set(light_color, 1.0f, 1.0f, 1.0f);
-        vec3f_copy(temp_vec3f, light_color);
-
-        vec3f_muls(temp_vec3f, temp_vec3f, ambient_factor);
-        glUniform3f(light_ambient_location, temp_vec3f->data[0],
-                                            temp_vec3f->data[1],
-                                            temp_vec3f->data[2]);
-
-        vec3f_copy(temp_vec3f, light_color);
-        vec3f_muls(temp_vec3f, temp_vec3f, diffuse_factor);
-        glUniform3f(light_diffuse_location, temp_vec3f->data[0],
-                                            temp_vec3f->data[1],
-                                            temp_vec3f->data[2]);
 
         glUniform3f(location_camera_front, camera_front->data[0],
                                            camera_front->data[1],
