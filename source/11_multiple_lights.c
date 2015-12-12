@@ -413,8 +413,6 @@ int main(void) {
 
     GLuint first_position = glGetUniformLocation(shader_program, "point_lights[0].position");
 
-    GLfloat test[3] = {1.0f,0.0f,0.0f};
-    printf("%f\n",test[0]);
     //glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&diffuse_color[0][0]));
     //*glUniform3fv(point_light_position[0][POSITION], 1, (GLvoid*)(&test));
     //glUniform3f(point_light_position[0][POSITION], 1.0f,0.0f,0.0f);
