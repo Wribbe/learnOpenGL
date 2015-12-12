@@ -51,9 +51,9 @@ void main() {
   vec3 normal = normalize(Normal);
   vec3 view_direction = normalize(view_position - fragment_position);
 
-  vec3 result;
+  vec3 result = vec3(0.0f);
   // Phase 1: Directional lighting.
-  result = get_direct_light(direct_light, normal, view_direction);
+  //result = get_direct_light(direct_light, normal, view_direction);
   // Phase 2: Point lights.
   int i;
   for(i=0; i < LIGHTS; i++) {
@@ -168,5 +168,4 @@ vec3 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
   specular *= attenuation;
 
   return ambient + diffuse + specular;
-
 }
