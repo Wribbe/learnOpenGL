@@ -374,10 +374,10 @@ int main(void) {
     glUniform1d(location_POINT_LIGHTS, POINT_LIGHTS);
 
     float point_positions[POINT_LIGHTS][3] = {
-        { 0.0f,  0.0f,  1.0f},
-        { 2.3f, -3.3f, -4.0f},
-        {-4.0f,  2.0f, -12.0f},
-        { 0.0f,  0.0f, -3.0f},
+        { 5.0f,  0.0f, -10.0f},
+        { 0.0f, -5.0f, -10.0f},
+        {-4.0f,  5.0f, -10.0f},
+        {-5.0f,  0.0f, -10.0f},
     };
 
     float ambient_color[POINT_LIGHTS][3] = {
