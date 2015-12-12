@@ -557,21 +557,29 @@ int main(void) {
 
         glUseProgram(lamp_program);
 
-        mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
-        mat4f_mul(temp, temp, model);
-        mat4f_translate_vec3f(temp2, light_position);
-        mat4f_mul(temp2, temp2, temp);
-
-        glUniformMatrix4fv(lamp_model_location, 1, GL_TRUE,
-                           mat4f_pointer(temp2));
-        glUniformMatrix4fv(lamp_view_location, 1, GL_TRUE,
-                           mat4f_pointer(view));
-        glUniformMatrix4fv(lamp_projection_location, 1, GL_TRUE,
-                           mat4f_pointer(projection));
-
         glBindVertexArray(lightVAO);
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for(i=0; i<POINT_LIGHTS; i++) {
+            mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
+            mat4f_mul(temp, temp, model);
+            float x, y, z;
+            x = point_positions[i][0];
+            y = point_positions[i][1];
+            z = point_positions[i][2];
+            GLuint location_lamp_color = glGetUniformLocation(lamp_program, "lamp_color");
+            glUniform3fv(location_lamp_color, 1, (GLvoid*)(&diffuse_color[i][0]));
+            mat4f_translate(temp2, x, y, z);
+            mat4f_mul(temp2, temp2, temp);
+
+            glUniformMatrix4fv(lamp_model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp2));
+            glUniformMatrix4fv(lamp_view_location, 1, GL_TRUE,
+                               mat4f_pointer(view));
+            glUniformMatrix4fv(lamp_projection_location, 1, GL_TRUE,
+                               mat4f_pointer(projection));
+
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         glBindVertexArray(0);
 
