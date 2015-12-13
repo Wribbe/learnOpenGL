@@ -118,6 +118,9 @@ int main(void) {
             break;
         }
     }
+
+    fclose(file_pointer);
+
     for (i=0; i<num_prefixes; i++) {
         current_vertex[i] = 0;
     }
@@ -146,35 +149,20 @@ int main(void) {
     }
     printf("%d\n",vertices);
 
-    //for (i=0; i<num_prefixes-1; i++) {
-    //    for(int j=0; j<prefix_total[i]; j++) {
-    //        for(int k=0; k<prefix_sizes[i]; k++) {
-    //            printf("%f,",data[i][j][k]);
-    //        }
-    //        printf("\n");
-    //    }
-    //    printf("\n");
-    //}
-    //bool prefix_left = true;
-    //while(prefix_left) {
-    //    for (i=0; i<num_prefixes-1; i++) {
-    //        for (int k=0; k<prefix_sizes[i]; k++) {
-    //            if (prefix_total[i] == 0 || current_vertex[i] >= prefix_total[i]) {
-    //                printf("-0f,");
-    //            } else {
-    //                printf("%.2ff, ",data[i][current_vertex[i]][k]);
-    //            }
-    //        }
-    //        current_vertex[i]++;
-    //    }
-    //    printf("\n");
-    //    prefix_left = false;
-    //    for (i=0; i<num_prefixes-1; i++) {
-    //        if (current_vertex[i] < prefix_total[i]) {
-    //            prefix_left = true;
-    //            continue;
-    //        }
-    //    }
-    //}
-    fclose(file_pointer);
+    for (i=0; i<num_prefixes-1; i++) {
+        for (int j=0; j<prefix_total[i]; j++) {
+            free(data[i][j]);
+        }
+        free(data[i]);
+    }
+    free(data);
+
+    for (i=0; i<prefix_total[f]; i++) {
+        for (int j=0; j<prefix_sizes[f]; j++) {
+            free(faces[i][j]);
+        }
+        free(faces[i]);
+    }
+    free(faces);
+
 }
