@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 #include "file_utils.h"
 
@@ -62,37 +63,7 @@ GLsizei stride = 8 * sizeof(GLfloat);
 //    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
 //    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 //};
-GLfloat vertices[] = {
-  1.00f, -1.00f, -1.00f, 0.0f, 0.0f, 0.00f, -1.00f, 0.00f,
-  1.00f, -1.00f, 1.00f, 0.0f, 0.0f, 0.00f, -1.00f, 0.00f,
-  -1.00f, -1.00f, 1.00f, 0.0f, 0.0f, 0.00f, -1.00f, 0.00f,
-  -1.00f, -1.00f, -1.00f, 0.0f, 0.0f, 0.00f, -1.00f, 0.00f,
-
-  1.00f, 1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 1.00f, 0.00f,
-  -1.00f, 1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 1.00f, 0.00f,
-  -1.00f, 1.00f, 1.00f, 0.0f, 0.0f, 0.00f, 1.00f, 0.00f,
-  1.00f, 1.00f, 1.00f, 0.0f, 0.0f, 0.00f, 1.00f, 0.00f,
-
-  1.00f, -1.00f, -1.00f, 0.0f, 0.0f, 1.00f, 0.00f, 0.00f,
-  1.00f, 1.00f, -1.00f, 0.0f, 0.0f, 1.00f, 0.00f, 0.00f,
-  1.00f, 1.00f, 1.00f, 0.0f, 0.0f, 1.00f, 0.00f, 0.00f,
-  1.00f, -1.00f, 1.00f, 0.0f, 0.0f, 1.00f, 0.00f, 0.00f,
-
-  1.00f, -1.00f, 1.00f, 0.0f, 0.0f, -0.00f, -0.00f, 1.00f,
-  1.00f, 1.00f, 1.00f, 0.0f, 0.0f, -0.00f, -0.00f, 1.00f,
-  -1.00f, 1.00f, 1.00f, 0.0f, 0.0f, -0.00f, -0.00f, 1.00f,
-  -1.00f, -1.00f, 1.00f, 0.0f, 0.0f, -0.00f, -0.00f, 1.00f,
-
-  -1.00f, -1.00f, 1.00f, 0.0f, 0.0f, -1.00f, -0.00f, -0.00f,
-  -1.00f, 1.00f, 1.00f, 0.0f, 0.0f, -1.00f, -0.00f, -0.00f,
-  -1.00f, 1.00f, -1.00f, 0.0f, 0.0f, -1.00f, -0.00f, -0.00f,
-  -1.00f, -1.00f, -1.00f, 0.0f, 0.0f, -1.00f, -0.00f, -0.00f,
-
-  1.00f, 1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 0.00f, -1.00f,
-  1.00f, -1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 0.00f, -1.00f,
-  -1.00f, -1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 0.00f, -1.00f,
-  -1.00f, 1.00f, -1.00f, 0.0f, 0.0f, 0.00f, 0.00f, -1.00f,
-};
+GLfloat *vertices;
 
 void vec3f_add(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
     int i;
@@ -234,6 +205,17 @@ void do_movement() {
 
 int main(void) {
 
+    int num_vertices;
+    load_model(&vertices, &num_vertices);
+    return EXIT_SUCCESS;
+    if(load_model(&vertices, &num_vertices)) {
+        fprintf(stderr, "Could not load model, aborting.\n");
+        return(EXIT_FAILURE);
+    }
+    printf("vertices: %d\n",num_vertices);
+    printf("vertices: %d\n",EXIT_FAILURE);
+    return (EXIT_SUCCESS);
+
     if(!glfwInit()) {
         fprintf(stderr, "Could not load GLFW, aborting.\n");
         return(EXIT_FAILURE);
@@ -353,12 +335,13 @@ int main(void) {
 
     GLuint material_shininess_location = glGetUniformLocation(shader_program, "material.shininess");
 
+
     GLuint sampler_diffuse_location = glGetUniformLocation(shader_program, "material.diffuse");
     GLuint sampler_specular_location = glGetUniformLocation(shader_program, "material.specular");
 
     GLuint location_camera_front = glGetUniformLocation(shader_program, "camera_front");
-    GLuint location_cutoff_angle = glGetUniformLocation(shader_program, "light.cutoff_angle");
-    GLuint location_outer_cutoff_angle = glGetUniformLocation(shader_program, "light.outer_cutoff_angle");
+    //GLuint location_cutoff_angle = glGetUniformLocation(shader_program, "light.cutoff_angle");
+    //GLuint location_outer_cutoff_angle = glGetUniformLocation(shader_program, "light.outer_cutoff_angle");
 
     GLuint location_POINT_LIGHTS = glGetUniformLocation(shader_program, "POINT_LIGHTS");
 
@@ -454,7 +437,8 @@ int main(void) {
 
     srand(time(NULL));
 
-    int num_cubes = 500;
+    //int num_cubes = 500;
+    int num_cubes = 1;
 
     float cube_locations[num_cubes][3];
     float cube_rotations[num_cubes][3];
@@ -529,7 +513,8 @@ int main(void) {
             glUniformMatrix4fv(model_location, 1, GL_TRUE,
                                mat4f_pointer(temp2));
             //glDrawArrays(GL_TRIANGLES, 0, 36);
-            glDrawArrays(GL_QUADS, 0, 24);
+            //glDrawArrays(GL_QUADS, 0, 24);
+            glDrawArrays(GL_QUADS, 0, 36768);
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -561,7 +546,7 @@ int main(void) {
                                mat4f_pointer(projection));
 
             //glDrawArrays(GL_TRIANGLES, 0, 36);
-            glDrawArrays(GL_QUADS, 0, 24);
+            //glDrawArrays(GL_QUADS, 0, 24);
         }
 
         glBindVertexArray(0);

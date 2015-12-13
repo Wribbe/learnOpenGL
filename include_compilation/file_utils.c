@@ -1,14 +1,16 @@
 #ifndef FILE_UTILS_H
 #define FILE_UTILS_H
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 #include <GL/glew.h>
 #include <SOIL.h>
-#include <math.h>
 
 #include "file_utils.h"
+
 char *read_file(const char* filename) {
     FILE *file_pointer = fopen(filename, "rb");
     if (!file_pointer) {
@@ -113,7 +115,7 @@ void mat4f_allocate(Mat4f **matrix) {
     *matrix = malloc(sizeof(Mat4f));
     if(!matrix) {
         fprintf(stderr, "Could not allocate memory for Mat4f matrix.\n");
-        return NULL;
+        return;
     }
     mat4f_zero(*matrix);
 }
@@ -398,6 +400,202 @@ void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
     free(camera_right);
     free(crossed_up);
     free(unity);
+}
+
+int load_model(float** vertices, int* size) {
+    //const char *filename = "coffee_pot.obj";
+    const char *filename = "models/box.obj";
+    FILE *file_pointer = fopen(filename, "rb");
+    if (!file_pointer) {
+        fprintf(stderr, "No such file: %s\n",filename);
+        return EXIT_FAILURE;
+    }
+    int BUFFER_SIZE = 256;
+    char linebuffer[BUFFER_SIZE];
+    int i;
+
+    enum {v, vt, vn, f, num_prefixes};
+    const char *prefixes[num_prefixes] = {"v","vt","vn","f"};
+    char *token;
+    char separator = ' ';
+    char strtok_separator[] = " ";
+    char *save_first;
+
+    int prefix_total[num_prefixes] = {0};
+    int prefix_sizes[num_prefixes] = {3, 2, 3, 4};
+    int face_size = 3;
+
+    while(fgets(linebuffer, BUFFER_SIZE, file_pointer) != NULL) {
+        token = strtok(linebuffer, strtok_separator);
+        while (token != NULL) {
+            for (i=0; i<num_prefixes; i++) {
+                if (strcmp(prefixes[i], token) == 0) {
+                    prefix_total[i]++;
+                }
+            }
+            break;
+        }
+    }
+
+    float ***data;
+    int ***faces;
+    data = malloc(sizeof(float*)*num_prefixes);
+    faces = malloc(sizeof(int*)*prefix_total[f]);
+    for (i=0; i<num_prefixes; i++) {
+        if (i == f) {
+            for (int j=0; j<prefix_total[i]; j++) {
+                faces[j] = malloc(sizeof(int*)*prefix_sizes[i]);
+                for (int k=0; k<prefix_sizes[i]; k++) {
+                    faces[j][k] = malloc(sizeof(int)*face_size);
+                }
+            }
+        } else {
+            data[i] = malloc(sizeof(float*)*prefix_total[i]);
+            for (int j=0; j<prefix_total[i]; j++) {
+                data[i][j] = malloc(sizeof(float)*prefix_sizes[i]);
+            }
+        }
+    }
+    int current_vertex[num_prefixes] = {0};
+    int parameter_flag = -1;
+    char *face_token;
+    char face_separator = '/';
+    char *save_second;
+
+    rewind(file_pointer);
+
+    while(fgets(linebuffer, BUFFER_SIZE, file_pointer) != NULL) {
+        //printf("linebuffer: %s\n",linebuffer);
+        token = token_parser(linebuffer, separator, &save_first);
+        //printf("Token is = %s\n",token);
+        parameter_flag = -1;
+        while (token != NULL) {
+            for (i=0; i<num_prefixes; i++) {
+                //printf("prefix: %s, token: %s\n", prefixes[i], token);
+                if (strcmp(prefixes[i], token) == 0) {
+                    parameter_flag = i;
+                    break;
+                }
+            }
+            //printf("continuing with flag: %d\n",parameter_flag);
+            if (parameter_flag < 0) {
+                break;
+            }
+            for (i=0; i<prefix_sizes[parameter_flag]; i++) {
+                token = token_parser(NULL, separator, &save_first);
+                //printf("token in for: %s\n",token);
+                int current_vert = current_vertex[parameter_flag];
+                if (parameter_flag != f) {
+                    float value = strtof(token, NULL);
+                    //printf("value: %f\n",value);
+                    //printf("Trying to write to data[%d][%d][%d]\n",parameter_flag,current_vert,i);
+                    //printf("total vn: %d\n",prefix_total[2]);
+                    //printf("total vn: %d\n",prefix_total[vn]);
+                    data[parameter_flag][current_vert][i] = value;
+                } else {
+                    //printf("token: %s\n",token);
+                    face_token = token_parser(token, face_separator, &save_second);
+                    for (int j=0; j<face_size; j++) {
+                        //printf("face_number: %s\n",face_token);
+                        faces[current_vert][i][j] = ((int)strtof(face_token, NULL))-1;
+                        face_token = token_parser(NULL, face_separator, &save_second);
+                    }
+                }
+            }
+            current_vertex[parameter_flag]++;
+            break;
+        }
+    }
+
+    fclose(file_pointer);
+
+    for (i=0; i<num_prefixes; i++) {
+        current_vertex[i] = 0;
+    }
+
+    //*vertices = malloc(sizeof(float)*prefix_total[f]*8);
+    //array = malloc(sizeof(float)*prefix_total[f]*8);
+    int array_size = prefix_total[f]*8*(face_size+1);
+    float array[array_size];
+    int index = 0;
+    int num_vertices = 0;
+    int vert_index = 0;
+    for (i=0; i<prefix_total[f]; i++) {
+        for (int j=0; j<prefix_sizes[f]; j++) {
+            for (int k=0; k<face_size; k++) {
+                index = faces[i][j][k];
+                for(int l=0; l<prefix_sizes[k]; l++) {
+                    if (index < 0) {
+                        //*vertices[vert_index++] = 0.0f;
+                        array[vert_index] = 0.0f;
+                        printf("0.0f, ");
+                    } else {
+                        //*vertices[vert_index++] = data[k][index][l];
+                        array[vert_index] = data[k][index][l];
+                        printf("%ff, ",data[k][index][l]);
+                    }
+                    //printf("vert_index: %d\n",vert_index);
+                    //} else {
+                    //}
+                    vert_index++;
+                }
+            }
+            num_vertices++;
+            printf("\n");
+        }
+    }
+    printf("%d\n",array_size);
+    printf("%d\n",vert_index);
+    printf("%d\n",num_vertices);
+
+    for(i=0; i<array_size; i++) {
+        if (i != 0 && i%8 == 0) {
+            printf("\n");
+        }
+        printf("%f, ",array[i]);
+    }
+
+    //*size = num_vertices;
+
+    //free(array);
+
+    for (i=0; i<num_prefixes-1; i++) {
+        for (int j=0; j<prefix_total[i]; j++) {
+            free(data[i][j]);
+        }
+        free(data[i]);
+    }
+    free(data);
+
+    for (i=0; i<prefix_total[f]; i++) {
+        for (int j=0; j<prefix_sizes[f]; j++) {
+            free(faces[i][j]);
+        }
+        free(faces[i]);
+    }
+    free(faces);
+    return(EXIT_SUCCESS);
+}
+
+char *token_parser(char *string, char delimiter, char** save_pointer) {
+    char *string_pointer;
+    if (string == NULL) {
+        string = *save_pointer;
+    }
+    string_pointer = string;
+    while(*string_pointer != '\0' && *string_pointer != delimiter) {
+        string_pointer++;
+    }
+    if (&string_pointer == save_pointer) {
+        return NULL;
+    }
+    if (*string_pointer == '\0') {
+        *save_pointer = string_pointer;
+    } else {
+        *save_pointer = string_pointer+1;
+    }
+    *string_pointer = '\0';
+    return string;
 }
 
 #endif

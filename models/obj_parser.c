@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-int main(void) {
+void load_model(float** vertices, int* size) {
     //const char *filename = "coffee_pot.obj";
     const char *filename = "box.obj";
     FILE *file_pointer = fopen(filename, "rb");
@@ -14,25 +14,6 @@ int main(void) {
     int BUFFER_SIZE = 256;
     char linebuffer[BUFFER_SIZE], token_buffer[4];
     int current_char, i;
-
-    //long accumulated_reads = 0;
-
-    //fseek(file_pointer, 0, SEEK_END);
-    //long file_size = ftell(file_pointer);
-    //rewind(file_pointer);
-    //printf("File size: %lu\n",file_size);
-
-    //while(accumulated_reads < file_size) {
-    //    fread(&linebuffer[0], BUFFER_SIZE, 1, file_pointer);
-    //    accumulated_reads += BUFFER_SIZE;
-    //    for (i=0; i<BUFFER_SIZE; i++) {
-    //        current_char = linebuffer[i];
-    //        if (current
-    //    }
-    //}
-    //size_t temp_buffer_size = fread(&linebuffer[0], BUFFER_SIZE, 1, file_pointer);
-    //printf("Last read was: %zu long.\n", temp_buffer_size);
-    //
 
     enum {v, vt, vn, f, num_prefixes};
     char *prefixes[num_prefixes] = {"v","vt","vn","f"};
@@ -126,28 +107,27 @@ int main(void) {
     }
 
     int index = 0;
-    int vertices = 0;
+    int num_vertices = 0;
     for (i=0; i<prefix_total[f]; i++) {
         for (int j=0; j<prefix_sizes[f]; j++) {
             for (int k=0; k<face_size; k++) {
                 index = faces[i][j][k];
                 for(int l=0; l<prefix_sizes[k]; l++) {
                     if (index < 0) {
-                        //printf("0.0f, ");
                         printf("0.0f, ");
                     } else {
-                        //printf("data_type: %d ",k);
-                        //printf("data_row_of_type: %d ",index);
-                        //printf("element_of_data_row: %d ",l);
-                        printf("%.2ff, ",data[k][index][l]);
+                        printf("%ff, ",data[k][index][l]);
                     }
                 }
             }
-            vertices++;
-            printf("\n");
+            num_vertices++;
+            //printf("\n");
         }
     }
-    printf("%d\n",vertices);
+    //printf("%d\n",vertices);
+
+    *vertices = malloc(sizeof(float)*num_vertices);
+    *size = num_vertices;
 
     for (i=0; i<num_prefixes-1; i++) {
         for (int j=0; j<prefix_total[i]; j++) {
@@ -164,5 +144,4 @@ int main(void) {
         free(faces[i]);
     }
     free(faces);
-
 }

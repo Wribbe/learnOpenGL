@@ -2,6 +2,7 @@
 #define FILE_UTILS_H_INCLUDED
 
 #include <GL/glew.h>
+#include <string.h>
 
 #define info_log_size 512
 
@@ -65,5 +66,7 @@ void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
                    Vec3f *camera_up);
 
 void mat4f_translate_vec3f(Mat4f *matrix, Vec3f *vector);
+int load_model(float** vertices, int* size);
+char *token_parser(char *string, char delimiter, char** save_pointer);
 
 #endif
