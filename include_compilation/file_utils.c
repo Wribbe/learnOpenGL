@@ -402,7 +402,7 @@ void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
     free(unity);
 }
 
-int load_model(float** vertices, int* size) {
+int load_model(float **vertices, int *total_vertices) {
     //const char *filename = "coffee_pot.obj";
     const char *filename = "models/box.obj";
     FILE *file_pointer = fopen(filename, "rb");
@@ -513,10 +513,10 @@ int load_model(float** vertices, int* size) {
         current_vertex[i] = 0;
     }
 
-    //*vertices = malloc(sizeof(float)*prefix_total[f]*8);
     //array = malloc(sizeof(float)*prefix_total[f]*8);
     int array_size = prefix_total[f]*8*(face_size+1);
-    float array[array_size];
+    *vertices = malloc(sizeof(float)*array_size);
+    //float array[array_size];
     int index = 0;
     int num_vertices = 0;
     int vert_index = 0;
@@ -526,13 +526,13 @@ int load_model(float** vertices, int* size) {
                 index = faces[i][j][k];
                 for(int l=0; l<prefix_sizes[k]; l++) {
                     if (index < 0) {
-                        //*vertices[vert_index++] = 0.0f;
-                        array[vert_index] = 0.0f;
-                        printf("0.0f, ");
+                        (*vertices)[vert_index] = 0.0f;
+                        //array[vert_index] = 0.0f;
+                        //printf("0.0f, ");
                     } else {
-                        //*vertices[vert_index++] = data[k][index][l];
-                        array[vert_index] = data[k][index][l];
-                        printf("%ff, ",data[k][index][l]);
+                        (*vertices)[vert_index] = data[k][index][l];
+                        //array[vert_index] = data[k][index][l];
+                        //printf("%ff, ",data[k][index][l]);
                     }
                     //printf("vert_index: %d\n",vert_index);
                     //} else {
@@ -541,23 +541,22 @@ int load_model(float** vertices, int* size) {
                 }
             }
             num_vertices++;
-            printf("\n");
+            //printf("\n");
         }
     }
-    printf("%d\n",array_size);
-    printf("%d\n",vert_index);
-    printf("%d\n",num_vertices);
+    //printf("%d\n",array_size);
+    //printf("%d\n",vert_index);
+    //printf("%d\n",num_vertices);
 
-    for(i=0; i<array_size; i++) {
-        if (i != 0 && i%8 == 0) {
-            printf("\n");
-        }
-        printf("%f, ",array[i]);
-    }
+    //for(i=0; i<array_size; i++) {
+    //    if (i != 0 && i%8 == 0) {
+    //        printf("\n");
+    //    }
+    //    //printf("%f, ",array[i]);
+    //    printf("%f, ",(*vertices)[i]);
+    //}
 
-    //*size = num_vertices;
-
-    //free(array);
+    *total_vertices = num_vertices;
 
     for (i=0; i<num_prefixes-1; i++) {
         for (int j=0; j<prefix_total[i]; j++) {
