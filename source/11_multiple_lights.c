@@ -211,17 +211,17 @@ int main(void) {
         fprintf(stderr, "Could not load model, aborting.\n");
         return(EXIT_FAILURE);
     }
-    printf("num_vertices: %d\n",num_vertices);
-    printf("sizeof(vertices): %zu\n",sizeof(vertices));
-    printf("corrected sizeof(vertices): %zu\n",sizeof(float)*num_vertices*8);
-    printf("sizeof(vertices2): %zu\n",sizeof(vertices2));
-    for (int i=0; i<num_vertices*8; i++) {
-        if (i != 0 && i%8 == 0) {
-            printf("\n");
-        }
-        printf("%ff, ",vertices[i]);
-    }
-    printf("\n");
+    //printf("num_vertices: %d\n",num_vertices);
+    //printf("sizeof(vertices): %zu\n",sizeof(vertices));
+    //printf("corrected sizeof(vertices): %zu\n",sizeof(float)*num_vertices*8);
+    //printf("sizeof(vertices2): %zu\n",sizeof(vertices2));
+    //for (int i=0; i<num_vertices*8; i++) {
+    //    if (i != 0 && i%8 == 0) {
+    //        printf("\n");
+    //    }
+    //    printf("%ff, ",vertices[i]);
+    //}
+    //printf("\n");
 
     if(!glfwInit()) {
         fprintf(stderr, "Could not load GLFW, aborting.\n");

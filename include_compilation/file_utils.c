@@ -403,8 +403,8 @@ void mat4f_look_at(Mat4f *result, Vec3f *camera_pos, Vec3f *camera_target,
 }
 
 int load_model(float **vertices, int *total_vertices) {
-    //const char *filename = "coffee_pot.obj";
-    const char *filename = "models/box.obj";
+    const char *filename = "models/coffee_pot.obj";
+    //const char *filename = "models/box.obj";
     FILE *file_pointer = fopen(filename, "rb");
     if (!file_pointer) {
         fprintf(stderr, "No such file: %s\n",filename);
