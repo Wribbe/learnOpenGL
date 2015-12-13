@@ -24,6 +24,7 @@ LDFLAGS = -I$(INCLUDE_DIR) $(ERROR_FLAGS)
 SOURCE_DIR=source
 SHADERS = $(SOURCE_DIR)/shaders
 TEXTURES = textures
+MODELS = models
 
 MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MAKEFILE_PATH))))
@@ -68,6 +69,7 @@ $(OBJECT_DIR)/%.o: $(INCLUDE_DIR)/%.c
 
 all: $(TARGETS)
 	cp -r $(SHADERS) $(EXECUTABLES_DIR)
+	cp -r $(MODELS) $(EXECUTABLES_DIR)
 ifeq ($(OS), Windows_NT)
 	unix2dos $(EXECUTABLES_DIR)/shaders/*
 	cp -r $(TEXTURES) $(EXECUTABLES_DIR)
