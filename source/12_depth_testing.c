@@ -173,8 +173,8 @@ int main(void) {
     }
 
     int WIDTH, HEIGHT;
-    WIDTH = 800;
-    HEIGHT = 600;
+    WIDTH = 1200;
+    HEIGHT = 900;
 
     GLFWwindow *window;
     window = glfwCreateWindow(WIDTH,HEIGHT,"12 Depth Test.", NULL, NULL);
