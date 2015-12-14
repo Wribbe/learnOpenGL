@@ -21,6 +21,13 @@ int i;
 GLsizei stride = 8 * sizeof(GLfloat);
 GLfloat *vertices;
 
+GLfloat decal_vertices[] = {
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+};
+
 void vec3f_add(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
     int i;
     float res;
@@ -201,7 +208,7 @@ int main(void) {
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    GLuint VAO, VBO, lightVAO;
+    GLuint VAO, VBO, lightVAO, VAO_decal, VBO_decal;
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -246,6 +253,23 @@ int main(void) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
+
+    /* VAO_decal and VBO_decal definitions. */
+
+    glGenVertexArrays(1, &VAO_decal);
+    glGenBuffers(1, &VBO_decal);
+    glBindVertexArray(VAO_decal);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_decal);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(decal_vertices), decal_vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(3*sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(5*sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+    glBindVertexArray(0);
+
+    /* Shader loading and construction. */
 
     char* vertex_source = read_shader("shaders/12.vert");
     char* fragment_source = read_shader("shaders/12.frag");
