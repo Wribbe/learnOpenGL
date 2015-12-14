@@ -41,8 +41,8 @@ uniform Point_Light point_light;
 
 uniform Point_Light point_lights[LIGHTS];
 
-vec3 get_direct_light(Direct_Light light, vec3 normal, vec3 view_direction);
-vec3 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
+vec4 get_direct_light(Direct_Light light, vec3 normal, vec3 view_direction);
+vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
                  vec3 view_direction);
 
 void main() {
@@ -51,7 +51,7 @@ void main() {
   vec3 normal = normalize(Normal);
   vec3 view_direction = normalize(view_position - fragment_position);
 
-  vec3 result = vec3(0.0f);
+  vec4 result = vec4(0.0f);
   // Phase 1: Directional lighting.
   //result = get_direct_light(direct_light, normal, view_direction);
   // Phase 2: Point lights.
@@ -61,10 +61,10 @@ void main() {
                               view_direction);
   }
   //result = point_lights[1].ambient;
-  color = vec4(result, 1.0);
+  color = result;
 }
 
-vec3 get_direct_light(Direct_Light light, vec3 normal, vec3 view_direction) {
+vec4 get_direct_light(Direct_Light light, vec3 normal, vec3 view_direction) {
   vec3 light_direction = normalize(-light.direction);
   // Diffuse shading.
   float diffuse_factor = max(dot(normal, light_direction), 0.0);
@@ -73,19 +73,19 @@ vec3 get_direct_light(Direct_Light light, vec3 normal, vec3 view_direction) {
   float specular_factor = pow(max(dot(view_direction, reflection_direction),
                                   0.0), material.shininess);
   // Combine results.
-  vec3 ambient, diffuse, specular;
-  vec3 diffuse_map, specular_map;
+  vec4 ambient, diffuse, specular;
+  vec4 diffuse_map, specular_map;
 
-  diffuse_map = vec3(texture(material.diffuse, texture_coordinates));
-  specular_map = vec3(texture(material.specular, texture_coordinates));
+  diffuse_map = vec4(texture(material.diffuse, texture_coordinates));
+  specular_map = vec4(texture(material.specular, texture_coordinates));
 
-  ambient = light.ambient * diffuse_map;
-  diffuse = light.diffuse * diffuse_factor * diffuse_map;
-  specular = light.specular * specular_factor * specular_map;
+  ambient = vec4(light.ambient,1.0f) * diffuse_map;
+  diffuse = vec4(light.diffuse,1.0f) * diffuse_factor * diffuse_map;
+  specular = vec4(light.specular,1.0f) * specular_factor * specular_map;
   return ambient + diffuse + specular;
 }
 
-vec3 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
+vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
                  vec3 view_direction) {
   vec3 light_vector = light.position - fragment_position;
   vec3 light_direction = normalize(light_vector);
@@ -108,12 +108,12 @@ vec3 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
   float attenuation = 1.0f / (falloff_constant + falloff_linear +
                               falloff_quadratic);
 
-  vec3 diffuse_sampling = vec3(texture(material.diffuse, texture_coordinates));
-  vec3 specular_sampling = vec3(texture(material.specular, texture_coordinates));
+  vec4 diffuse_sampling = vec4(texture(material.diffuse, texture_coordinates));
+  vec4 specular_sampling = vec4(texture(material.specular, texture_coordinates));
 
-  vec3 ambient = light.ambient * diffuse_sampling;
-  vec3 diffuse = light.diffuse * diffuse_factor * diffuse_sampling;
-  vec3 specular = light.specular * specular_factor * specular_sampling;
+  vec4 ambient = vec4(light.ambient,1.0f) * diffuse_sampling;
+  vec4 diffuse = vec4(light.diffuse,1.0f) * diffuse_factor * diffuse_sampling;
+  vec4 specular = vec4(light.specular,1.0f) * specular_factor * specular_sampling;
 
   ambient *= attenuation;
   diffuse *= attenuation;
