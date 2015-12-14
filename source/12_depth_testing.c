@@ -286,6 +286,8 @@ int main(void) {
     free(lamp_fragment_source);
     free(outline_program_source);
 
+    /* Matrix allocations. */
+
     Mat4f *projection, *model, *view, *temp, *temp2;
     mat4f_allocate(&projection);
     mat4f_allocate(&model);
@@ -296,6 +298,8 @@ int main(void) {
     mat4f_translate(view, 0.0f, 0.0f, -3.0f);
     //mat4f_rotate_x(model, -M_PI/4);
     mat4f_rotate_x(model, 0.0f);
+
+    /* Vertex allocations. */
 
     Vec3f *light_position;
     vec3f_allocate(&light_position);
@@ -312,7 +316,7 @@ int main(void) {
     vec3f_set(camera_pos, 0.0f, 0.0f, 3.0f);
     vec3f_set(light_position, 1.2f, 1.0f, 2.0f);
 
-    /* shader locations */
+    /* Shader locations. */
 
     GLuint model_location = glGetUniformLocation(shader_program, "model");
     GLuint projection_location = glGetUniformLocation(shader_program, "perspective");
