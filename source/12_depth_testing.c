@@ -219,7 +219,7 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    GLuint diffuse_map, specular_map;
+    GLuint diffuse_map, specular_map, texture_grass;
     glGenTextures(1, &diffuse_map);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuse_map);
@@ -230,6 +230,12 @@ int main(void) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, specular_map);
     load_texture("textures/container_specular.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glGenTextures(1, &texture_grass);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, texture_grass);
+    load_texture("textures/grass.png");
     glBindTexture(GL_TEXTURE_2D, 0);
 
     /* LightVAO definition. */
