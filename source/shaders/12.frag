@@ -47,6 +47,11 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
 
 void main() {
 
+  vec4 diffuse_sampling = texture(material.diffuse, texture_coordinates);
+  if (diffuse_sampling.a < 0.1) {
+    discard;
+  }
+
   // Properties.
   vec3 normal = normalize(Normal);
   vec3 view_direction = normalize(view_position - fragment_position);
