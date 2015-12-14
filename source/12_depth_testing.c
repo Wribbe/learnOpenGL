@@ -463,6 +463,9 @@ int main(void) {
         glStencilMask(0x00);
         glBindVertexArray(lightVAO);
 
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0xFF);
+
         for(i=0; i<POINT_LIGHTS; i++) {
             mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
             mat4f_mul(temp, temp, model);
@@ -487,9 +490,6 @@ int main(void) {
         }
 
         glBindVertexArray(0);
-
-        glStencilFunc(GL_ALWAYS, 1, 0xFF);
-        glStencilMask(0xFF);
 
         glUseProgram(shader_program);
 
