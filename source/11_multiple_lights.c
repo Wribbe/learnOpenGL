@@ -444,26 +444,28 @@ int main(void) {
 
     srand(time(NULL));
 
-    //int num_cubes = 500;
-    int num_cubes = 10;
+    int num_cubes = 4;
 
     float cube_locations[num_cubes][3];
-    float cube_rotations[num_cubes][3];
-    float x_max, y_max, z_max;
+    //float cube_rotations[num_cubes][3];
+    //float x_max, y_max, z_max;
 
-    x_max = 4.0f;
-    y_max = 4.0f;
-    z_max = 25.0f;
+    //x_max = 4.0f;
+    //y_max = 4.0f;
+    //z_max = 25.0f;
 
     for (i=0; i<num_cubes; i++) {
 
-        cube_locations[i][0] = ((x_max*2.0) * ((float)rand()/(float)RAND_MAX)) - x_max;
-        cube_locations[i][1] = ((y_max*2.0) * ((float)rand()/(float)RAND_MAX)) - y_max;
-        cube_locations[i][2] = -(z_max * ((float)rand()/(float)RAND_MAX));
+//        cube_locations[i][0] = ((x_max*2.0) * ((float)rand()/(float)RAND_MAX)) - x_max;
+//        cube_locations[i][1] = ((y_max*2.0) * ((float)rand()/(float)RAND_MAX)) - y_max;
+//        cube_locations[i][2] = -(z_max * ((float)rand()/(float)RAND_MAX));
+        cube_locations[i][0] = 0.0f;
+        cube_locations[i][1] = 0.0f;
+        cube_locations[i][2] = -i*5.0f-3.0f;
 
-        cube_rotations[i][0] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
-        cube_rotations[i][1] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
-        cube_rotations[i][2] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+     //   cube_rotations[i][0] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+     //   cube_rotations[i][1] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
+     //   cube_rotations[i][2] = ((float)M_PI * ((float)rand()/(float)RAND_MAX));
     }
 
     while(!glfwWindowShouldClose(window)) {
@@ -511,12 +513,12 @@ int main(void) {
                                   cube_locations[i][1],
                                   cube_locations[i][2]);
             mat4f_mul(temp2, temp, model);
-            mat4f_rotate_x(temp, cube_rotations[i][0]);
-            mat4f_mul(temp2, temp2, temp);
-            mat4f_rotate_y(temp, cube_rotations[i][1]);
-            mat4f_mul(temp2, temp2, temp);
-            mat4f_rotate_z(temp, cube_rotations[i][2]);
-            mat4f_mul(temp2, temp2, temp);
+            //mat4f_rotate_x(temp, cube_rotations[i][0]);
+            //mat4f_mul(temp2, temp2, temp);
+            //mat4f_rotate_y(temp, cube_rotations[i][1]);
+            //mat4f_mul(temp2, temp2, temp);
+            //mat4f_rotate_z(temp, cube_rotations[i][2]);
+            //mat4f_mul(temp2, temp2, temp);
             glUniformMatrix4fv(model_location, 1, GL_TRUE,
                                mat4f_pointer(temp2));
             //glDrawArrays(GL_TRIANGLES, 0, 36);

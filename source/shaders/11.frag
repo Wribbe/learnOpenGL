@@ -61,7 +61,6 @@ void main() {
                               view_direction);
   }
   //result = point_lights[1].ambient;
-  result = normal;
   color = vec4(result, 1.0);
 }
 
