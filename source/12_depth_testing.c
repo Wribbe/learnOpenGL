@@ -521,6 +521,21 @@ int main(void) {
 
         glUseProgram(shader_program);
 
+        glBindVertexArray(VAO_decal);
+
+        glUniformMatrix4fv(view_location, 1, GL_TRUE,
+                           mat4f_pointer(view));
+        glUniformMatrix4fv(projection_location, 1, GL_TRUE,
+                           mat4f_pointer(projection));
+        glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                           mat4f_pointer(model));
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_grass);
+
+        glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
+        //glActiveTexture(0);
+
         glBindVertexArray(VAO);
 
         glActiveTexture(GL_TEXTURE0);
@@ -544,10 +559,9 @@ int main(void) {
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glActiveTexture(0);
-
+        glBindVertexArray(0);
         glUseProgram(0);
 
-        glBindVertexArray(0);
 
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         glStencilMask(0x00);
