@@ -240,14 +240,17 @@ int main(void) {
     char* vertex_source = read_shader("shaders/12.vert");
     char* fragment_source = read_shader("shaders/12.frag");
     char* lamp_fragment_source = read_shader("shaders/12_lamp.frag");
+    char* outline_shader_source = read_shader("shaders/12_single_color.frag");
 
-    GLuint shader_program, lamp_program;
+    GLuint shader_program, lamp_program, outline_shader;
     shader_program = create_shader_program(vertex_source, fragment_source);
     lamp_program = create_shader_program(vertex_source, lamp_fragment_source);
+    outline_shader = create_shader_program(vertex_source, outline_shader_source);
 
     free(vertex_source);
     free(fragment_source);
     free(lamp_fragment_source);
+    free(outline_shader_source);
 
     Mat4f *projection, *model, *view, *temp, *temp2;
     mat4f_allocate(&projection);
