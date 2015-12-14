@@ -195,6 +195,10 @@ int main(void) {
     }
 
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     GLuint VAO, VBO, lightVAO;
@@ -240,17 +244,17 @@ int main(void) {
     char* vertex_source = read_shader("shaders/12.vert");
     char* fragment_source = read_shader("shaders/12.frag");
     char* lamp_fragment_source = read_shader("shaders/12_lamp.frag");
-    char* outline_shader_source = read_shader("shaders/12_single_color.frag");
+    char* outline_program_source = read_shader("shaders/12_single_color.frag");
 
-    GLuint shader_program, lamp_program, outline_shader;
+    GLuint shader_program, lamp_program, outline_program;
     shader_program = create_shader_program(vertex_source, fragment_source);
     lamp_program = create_shader_program(vertex_source, lamp_fragment_source);
-    outline_shader = create_shader_program(vertex_source, outline_shader_source);
+    outline_program = create_shader_program(vertex_source, outline_program_source);
 
     free(vertex_source);
     free(fragment_source);
     free(lamp_fragment_source);
-    free(outline_shader_source);
+    free(outline_program_source);
 
     Mat4f *projection, *model, *view, *temp, *temp2;
     mat4f_allocate(&projection);
@@ -375,6 +379,16 @@ int main(void) {
 
     glUseProgram(0);
 
+    glUseProgram(outline_program);
+
+    GLuint outline_model_location, outline_projection_location, outline_view_location;
+
+    outline_model_location = glGetUniformLocation(outline_program, "model");
+    outline_projection_location = glGetUniformLocation(outline_program, "perspective");
+    outline_view_location = glGetUniformLocation(outline_program, "view");
+
+    glUseProgram(0);
+
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     current_frame = 0.0f;
@@ -422,23 +436,13 @@ int main(void) {
         last_frame = current_frame;
         do_movement();
 
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glUseProgram(shader_program);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         vec3f_add(camera_target, camera_pos, camera_front);
         mat4f_look_at(view, camera_pos, camera_target, camera_up);
 
         mat4f_perspective(projection, fov, (float)WIDTH/(float)HEIGHT,
                           0.1f, 100.0f);
-
-        glUniformMatrix4fv(model_location, 1, GL_TRUE,
-                           mat4f_pointer(model));
-        glUniformMatrix4fv(view_location, 1, GL_TRUE,
-                           mat4f_pointer(view));
-        glUniformMatrix4fv(projection_location, 1, GL_TRUE,
-                           mat4f_pointer(projection));
 
         glUniform3f(view_position_location, camera_pos->data[0],
                                             camera_pos->data[1],
@@ -448,38 +452,9 @@ int main(void) {
                                            camera_front->data[1],
                                            camera_front->data[2]);
 
-        glBindVertexArray(VAO);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuse_map);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specular_map);
-
-        for(i=0; i<num_cubes; i++) {
-            mat4f_translate(temp, cube_locations[i][0],
-                                  cube_locations[i][1],
-                                  cube_locations[i][2]);
-            mat4f_mul(temp2, temp, model);
-            //mat4f_rotate_x(temp, cube_rotations[i][0]);
-            //mat4f_mul(temp2, temp2, temp);
-            //mat4f_rotate_y(temp, cube_rotations[i][1]);
-            //mat4f_mul(temp2, temp2, temp);
-            //mat4f_rotate_z(temp, cube_rotations[i][2]);
-            //mat4f_mul(temp2, temp2, temp);
-            glUniformMatrix4fv(model_location, 1, GL_TRUE,
-                               mat4f_pointer(temp2));
-            //glDrawArrays(GL_TRIANGLES, 0, 36);
-            //glDrawArrays(GL_QUADS, 0, 24);
-            glDrawArrays(GL_QUADS, 0, num_vertices);
-        }
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glActiveTexture(0);
-
-        glBindVertexArray(0);
-
         glUseProgram(lamp_program);
 
+        glStencilMask(0x00);
         glBindVertexArray(lightVAO);
 
         for(i=0; i<POINT_LIGHTS; i++) {
@@ -506,6 +481,67 @@ int main(void) {
         }
 
         glBindVertexArray(0);
+
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glStencilMask(0xFF);
+
+        glUseProgram(shader_program);
+
+        glBindVertexArray(VAO);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuse_map);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specular_map);
+
+        for(i=0; i<num_cubes; i++) {
+            mat4f_translate(temp, cube_locations[i][0],
+                                  cube_locations[i][1],
+                                  cube_locations[i][2]);
+            mat4f_mul(temp2, temp, model);
+            glUniformMatrix4fv(view_location, 1, GL_TRUE,
+                               mat4f_pointer(view));
+            glUniformMatrix4fv(projection_location, 1, GL_TRUE,
+                               mat4f_pointer(projection));
+            glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp2));
+            glDrawArrays(GL_QUADS, 0, num_vertices);
+        }
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glActiveTexture(0);
+
+        glUseProgram(0);
+
+        glBindVertexArray(0);
+
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+        glDisable(GL_DEPTH_TEST);
+        glUseProgram(outline_program);
+
+        glBindVertexArray(VAO);
+
+        float outline_scale = 1.003f;
+        for(i=0; i<num_cubes; i++) {
+
+            mat4f_scale(temp, outline_scale, outline_scale, outline_scale);
+            mat4f_translate(temp2,cube_locations[i][0],
+                                  cube_locations[i][1],
+                                  cube_locations[i][2]);
+            mat4f_mul(temp2, temp2, temp);
+            mat4f_mul(temp2, temp2, model);
+            glUniformMatrix4fv(outline_view_location, 1, GL_TRUE,
+                               mat4f_pointer(view));
+            glUniformMatrix4fv(outline_projection_location, 1, GL_TRUE,
+                               mat4f_pointer(projection));
+            glUniformMatrix4fv(outline_model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp2));
+            glDrawArrays(GL_QUADS, 0, num_vertices);
+        }
+        glBindVertexArray(0);
+        glStencilMask(0xFF);
+        glEnable(GL_DEPTH_TEST);
 
         glfwSwapBuffers(window);
 
