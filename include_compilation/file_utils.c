@@ -89,13 +89,13 @@ void load_texture(const char *filename) {
                                            &width,
                                            &height,
                                            0,
-                                           SOIL_LOAD_RGB);
+                                           SOIL_LOAD_RGBA);
     if (!image) {
         fprintf(stderr, "Could not load image: %s.\n",filename);
         fprintf(stderr, "result: %s\n",SOIL_last_result());
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
 
