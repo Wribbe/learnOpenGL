@@ -525,18 +525,28 @@ int main(void) {
 
         glBindVertexArray(VAO_decal);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_grass);
+
         glUniformMatrix4fv(view_location, 1, GL_TRUE,
                            mat4f_pointer(view));
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
                            mat4f_pointer(projection));
-        glUniformMatrix4fv(model_location, 1, GL_TRUE,
-                           mat4f_pointer(model));
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture_grass);
-
-        glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
-        //glActiveTexture(0);
+        float decal_scale = 2.0f;
+        for (i=0; i<num_cubes; i++) {
+            mat4f_translate(temp, cube_locations[i][0]+8.0f,
+                                  cube_locations[i][1],
+                                  cube_locations[i][2]);
+            mat4f_mul(temp, temp, model);
+            mat4f_scale(temp2, decal_scale, decal_scale, decal_scale);
+            mat4f_mul(temp, temp, temp2);
+            glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp));
+            glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
+        }
+        glActiveTexture(0);
+        glBindVertexArray(0);
 
         glBindVertexArray(VAO);
 
