@@ -545,6 +545,7 @@ int main(void) {
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
                            mat4f_pointer(projection));
 
+        float grass_displacement = 6.0f;
         float decal_scale = 1.3f;
         int num_decals = 9;
         float decal_rotation_step = M_PI/num_decals*2;
@@ -556,7 +557,7 @@ int main(void) {
                 mat4f_mul(temp, temp, temp2);
                 mat4f_scale(temp2, decal_scale, decal_scale, decal_scale);
                 mat4f_mul(temp, temp, temp2);
-                mat4f_translate(temp2, cube_locations[i][0]+6.0f,
+                mat4f_translate(temp2, cube_locations[i][0]+grass_displacement,
                                        cube_locations[i][1],
                                        cube_locations[i][2]);
                 mat4f_mul(temp, temp2, temp);
