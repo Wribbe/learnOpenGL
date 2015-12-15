@@ -226,7 +226,10 @@ int main(void) {
 
     glBindVertexArray(0);
 
+    /* Load textures. */
+
     GLuint diffuse_map, specular_map, texture_grass;
+
     glGenTextures(1, &diffuse_map);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuse_map);
@@ -508,6 +511,8 @@ int main(void) {
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         glStencilMask(0xFF);
 
+        /* Draw lights. */
+
         for(i=0; i<POINT_LIGHTS; i++) {
             mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
             mat4f_mul(temp, temp, model);
@@ -532,6 +537,8 @@ int main(void) {
         }
 
         glBindVertexArray(0);
+
+        /* Draw Decals */
 
         glUseProgram(shader_program);
 
@@ -586,6 +593,8 @@ int main(void) {
 
         glActiveTexture(0);
         glBindVertexArray(0);
+
+        /* Draw coffeepots. */
 
         glBindVertexArray(VAO);
 
