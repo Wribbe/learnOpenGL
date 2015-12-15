@@ -213,16 +213,18 @@ void vec4f_add(Vec4f *vecA, Vec4f *vecB,  Vec4f *vecRes) {
 
 void mat4f_mul(Mat4f *matRes, Mat4f *matA, Mat4f *matB) {
     int i, j, k;
-    double temp_array[4];
+    double temp_array[4][4];
     for (i=0; i<4; i++) {
         for (j=0; j<4; j++) {
-            temp_array[j] = 0;
+            temp_array[i][j] = 0;
             for (k=0; k<4; k++) {
-                temp_array[j] += matA->data[i][k] * matB->data[k][j];
+                temp_array[i][j] += matA->data[i][k] * matB->data[k][j];
             }
         }
+    }
+    for (i=0; i<4; i++) {
         for (j=0; j<4; j++) {
-            matRes->data[i][j] = temp_array[j];
+            matRes->data[i][j] = temp_array[i][j];
         }
     }
 }
