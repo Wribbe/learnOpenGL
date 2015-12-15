@@ -566,6 +566,24 @@ int main(void) {
                 glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
             }
         }
+
+        glBindTexture(GL_TEXTURE_2D, texture_window);
+
+        float window_displacement = grass_displacement + 4.0f;
+        for(i=0; i<num_cubes; i++) {
+            mat4f_translate(temp, cube_locations[i][0]+window_displacement,
+                                  cube_locations[i][1],
+                                  cube_locations[i][2]);
+            mat4f_mul(temp2, temp, model);
+            glUniformMatrix4fv(view_location, 1, GL_TRUE,
+                               mat4f_pointer(view));
+            glUniformMatrix4fv(projection_location, 1, GL_TRUE,
+                               mat4f_pointer(projection));
+            glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                               mat4f_pointer(temp2));
+            glDrawArrays(GL_QUADS, 0, num_vertices);
+        }
+
         glActiveTexture(0);
         glBindVertexArray(0);
 
