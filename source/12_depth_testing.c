@@ -65,14 +65,30 @@ void vec3f_muls(Vec3f *result, Vec3f *vector, float scalar) {
     }
 }
 
-int compare_window_z(const void *p1, const void *p2) {
-    float z1, z2;
-    z1 = ((float*)p1)[3];
-    z2 = ((float*)p2)[3];
-    if (z1 < z2) {
-        return -1;
-    } else {
+int compare_window_distance(const void *p1, const void *p2) {
+    float *vector1, *vector2;
+    float quadratic_sum_1, quadratic_sum_2;
+    int i;
+
+    vector1 = (float*)p1;
+    vector2 = (float*)p2;
+
+    float dist_cam1[3], dist_cam2[3];
+    for (i=0; i<3; i++) {
+        dist_cam1[i] = camera_pos->data[i] - vector1[i];
+        dist_cam2[i] = camera_pos->data[i] - vector2[i];
+    }
+
+    quadratic_sum_1 = 0;
+    quadratic_sum_2 = 0;
+    for (i=0; i<3; i++) {
+        quadratic_sum_1 += dist_cam1[i]*dist_cam1[i];
+        quadratic_sum_2 += dist_cam2[i]*dist_cam2[i];
+    }
+    if (quadratic_sum_1 < quadratic_sum_2) {
         return 1;
+    } else {
+        return -1;
     }
 }
 
@@ -662,7 +678,7 @@ int main(void) {
         float window_locations[num_cubes][3];
         memcpy(window_locations, cube_locations, sizeof(float)*num_cubes*3);
 
-        qsort(window_locations, num_cubes, sizeof(float)*3, compare_window_z);
+        qsort(window_locations, num_cubes, sizeof(float)*3, compare_window_distance);
 
         float window_displacement = grass_displacement + 4.0f;
         for(i=0; i<num_cubes; i++) {
