@@ -535,17 +535,25 @@ int main(void) {
         glUniformMatrix4fv(projection_location, 1, GL_TRUE,
                            mat4f_pointer(projection));
 
-        float decal_scale = 2.0f;
-        for (i=0; i<num_cubes; i++) {
-            mat4f_translate(temp, cube_locations[i][0]+8.0f,
-                                  cube_locations[i][1],
-                                  cube_locations[i][2]);
-            mat4f_mul(temp, temp, model);
-            mat4f_scale(temp2, decal_scale, decal_scale, decal_scale);
-            mat4f_mul(temp, temp, temp2);
-            glUniformMatrix4fv(model_location, 1, GL_TRUE,
-                               mat4f_pointer(temp));
-            glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
+        float decal_scale = 1.3f;
+        int num_decals = 9;
+        float decal_rotation_step = M_PI/num_decals*2;
+        for (int j=0; j<num_decals; j++) {
+            for (i=0; i<num_cubes; i++) {
+                mat4f_unity(temp);
+                mat4f_mul(temp, temp, model);
+                mat4f_rotate_y(temp2, decal_rotation_step*j);
+                mat4f_mul(temp, temp, temp2);
+                mat4f_scale(temp2, decal_scale, decal_scale, decal_scale);
+                mat4f_mul(temp, temp, temp2);
+                mat4f_translate(temp2, cube_locations[i][0]+6.0f,
+                                       cube_locations[i][1],
+                                       cube_locations[i][2]);
+                mat4f_mul(temp, temp2, temp);
+                glUniformMatrix4fv(model_location, 1, GL_TRUE,
+                                   mat4f_pointer(temp));
+                glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
+            }
         }
         glActiveTexture(0);
         glBindVertexArray(0);
