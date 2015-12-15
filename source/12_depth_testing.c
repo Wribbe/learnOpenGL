@@ -65,6 +65,17 @@ void vec3f_muls(Vec3f *result, Vec3f *vector, float scalar) {
     }
 }
 
+int compare_window_z(const void *p1, const void *p2) {
+    float z1, z2;
+    z1 = ((float*)p1)[3];
+    z2 = ((float*)p2)[3];
+    if (z1 < z2) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     UNUSED(scancode);
     UNUSED(mods);
