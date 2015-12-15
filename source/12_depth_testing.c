@@ -299,7 +299,9 @@ int main(void) {
 
     mat4f_translate(view, 0.0f, 0.0f, -3.0f);
     //mat4f_rotate_x(model, -M_PI/4);
-    mat4f_rotate_x(model, 0.0f);
+    //mat4f_rotate_x(model, 0.0f);
+    //mat4f_translate(model, -0.5f, -0.5f, -0.5f);
+    mat4f_unity(model);
 
     /* Vertex allocations. */
 
