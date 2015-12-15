@@ -485,7 +485,7 @@ int main(void) {
 
     srand(time(NULL));
 
-    int num_cubes = 4;
+    int num_cubes = 5;
 
     float cube_locations[num_cubes][3];
     //float cube_rotations[num_cubes][3];
@@ -664,6 +664,7 @@ int main(void) {
         glEnable(GL_DEPTH_TEST);
 
         /* Draw transparent objects */
+        glEnable(GL_BLEND);
 
         glStencilMask(0x00);
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -694,10 +695,12 @@ int main(void) {
                                mat4f_pointer(temp2));
             glDrawArrays(GL_QUADS, 0, num_vertices);
         }
+        glDisable(GL_BLEND);
 
         glActiveTexture(0);
         glBindVertexArray(0);
 
+        /* Swap buffers. */
 
         glfwSwapBuffers(window);
 
