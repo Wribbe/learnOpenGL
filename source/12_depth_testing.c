@@ -236,6 +236,9 @@ int main(void) {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
 
     GLuint VAO, VBO, lightVAO, VAO_decal, VBO_decal;
 
@@ -665,6 +668,7 @@ int main(void) {
 
         /* Draw transparent objects */
         glEnable(GL_BLEND);
+        glDisable(GL_CULL_FACE);
 
         glStencilMask(0x00);
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -696,6 +700,7 @@ int main(void) {
             glDrawArrays(GL_QUADS, 0, num_vertices);
         }
         glDisable(GL_BLEND);
+        glEnable(GL_CULL_FACE);
 
         glActiveTexture(0);
         glBindVertexArray(0);
