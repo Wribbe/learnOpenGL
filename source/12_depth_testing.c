@@ -22,10 +22,14 @@ GLsizei stride = 8 * sizeof(GLfloat);
 GLfloat *vertices;
 
 GLfloat decal_vertices[] = {
-    -0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-     0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    //-0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+    // 0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+    // 0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    //-0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+     1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+     1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+    -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 };
 
 void vec3f_add(Vec3f *result, Vec3f *vecA, Vec3f *vecB) {
@@ -228,17 +232,119 @@ int main(void) {
         return(EXIT_FAILURE);
     }
 
+    /* GL state configuration. */
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+
+    /* Load textures. */
+
+    GLuint diffuse_map, specular_map, texture_grass;
+
+    glGenTextures(1, &diffuse_map);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuse_map);
+    load_texture("textures/container_diffuse.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    glGenTextures(1, &specular_map);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specular_map);
+    load_texture("textures/container_specular.png");
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    glGenTextures(1, &texture_grass);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, texture_grass);
+    load_texture("textures/grass.png");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    GLuint texture_window;
+
+    glGenTextures(1, &texture_window);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, texture_window);
+    load_texture("textures/window_red.png");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    GLuint texture_anisotropic;
+
+    glGenTextures(1, &texture_anisotropic);
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, texture_anisotropic);
+    load_texture("textures/anisotropic_direction.jpg");
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    GLuint texture_brushed;
+    glGenTextures(1, &texture_brushed);
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_2D, texture_brushed);
+    load_texture("textures/brushed.jpg");
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    /* Frambuffer setup. */
+
+    GLuint FBO;
+    glGenFramebuffers(1, &FBO);
+
+    GLuint texture_framebuffer;
+    glGenTextures(1, &texture_framebuffer);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, texture_framebuffer);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(0);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT, 0, GL_DEPTH_STENCIL,
+                 GL_UNSIGNED_INT_24_8, NULL);
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGBA,
+    //             GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                           texture_framebuffer, 0);
+
+    /* Renderbuffer setup. */
+
+    GLuint RBO;
+    glGenRenderbuffers(1, &RBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    /* Attach renderbuffer to framebuffer. */
+
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
+                              GL_RENDERBUFFER, RBO);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        fprintf(stderr, "ERROR: Framebuffer is not complete!\n");
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    /* Vertex Array and Vertex Buffer setup. */
 
     GLuint VAO, VBO, lightVAO, VAO_decal, VBO_decal;
 
@@ -257,40 +363,6 @@ int main(void) {
     glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
-
-    /* Load textures. */
-
-    GLuint diffuse_map, specular_map, texture_grass;
-
-    glGenTextures(1, &diffuse_map);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, diffuse_map);
-    load_texture("textures/container_diffuse.png");
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glGenTextures(1, &specular_map);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, specular_map);
-    load_texture("textures/container_specular.png");
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glGenTextures(1, &texture_grass);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, texture_grass);
-    load_texture("textures/grass.png");
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    GLuint texture_window;
-
-    glGenTextures(1, &texture_window);
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, texture_window);
-    load_texture("textures/window_red.png");
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_2D, 0);
 
     /* LightVAO definition. */
 
@@ -322,16 +394,21 @@ int main(void) {
     char* fragment_source = read_shader("shaders/12.frag");
     char* lamp_fragment_source = read_shader("shaders/12_lamp.frag");
     char* outline_program_source = read_shader("shaders/12_single_color.frag");
+    char* source_framebuffer_vert = read_shader("shaders/12_framebuffer.vert");
+    char* source_framebuffer_frag = read_shader("shaders/12_framebuffer.frag");
 
-    GLuint shader_program, lamp_program, outline_program;
+    GLuint shader_program, lamp_program, outline_program, program_framebuffer;
     shader_program = create_shader_program(vertex_source, fragment_source);
     lamp_program = create_shader_program(vertex_source, lamp_fragment_source);
     outline_program = create_shader_program(vertex_source, outline_program_source);
+    program_framebuffer = create_shader_program(source_framebuffer_vert, source_framebuffer_frag);
 
     free(vertex_source);
     free(fragment_source);
     free(lamp_fragment_source);
     free(outline_program_source);
+    free(source_framebuffer_vert);
+    free(source_framebuffer_frag);
 
     /* Matrix allocations. */
 
@@ -410,6 +487,7 @@ int main(void) {
     glUniform1f(material_shininess_location, 32.0f);
     glUniform1i(sampler_diffuse_location, 0);
     glUniform1i(sampler_specular_location, 1);
+    glUniform1i(glGetUniformLocation(program_framebuffer, "screen_texture"), 0);
     glUniform1d(location_POINT_LIGHTS, POINT_LIGHTS);
 
     float point_positions[POINT_LIGHTS][3] = {
@@ -433,7 +511,12 @@ int main(void) {
         {0.0f, 0.5f, 0.5f},
     };
 
-    float specular_color[3] = {1.0,1.0,1.0};
+    float specular_color[POINT_LIGHTS][3] = {
+        {1.0f, 0.5f, 1.0f},
+        {0.3f, 1.0f, 0.2f},
+        {1.0f, 1.0f, 1.0f},
+        {0.0f, 0.5f, 0.5f},
+    };
 
     float constant, linear, quadratic;
     constant = 1.0f;
@@ -444,7 +527,7 @@ int main(void) {
         glUniform3fv(point_light_position[i][POSITION], 1, (GLvoid*)(&point_positions[i][0]));
         glUniform3fv(point_light_position[i][AMBIENT], 1, (GLvoid*)(&ambient_color[i][0]));
         glUniform3fv(point_light_position[i][DIFFUSE], 1, (GLvoid*)(&diffuse_color[i][0]));
-        glUniform3fv(point_light_position[i][SPECULAR], 1, (GLvoid*)(&specular_color[0]));
+        glUniform3fv(point_light_position[i][SPECULAR], 1, (GLvoid*)(&specular_color[i][0]));
         glUniform1f(point_light_position[i][CONSTANT], constant);
         glUniform1f(point_light_position[i][LINEAR], linear);
         glUniform1f(point_light_position[i][QUADRATIC], quadratic);
@@ -473,7 +556,6 @@ int main(void) {
     glUseProgram(0);
 
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     current_frame = 0.0f;
     last_frame = 0.0f;
     last_x = WIDTH / 2.0f;
@@ -519,23 +601,13 @@ int main(void) {
         last_frame = current_frame;
         do_movement();
 
+        /* Render to framebuffer object. */
+
+        //glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        vec3f_add(camera_target, camera_pos, camera_front);
-        mat4f_look_at(view, camera_pos, camera_target, camera_up);
-
-        mat4f_perspective(projection, fov, (float)WIDTH/(float)HEIGHT,
-                          0.1f, 100.0f);
-
-        glUniform3f(view_position_location, camera_pos->data[0],
-                                            camera_pos->data[1],
-                                            camera_pos->data[2]);
-
-        glUniform3f(location_camera_front, camera_front->data[0],
-                                           camera_front->data[1],
-                                           camera_front->data[2]);
-
-        glUseProgram(lamp_program);
 
         glStencilMask(0x00);
         glBindVertexArray(lightVAO);
@@ -544,6 +616,9 @@ int main(void) {
         glStencilMask(0xFF);
 
         /* Draw lights. */
+
+        glUseProgram(lamp_program);
+        glBindVertexArray(VAO);
 
         for(i=0; i<POINT_LIGHTS; i++) {
             mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
@@ -568,15 +643,32 @@ int main(void) {
             glDrawArrays(GL_QUADS, 0, num_vertices);
         }
 
+        glUseProgram(0);
         glBindVertexArray(0);
 
         /* Draw Decals */
 
         glUseProgram(shader_program);
 
+        vec3f_add(camera_target, camera_pos, camera_front);
+        mat4f_look_at(view, camera_pos, camera_target, camera_up);
+
+        mat4f_perspective(projection, fov, (float)WIDTH/(float)HEIGHT,
+                          0.1f, 100.0f);
+
+        glUniform3f(view_position_location, camera_pos->data[0],
+                                            camera_pos->data[1],
+                                            camera_pos->data[2]);
+
+        glUniform3f(location_camera_front, camera_front->data[0],
+                                           camera_front->data[1],
+                                           camera_front->data[2]);
+
         glBindVertexArray(VAO_decal);
 
         glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_grass);
+        glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture_grass);
 
         glUniformMatrix4fv(view_location, 1, GL_TRUE,
@@ -612,11 +704,13 @@ int main(void) {
         /* Draw coffeepots. */
 
         glBindVertexArray(VAO);
+        glUseProgram(shader_program);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuse_map);
+        glBindTexture(GL_TEXTURE_2D, texture_brushed);
+        //glBindTexture(GL_TEXTURE_2D, texture_anisotropic);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specular_map);
+        glBindTexture(GL_TEXTURE_2D, texture_anisotropic);
 
         for(i=0; i<num_cubes; i++) {
             mat4f_translate(temp, cube_locations[i][0],
@@ -637,6 +731,7 @@ int main(void) {
         glBindVertexArray(0);
         glUseProgram(0);
 
+        /* Draw outlines. */
 
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         glStencilMask(0x00);
@@ -667,6 +762,7 @@ int main(void) {
         glEnable(GL_DEPTH_TEST);
 
         /* Draw transparent objects */
+
         glEnable(GL_BLEND);
         glDisable(GL_CULL_FACE);
 
@@ -678,6 +774,8 @@ int main(void) {
 
         glBindVertexArray(VAO_decal);
         glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_window);
+        glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture_window);
 
         float window_locations[num_cubes][3];
@@ -702,8 +800,24 @@ int main(void) {
         glDisable(GL_BLEND);
         glEnable(GL_CULL_FACE);
 
+        glUseProgram(0);
         glActiveTexture(0);
         glBindVertexArray(0);
+
+        /* Render framebuffer to quad. */
+
+        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //glUseProgram(program_framebuffer);
+        //glBindVertexArray(VAO_decal);
+        //glDisable(GL_DEPTH_TEST);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, texture_framebuffer);
+        ////glBindTexture(GL_TEXTURE_2D, texture_window);
+        //glDrawArrays(GL_QUADS, 0, sizeof(decal_vertices));
+        //glBindVertexArray(0);
 
         /* Swap buffers. */
 
