@@ -114,54 +114,9 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
   vec3 try_color;
   vec3 albedo = vec3(0.0f, 1.0f, 0.0f);
   vec3 light_color = vec3(1.0f);
-  //try_color.rgb = vec3((albedo * light_color * dot_normal_light) +
-  //                     light_color * specular);
-  //return vec4(try_color, 1.0f);
 
-  //vec3 sampled_specular = vec3(texture(material.specular, texture_coordinates));
-  //float dot_light_direction_normal = dot(light_direction, normal);
-
-  ////vec3 reflect_direction = reflect(-light_direction, sampled_specular);
-  //vec3 reflect_direction = reflect(-light_direction, normal);
-
-  //float alpha_x = 0.3f;
-  //float alpha_y = 0.3f;
-
-  //vec3 halfway_vector = normalize(light_direction + view_direction);
-  //vec3 binormal_direction = cross(normal, sampled_specular);
-
-  //float specular_factor;
-  //if (dot_light_direction_normal < 0.0) {
-  //  specular_factor = 0.0f;
-  //} else {
-  //  float dot_halfway_normal = dot(halfway_vector, normal);
-  //  float dot_view_normal = dot(view_direction, normal);
-  //  float dot_halfway_tangent = dot(halfway_vector, sampled_specular);
-  //  float dot_halfway_binormal = dot(halfway_vector, binormal_direction);
-  //  float dot_halfway_tangent_alpha_x = dot_halfway_tangent / alpha_x;
-  //  float dot_halfway_tangent_alpha_y = dot_halfway_binormal / alpha_y;
-
-  //  specular_factor = sqrt(max(0.0,
-  //                            dot_light_direction_normal / dot_view_normal))
-  //                            * exp(-2.0f *
-  //                                    (dot_halfway_tangent_alpha_x *
-  //                                    dot_halfway_tangent_alpha_y) /
-  //                            (1.0f + dot_halfway_normal));
-  //  //specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
-  //  //                      material.shininess);
-  //  //specular_factor *= 0.01f;
-  //  specular_factor = sampled_specular.
-  //}
-
-
-  /* */
-
-  //float diffuse_factor = max(dot_light_direction_normal, 0.0);
   float diffuse_factor = max(dot_normal_light, 0.0);
-  // Specular shading.
-  //vec3 reflect_direction = reflect(-light_direction, normal);
-  //float specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
-  //                            material.shininess);
+
   // Attenuation
   float squared_light_distance = dot(light_vector, light_vector);
   float light_distance = sqrt(squared_light_distance);
@@ -176,11 +131,9 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
                               falloff_quadratic);
 
   vec4 diffuse_sampling = vec4(texture(material.diffuse, texture_coordinates));
-  //vec4 specular_sampling = vec4(texture(material.specular, texture_coordinates));
 
   vec4 ambient = vec4(light.ambient,1.0f) * diffuse_sampling;
   vec4 diffuse = vec4(light.diffuse,1.0f) * diffuse_factor * diffuse_sampling;
-  //vec4 specular = vec4(light.specular,1.0f) * specular_factor * specular_sampling;
   vec4 specular = vec4(light.specular,1.0f) * specular_factor;
 
   ambient *= attenuation;
