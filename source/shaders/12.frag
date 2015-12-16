@@ -65,7 +65,6 @@ void main() {
     result += get_point_light(point_lights[i], normal, fragment_position,
                               view_direction);
   }
-  //result = point_lights[1].ambient;
   color = result;
 }
 
@@ -98,19 +97,67 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
 
   /* Trying to make anisotropic work */
 
-  vec3 sampled_specular_normal = vec3(texture(material.specular, texture_coordinates));
+  vec4 sampled_specular = vec4(texture(material.specular, texture_coordinates));
 
-  vec3 reflect_direction = reflect(-light_direction, sampled_specular_normal);
-  float specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
-                              material.shininess);
+  vec3 halfway = normalize(light_direction - view_direction);
+  float dot_normal_light = clamp(dot(normal, light_direction), 0.0f, 1.0f);
+  float dot_halfway_aniso = dot(normalize(normal + sampled_specular.rgb),
+                                halfway);
+  float aniso_offset = 0.0f;
+  float aniso = max(0, sin(radians((dot_halfway_aniso + aniso_offset) * 180)));
 
-  vec3 halfway_vector = normalize(light_direction + view_direction);
-  vec3 binormal_direction = cross(normal, sampled_specular_normal);
-  float dot_light_direction = dot(light_direction, normal);
+  float specular_factor = clamp(dot(normal, halfway), 0.0f, 1.0f);
+  float lerped = specular_factor*(1-sampled_specular.a) + aniso*sampled_specular.a;
+  float gloss = 0.5f;
+  specular_factor = clamp(pow(lerped, gloss * 128) * 0.5f, 0.0f, 1.0f);
+
+  vec3 try_color;
+  vec3 albedo = vec3(0.0f, 1.0f, 0.0f);
+  vec3 light_color = vec3(1.0f);
+  //try_color.rgb = vec3((albedo * light_color * dot_normal_light) +
+  //                     light_color * specular);
+  //return vec4(try_color, 1.0f);
+
+  //vec3 sampled_specular = vec3(texture(material.specular, texture_coordinates));
+  //float dot_light_direction_normal = dot(light_direction, normal);
+
+  ////vec3 reflect_direction = reflect(-light_direction, sampled_specular);
+  //vec3 reflect_direction = reflect(-light_direction, normal);
+
+  //float alpha_x = 0.3f;
+  //float alpha_y = 0.3f;
+
+  //vec3 halfway_vector = normalize(light_direction + view_direction);
+  //vec3 binormal_direction = cross(normal, sampled_specular);
+
+  //float specular_factor;
+  //if (dot_light_direction_normal < 0.0) {
+  //  specular_factor = 0.0f;
+  //} else {
+  //  float dot_halfway_normal = dot(halfway_vector, normal);
+  //  float dot_view_normal = dot(view_direction, normal);
+  //  float dot_halfway_tangent = dot(halfway_vector, sampled_specular);
+  //  float dot_halfway_binormal = dot(halfway_vector, binormal_direction);
+  //  float dot_halfway_tangent_alpha_x = dot_halfway_tangent / alpha_x;
+  //  float dot_halfway_tangent_alpha_y = dot_halfway_binormal / alpha_y;
+
+  //  specular_factor = sqrt(max(0.0,
+  //                            dot_light_direction_normal / dot_view_normal))
+  //                            * exp(-2.0f *
+  //                                    (dot_halfway_tangent_alpha_x *
+  //                                    dot_halfway_tangent_alpha_y) /
+  //                            (1.0f + dot_halfway_normal));
+  //  //specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
+  //  //                      material.shininess);
+  //  //specular_factor *= 0.01f;
+  //  specular_factor = sampled_specular.
+  //}
+
 
   /* */
 
-  float diffuse_factor = max(dot_light_direction, 0.0);
+  //float diffuse_factor = max(dot_light_direction_normal, 0.0);
+  float diffuse_factor = max(dot_normal_light, 0.0);
   // Specular shading.
   //vec3 reflect_direction = reflect(-light_direction, normal);
   //float specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
