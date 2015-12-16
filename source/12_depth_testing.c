@@ -492,12 +492,13 @@ int main(void) {
 
     float r = 15.0f;
     float offset = -15.0f;
-    float point_positions[POINT_LIGHTS][3] = {
+    float static_point_positions[POINT_LIGHTS][3] = {
         {   r,  0.0f, offset},
         {  -r,  0.0f, offset},
         {0.0f,  0.0f, offset-r},
         {0.0f,  0.0f, offset+r},
     };
+    float point_positions[POINT_LIGHTS][3];
 
     float ambient_color[POINT_LIGHTS][3] = {
         {1.0f, 0.5f, 1.0f},
@@ -622,10 +623,15 @@ int main(void) {
         glUseProgram(lamp_program);
         glBindVertexArray(VAO);
 
+        GLfloat time = glfwGetTime();
         for(i=0; i<POINT_LIGHTS; i++) {
             mat4f_scale(temp, 0.2f, 0.2f, 0.2f);
             mat4f_mul(temp, temp, model);
             float x, y, z;
+            point_positions[i][0]= static_point_positions[i][0]+r*cos(((M_PI/4)*time));
+            point_positions[i][1]= static_point_positions[i][1];
+            point_positions[i][2]= static_point_positions[i][2]+r*sin(((M_PI/4)*time));
+
             x = point_positions[i][0];
             y = point_positions[i][1];
             z = point_positions[i][2];
@@ -713,6 +719,10 @@ int main(void) {
         //glBindTexture(GL_TEXTURE_2D, texture_anisotropic);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture_anisotropic);
+
+        for (i=0; i<POINT_LIGHTS; i++) {
+            glUniform3fv(point_light_position[i][POSITION], 1, (GLvoid*)(&point_positions[i][0]));
+        }
 
         for(i=0; i<num_cubes; i++) {
             mat4f_translate(temp, cube_locations[i][0],
