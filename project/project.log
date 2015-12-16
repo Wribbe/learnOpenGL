@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  16 DEC 2015 14:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  16 DEC 2015 16:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -204,99 +204,102 @@ Underfull \hbox (badness 10000) in paragraph at lines 46--50
 
  []
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 54.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 54.
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-Missing character: There is no â in font pcrr7t!
-Missing character: There is no € in font pcrr7t!
-Missing character: There is no “ in font pcrr7t!
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--57
-[][]$\OT1/pcr/m/n/8 https : / / en . wikipedia . org / wiki / BlinnPhong _
+Underfull \hbox (badness 1394) in paragraph at lines 51--58
+\OT1/ptm/m/n/9 be com-pared to a more pro-ce-du-ral ap-proach in com-bi-na-tion
+
  []
 
 <brushed.jpg, id=1, 120.45pt x 77.8107pt>
 File: brushed.jpg Graphic file (type jpg)
  <use brushed.jpg>
-Package pdftex.def Info: brushed.jpg used on input line 68.
+Package pdftex.def Info: brushed.jpg used on input line 66.
 (pdftex.def)             Requested size: 168.66075pt x 108.96509pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 71--75
+
+ []
 
 <highlight.jpg, id=2, 311.1625pt x 162.6075pt>
 File: highlight.jpg Graphic file (type jpg)
  <use highlight.jpg>
-Package pdftex.def Info: highlight.jpg used on input line 80.
+Package pdftex.def Info: highlight.jpg used on input line 78.
 (pdftex.def)             Requested size: 168.66075pt x 88.13922pt.
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 98.
-LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 114.
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--138
-[]\OT1/ptm/m/n/9 The source files con-sists of two style files:
+Underfull \hbox (badness 10000) in paragraph at lines 84--86
+
  []
 
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 92.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 94.
+<figure.png, id=3, 237.7683pt x 170.5572pt>
+File: figure.png Graphic file (type png)
+ <use figure.png>
+Package pdftex.def Info: figure.png used on input line 104.
+(pdftex.def)             Requested size: 168.66075pt x 120.98454pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 123.
 
-Underfull \hbox (badness 6608) in paragraph at lines 132--138
-\OT1/pcr/m/n/9 acmsiggraph.bst \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 acmsiggraph.cl
-s\OT1/ptm/m/n/9 , and these
+Overfull \hbox (16.75687pt too wide) detected at line 132
+\OML/cmm/m/it/9 ^^Z[][][]exp\OT1/cmr/m/n/9 (\OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2
+[])
  []
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
- <./brushed.jpg> <./highlight.jpg>]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 145.
+ <./brushed.jpg> <./highlight.jpg> <./figure.png (PNG copy)>]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 145.
 
 
-LaTeX Warning: Citation 'Hakura97' on page 2 undefined on input line 151.
+(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 145--151
+[]\OT1/ptm/m/n/9 The source files con-sists of two style files:
+ []
 
 
-LaTeX Warning: Citation 'Igehy98' on page 2 undefined on input line 151.
+Underfull \hbox (badness 6608) in paragraph at lines 145--151
+\OT1/pcr/m/n/9 acmsiggraph.bst \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 acmsiggraph.cl
+s\OT1/ptm/m/n/9 , and these
+ []
 
-
-LaTeX Warning: Citation 'RaganKelley2011' on page 2 undefined on input line 151
-.
-
-
-LaTeX Warning: Citation 'Doggett2012' on page 2 undefined on input line 151.
-
-
-LaTeX Warning: Citation 'Ganestam2015' on page 2 undefined on input line 151.
-
-<lugg.png, id=15, 513.92pt x 303.1325pt>
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 155.
+<lugg.png, id=22, 513.92pt x 303.1325pt>
 File: lugg.png Graphic file (type png)
  <use lugg.png>
-Package pdftex.def Info: lugg.png used on input line 161.
+Package pdftex.def Info: lugg.png used on input line 174.
 (pdftex.def)             Requested size: 168.66075pt x 99.4836pt.
-
-No file project.bbl.
-[2
-
- <./lugg.png>] (./project.aux) ) 
+ (./project.bbl)
+[2 <./lugg.png>] (./project.aux) ) 
 Here is how much of TeX's memory you used:
- 2056 strings out of 493054
- 28643 string characters out of 6140585
- 90590 words of memory out of 5000000
- 5542 multiletter control sequences out of 15000+600000
- 25293 words of font info for 51 fonts, out of 8000000 for 9000
+ 2062 strings out of 493054
+ 28717 string characters out of 6140585
+ 90652 words of memory out of 5000000
+ 5545 multiletter control sequences out of 15000+600000
+ 26502 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,12n,23p,235b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.
-enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texmf-dist/fonts/type1/urw/co
-urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></u
-sr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fon
-ts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr
-i8a.pfb>
-Output written on project.pdf (2 pages, 266805 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8
+r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
+are/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmmi9.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/
+share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmsy9.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr
+8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/t
+exmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/u
+rw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on project.pdf (2 pages, 508807 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 72 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

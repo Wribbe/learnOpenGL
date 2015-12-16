@@ -48,15 +48,13 @@ and limitations of doing low level OpenGL programming from scratch in C. The pro
 graphical focus is to simulate a brushed metal surface with semi-realistic light
 reflections. \\
 
-The final approach to the surface simulation includes a
-tangent-map texture to simulate the topography texture of a brushed metal
-in combination with a standard
-Phong\footnote{\url{https://en.wikipedia.org/wiki/Phong_shading}} shading model to achieve the desired
-result. Ideally this method would be compared to a more procedural approach in combination
-with a slightly more advanced light model like the
-Blinn-Phong\footnote{\url{https://en.wikipedia.org/wiki/Blinn–Phong_shading_model}} model. This was
-never done due to the render backbone implementation hitting a few problems and
-taking loger then anticipated.
+The final approach to the surface simulation includes a tangent-map texture to
+simulate the topography texture of a brushed metal in combination with a
+standard Phong shading model\cite{wiki_phong} to achieve the desired result.
+Ideally this method would be compared to a more procedural approach in
+combination with a slightly more advanced light model like the Blinn-Phong
+model\cite{wiki_blinn}. This was never done due to the render backbone
+implementation hitting a few problems and taking loger then anticipated.
 
 \end{abstract}
 
@@ -73,7 +71,7 @@ taking loger then anticipated.
 Brushed metal is a common type of metal texture on cookwares such as pots and
 pans and can also be found on metallic counter tops. One of the more
 recognizable properties of brushed metals is its ability to produce anisotropic
-highlights.
+highlights due to the patterned surface area. \\
 
 \begin{figure}[!ht]
     \centering
@@ -82,41 +80,59 @@ highlights.
     \label{anisotropic_highlight}
 \end{figure}
 
-%As part of the course EDAN35, each group of two\footnote{In some cases, groups with only three or one student
-%have to be formed, but this should be avoided as much as possible.} students need to create
-%a project as well. The project should be a 3D Graphics applications based on a 3D engine, for example the framework used in the assignements.
-%The project is worth 3 points.
-%
-%Any group who wants can participate in the competition.
+\section{Algorithms}
+The main algorithm used for simulating bushed metal is \textit{Ward's model of
+Anisotropic Reflection}\cite{GregWard}. \\
 
-\section{3D Graphics Project}
-In this project, you have a lot of freedom. You need to write
-an application using a 3D Graphics API, such as OpenGL, a rendering engine, such as the C++ framework used in the labs, which is either
-cool, beautiful, interesting, useful, fun to use, or a combination of all of the above.
-Examples of applications may include:
-\begin{itemize}
-    \item 3D graphics algorithm. From recent paper or GPU programming text, such as GPU Gems
-    \item game
-    \item screensaver
-    \item 3D GUI for mobile platforms
-    \item useful tool
-    \item something completely different
-\end{itemize}
-Remember though that as a group of two, you need to spend nearly 6 weeks on this.
-This obviously means that if you decide to make a screen saver, it should be \textit{very}
-challenging, otherwise, you will not pass.
+This model describes reflection in terms of a bidirectional reflectance
+distribution function (BRDF), that describes how a light ray from any direction
+is reflected into any other direction. Wards BRDF model incorporates to terms,
+a diffuse reflectance term and a specular reflectance term.
 
-The performance of your application is not the most important thing for the project. If you do
-optimize for performance, that is a good thing (especially for the competition).
+\subsection{Diffuse term}
 
-You can use the code from the \textit{Deferred Shading Assigment} when you start with this type of project.
+The diffuse term is a constant that equals $\frac{\rho_d}{\pi}$ where $\rho_d$
+specifies the materials diffuse reflectance. Using the same BRDF
+simplifications that are present in the Phong shading model, the specular terms
+for the color wave lengths Red, Green and Blue can be reduced to pre-defined
+material constants.
 
-\subsection{Who wins the 3D Graphics competition?}
-A jury will decide at the last lecture.
+\subsection{Specular term}
 
-The deadline is at 13:00 on the day before the last lecture and competition.
-The report and code should be delivered by then. However, note that modifications
-to the code can be done after that (in order to further impress the jury).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figure.png}
+    \caption{Fig 5. from Greg Wards paper p. 268}
+    \label{figure}
+\end{figure}
+
+By combining the vector setup with the following equation:
+
+\begin{equation}
+  \frac{\rho_d}{pi} + \rho_s \frac{1}{\sqrt{\cos{\theta_i},\cos{\theta_r}}}
+  \frac{exp[-\tan^2\delta(\cos^2\phi/\alpha_x^2 +
+  \sin^2\phi/\alpha_y^2)]}{4\pi\alpha_x\alpha_y}
+\end {equation}
+
+Where $\rho_d$ is the diffuse reflectance, $\rho_s$ is the specular
+reflectance, $\alpha_x$ is the standard deviation of the surface slope in the
+$\hat{x}$ direction. $\delta$ is the angle between the half vector $\hat{h}$
+and the surface normal $\hat{n}$ and $\phi$ is the angle between the projection
+of $\hat{h}$ projected into the plane and the $\hat{x}$ vector.
+
+By using normal the normalized vectors \textbf{N},\textbf{V},\textbf{L},\textbf{H} for the
+normal, view, light and halfway vector, where $\textbf{H} =
+(\textbf{V}+\textbf{L})/|\textbf{V}+\textbf{L}|$. The earlier formula can be
+restated as:
+\begin{equation}
+  \rho_s \frac{1}{\sqrt{(\textbf{L}\cdot\textbf{N})(\textbf{V}\cdot\textbf{N})}}
+  \frac{1}{4\pi\alpha_x\alpha_y} exp (-2\frac{((\textbf{H}\cdot\textbf{T})/\alpha_x)^2)
+((\textbf{H}\cdot\textbf{B})/\alpha_y)^2)} {1 + \textbf{H}\cdot\textbf{N}})
+  %\sin^2\phi/\alpha_y^2)}{4\pi\alpha_x\alpha_y}
+\end {equation}
+
+and since $\rho_s$,$\alpha_x$ and $\alpha_y$ are all constants related to the
+diffuse reflectance, they can be combined into the following equation:
 
 \section{Written Report}
 
@@ -148,7 +164,7 @@ the following sections:
 \end{itemize}
 Some groups may not have enough important material to write a ``Discussion''-section,
 and in such cases, that section can be omitted. Also, look at scientific papers,
-e.g.,~\cite{Hakura97,Igehy98,RaganKelley2011,Doggett2012,Ganestam2015}, and try to follow their general style.
+%e.g.,~\cite{Hakura97,Igehy98,RaganKelley2011,Doggett2012,Ganestam2015}, and try to follow their general style.
 When in doubt, come and ask us.
 If you need references not found in the file \texttt{project.bib}, simply add your reference to
 that file. The report should be 2--4 pages long.
@@ -167,6 +183,5 @@ for how this is done in \LaTeX.
 Make a great project. You're clever. Surprise us (and the jury)!
 
 \bibliographystyle{acmsiggraph}
-%\nocite{*}
 \bibliography{project}
 \end{document}
