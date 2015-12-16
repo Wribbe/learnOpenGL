@@ -490,11 +490,13 @@ int main(void) {
     glUniform1i(glGetUniformLocation(program_framebuffer, "screen_texture"), 0);
     glUniform1d(location_POINT_LIGHTS, POINT_LIGHTS);
 
+    float r = 15.0f;
+    float offset = -15.0f;
     float point_positions[POINT_LIGHTS][3] = {
-        { 5.0f,  0.0f, -10.0f},
-        { 0.0f, -5.0f, -10.0f},
-        {-4.0f,  5.0f, -10.0f},
-        {-5.0f,  0.0f, -10.0f},
+        {   r,  0.0f, offset},
+        {  -r,  0.0f, offset},
+        {0.0f,  0.0f, offset-r},
+        {0.0f,  0.0f, offset+r},
     };
 
     float ambient_color[POINT_LIGHTS][3] = {
