@@ -119,11 +119,13 @@ reflectance, $\alpha_x$ is the standard deviation of the surface slope in the
 $\hat{x}$ direction. $\delta$ is the angle between the half vector $\hat{h}$
 and the surface normal $\hat{n}$ and $\phi$ is the angle between the projection
 of $\hat{h}$ projected into the plane and the $\hat{x}$ vector.
+\\
 
-By using normal the normalized vectors \textbf{N},\textbf{V},\textbf{L},\textbf{H} for the
-normal, view, light and halfway vector, where $\textbf{H} =
-(\textbf{V}+\textbf{L})/|\textbf{V}+\textbf{L}|$. The earlier formula can be
-restated as:
+By using normal the normalized vectors
+\textbf{N},\textbf{V},\textbf{L},\textbf{T},\textbf{B},\textbf{H} for the
+normal, view, light, binormal, tangent, and halfway vector, where the halfway vector
+is defined as $\textbf{H} = (\textbf{V}+\textbf{L})/|\textbf{V}+\textbf{L}|$,
+the earlier formula can then be restated as:
 \begin{equation}
   \rho_s \frac{1}{\sqrt{(\textbf{L}\cdot\textbf{N})(\textbf{V}\cdot\textbf{N})}}
   \frac{1}{4\pi\alpha_x\alpha_y} exp (-2\frac{((\textbf{H}\cdot\textbf{T})/\alpha_x)^2)
@@ -133,6 +135,13 @@ restated as:
 
 and since $\rho_s$,$\alpha_x$ and $\alpha_y$ are all constants related to the
 diffuse reflectance, they can be combined into the following equation:
+
+\begin{equation}
+  k_{specular} \frac{1}{\sqrt{(\textbf{L}\cdot\textbf{N})(\textbf{V}\cdot\textbf{N})}}
+  exp (-2\frac{((\textbf{H}\cdot\textbf{T})/\alpha_x)^2)
+((\textbf{H}\cdot\textbf{B})/\alpha_y)^2)} {1 + \textbf{H}\cdot\textbf{N}})
+  %\sin^2\phi/\alpha_y^2)}{4\pi\alpha_x\alpha_y}
+\end {equation}
 
 \section{Written Report}
 
@@ -172,12 +181,6 @@ that file. The report should be 2--4 pages long.
 You can include screenshots as PNGs or illustrations in the PDF format.
 An example is shown in Figure~\ref{fig_lugg}. See the source file \texttt{project.tex}
 for how this is done in \LaTeX.
-\begin{figure}[tb]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{lugg.png}
-    \caption{This is the logotype for LUGG: Lund University Graphics Group.}
-    \label{fig_lugg}
-\end{figure}
 
 \section{Conclusion}
 Make a great project. You're clever. Surprise us (and the jury)!

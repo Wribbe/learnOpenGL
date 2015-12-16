@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  16 DEC 2015 16:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  16 DEC 2015 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -239,67 +239,80 @@ File: figure.png Graphic file (type png)
  <use figure.png>
 Package pdftex.def Info: figure.png used on input line 104.
 (pdftex.def)             Requested size: 168.66075pt x 120.98454pt.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 123.
 
-Overfull \hbox (16.75687pt too wide) detected at line 132
+Underfull \hbox (badness 10000) in paragraph at lines 117--123
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 125.
+
+Overfull \hbox (16.75687pt too wide) detected at line 134
 \OML/cmm/m/it/9 ^^Z[][][]exp\OT1/cmr/m/n/9 (\OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2
 [])
+ []
+
+
+Overfull \hbox (8.40839pt too wide) detected at line 144
+\OML/cmm/m/it/9 k[][]exp\OT1/cmr/m/n/9 (\OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2[])
  []
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
  <./brushed.jpg> <./highlight.jpg> <./figure.png (PNG copy)>]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 145.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 157.
 
 
 (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 145--151
+Underfull \hbox (badness 10000) in paragraph at lines 157--163
 []\OT1/ptm/m/n/9 The source files con-sists of two style files:
  []
 
 
-Underfull \hbox (badness 6608) in paragraph at lines 145--151
+Underfull \hbox (badness 6608) in paragraph at lines 157--163
 \OT1/pcr/m/n/9 acmsiggraph.bst \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 acmsiggraph.cl
 s\OT1/ptm/m/n/9 , and these
  []
 
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 155.
-<lugg.png, id=22, 513.92pt x 303.1325pt>
-File: lugg.png Graphic file (type png)
- <use lugg.png>
-Package pdftex.def Info: lugg.png used on input line 174.
-(pdftex.def)             Requested size: 168.66075pt x 99.4836pt.
- (./project.bbl)
-[2 <./lugg.png>] (./project.aux) ) 
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 167.
+
+LaTeX Warning: Reference `fig_lugg' on page 2 undefined on input line 182.
+
+(./project.bbl) [2
+
+] (./project.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2062 strings out of 493054
- 28717 string characters out of 6140585
- 90652 words of memory out of 5000000
- 5545 multiletter control sequences out of 15000+600000
+ 2057 strings out of 493054
+ 28658 string characters out of 6140585
+ 92644 words of memory out of 5000000
+ 5541 multiletter control sequences out of 15000+600000
  26502 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,12n,23p,235b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8
-r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
-are/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmi9.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/
-share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmsy9.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr
-8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/t
-exmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/u
-rw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on project.pdf (2 pages, 508807 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/
+share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></us
+r/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fo
+nts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/
+utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/
+texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on project.pdf (2 pages, 456962 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
+ 71 PDF objects out of 1000 (max. 8388607)
  49 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

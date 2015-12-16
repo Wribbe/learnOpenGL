@@ -103,13 +103,28 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
   float dot_normal_light = clamp(dot(normal, light_direction), 0.0f, 1.0f);
   float dot_halfway_aniso = dot(normalize(normal + sampled_specular.rgb),
                                 halfway);
-  float aniso_offset = 0.0f;
-  float aniso = max(0, sin(radians((dot_halfway_aniso + aniso_offset) * 180)));
+  vec3 binormal = (normalize(cross(normal, normalize(sampled_specular.rgb))));
+  float dot_normal_view = dot(normal, view_direction);
+  float dot_half_binormal = dot(halfway, binormal);
 
-  float specular_factor = clamp(dot(normal, halfway), 0.0f, 1.0f);
-  float lerped = specular_factor*(1-sampled_specular.a) + aniso*sampled_specular.a;
-  float gloss = 0.5f;
-  specular_factor = clamp(pow(lerped, gloss * 128) * 0.5f, 0.0f, 1.0f);
+  //float aniso_offset = 0.0f;
+  //float aniso = max(0, sin(radians((dot_halfway_aniso + aniso_offset) * 180)));
+
+  //float specular_factor = clamp(dot(normal, halfway), 0.0f, 1.0f);
+  //float lerped = specular_factor*(1-sampled_specular.a) + aniso*sampled_specular.a;
+  //float gloss = 0.5f;
+  //specular_factor = clamp(pow(lerped, gloss * 128) * 0.5f, 0.0f, 1.0f);
+
+  float first_term = sqrt(max(0.0f, dot_normal_light*dot_normal_view));
+  float dot_ht_alpha_x = dot_halfway_aniso / 1.0f;
+  float dot_hb_alpha_y = dot_half_binormal / 1.0f;
+  float second_term = exp(-2.0f * (dot_ht_alpha_x * dot_ht_alpha_x) +
+                                  (dot_hb_alpha_y * dot_hb_alpha_y) /
+                                  (1.0f + dot(halfway,normal)));
+  //float second_term = exp(-2 *((pow(dot_halfway_aniso,2)  *
+  //                              pow(dot_half_binormal,2)) /
+  //                              (1.0f + dot(halfway, normal))));
+  float specular_factor = first_term*second_term;
 
   vec3 try_color;
   vec3 albedo = vec3(0.0f, 1.0f, 0.0f);
