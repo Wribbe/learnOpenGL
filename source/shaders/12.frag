@@ -95,11 +95,26 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
   vec3 light_vector = light.position - fragment_position;
   vec3 light_direction = normalize(light_vector);
   // Diffuse shading.
-  float diffuse_factor = max(dot(normal, light_direction), 0.0);
-  // Specular shading.
-  vec3 reflect_direction = reflect(-light_direction, normal);
+
+  /* Trying to make anisotropic work */
+
+  vec3 sampled_specular_normal = vec3(texture(material.specular, texture_coordinates));
+
+  vec3 reflect_direction = reflect(-light_direction, sampled_specular_normal);
   float specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
                               material.shininess);
+
+  vec3 halfway_vector = normalize(light_direction + view_direction);
+  vec3 binormal_direction = cross(normal, sampled_specular_normal);
+  float dot_light_direction = dot(light_direction, normal);
+
+  /* */
+
+  float diffuse_factor = max(dot_light_direction, 0.0);
+  // Specular shading.
+  //vec3 reflect_direction = reflect(-light_direction, normal);
+  //float specular_factor = pow(max(dot(view_direction, reflect_direction), 0.0),
+  //                            material.shininess);
   // Attenuation
   float squared_light_distance = dot(light_vector, light_vector);
   float light_distance = sqrt(squared_light_distance);
@@ -114,11 +129,12 @@ vec4 get_point_light(Point_Light light, vec3 normal, vec3 fragment_position,
                               falloff_quadratic);
 
   vec4 diffuse_sampling = vec4(texture(material.diffuse, texture_coordinates));
-  vec4 specular_sampling = vec4(texture(material.specular, texture_coordinates));
+  //vec4 specular_sampling = vec4(texture(material.specular, texture_coordinates));
 
   vec4 ambient = vec4(light.ambient,1.0f) * diffuse_sampling;
   vec4 diffuse = vec4(light.diffuse,1.0f) * diffuse_factor * diffuse_sampling;
-  vec4 specular = vec4(light.specular,1.0f) * specular_factor * specular_sampling;
+  //vec4 specular = vec4(light.specular,1.0f) * specular_factor * specular_sampling;
+  vec4 specular = vec4(light.specular,1.0f) * specular_factor;
 
   ambient *= attenuation;
   diffuse *= attenuation;
