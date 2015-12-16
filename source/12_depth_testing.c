@@ -193,7 +193,7 @@ void do_movement() {
     }
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
 
     int num_vertices;
     if(load_model(&vertices, &num_vertices)) {
@@ -205,13 +205,21 @@ int main(void) {
         fprintf(stderr, "Could not load GLFW, aborting.\n");
         return(EXIT_FAILURE);
     }
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     int WIDTH, HEIGHT;
-    WIDTH = 1200;
-    HEIGHT = 900;
+    WIDTH = 1920;
+    HEIGHT = 1080;
 
     GLFWwindow *window;
-    window = glfwCreateWindow(WIDTH,HEIGHT,"12 Depth Test.", NULL, NULL);
+    if (argc > 1 && strcmp(argv[1], "--full") == 0) {
+        window = glfwCreateWindow(WIDTH,HEIGHT,"12 Depth Test.", glfwGetPrimaryMonitor(), NULL);
+    } else {
+        window = glfwCreateWindow(WIDTH,HEIGHT,"12 Depth Test.", NULL, NULL);
+    }
 
     if(!window) {
         fprintf(stderr, "Could not create main window, aborting.\n");
