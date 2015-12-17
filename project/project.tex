@@ -7,12 +7,13 @@
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{times}
+\usepackage{float}
 
 
 
 %% Paper title.
 
-\title{Simulate brushed metal surface in homegrown OpenGL render.}
+\title{Simulate brushed metal surface reflection in homegrown OpenGL render.}
 
 %% Author / Affiliation (single author).
 
@@ -45,15 +46,15 @@
 \begin{abstract}
 The main motivation for the project is to get accustomed with the possibilities
 and limitations of doing low level OpenGL programming from scratch in C. The projects
-graphical focus is to simulate a brushed metal surface with semi-realistic light
-reflections. \\
+graphical focus is to simulate a brushed metal surface with semi-realistic
+anisotropic light reflections. \\
 
-The final approach to the surface simulation includes a tangent-map texture to
-simulate the topography texture of a brushed metal in combination with a
-standard Phong shading model\cite{wiki_phong} to achieve the desired result.
+The final approach uses a texture to simulate the
+topographic surface features of the brushed metal in combination with a
+standard Phong shading model\cite{wiki_phong}.
 Ideally this method would be compared to a more procedural approach in
 combination with a slightly more advanced light model like the Blinn-Phong
-model\cite{wiki_blinn}. This was never done due to the render backbone
+model\cite{wiki_blinn}. This never happened due to the render backbone
 implementation hitting a few problems and taking loger then anticipated.
 
 \end{abstract}
@@ -68,8 +69,8 @@ implementation hitting a few problems and taking loger then anticipated.
     \label{brushed_real}
 \end{figure}
 
-Brushed metal is a common type of metal texture on cookwares such as pots and
-pans and can also be found on metallic counter tops. One of the more
+Brushed metal is a common type of metal texture found on metallic surfaces such
+as pots, pans and metallic counter tops. One of the more
 recognizable properties of brushed metals is its ability to produce anisotropic
 highlights due to the patterned surface area. \\
 
@@ -81,19 +82,19 @@ highlights due to the patterned surface area. \\
 \end{figure}
 
 \section{Algorithms}
-The main algorithm used for simulating bushed metal is \textit{Ward's model of
+The algorithm used for simulating bushed metal in this project is \textit{Ward's model of
 Anisotropic Reflection}\cite{GregWard}. \\
 
 This model describes reflection in terms of a bidirectional reflectance
 distribution function (BRDF), that describes how a light ray from any direction
-is reflected into any other direction. Wards BRDF model incorporates to terms,
+is reflected into any other direction. Wards BRDF model incorporates two terms;
 a diffuse reflectance term and a specular reflectance term.
 
 \subsection{Diffuse term}
 
 The diffuse term is a constant that equals $\frac{\rho_d}{\pi}$ where $\rho_d$
 specifies the materials diffuse reflectance. Using the same BRDF
-simplifications that are present in the Phong shading model, the specular terms
+simplifications that are present in the Phong shading model, the diffuse terms
 for the color wave lengths Red, Green and Blue can be reduced to pre-defined
 material constants.
 
@@ -106,8 +107,8 @@ material constants.
     \label{figure}
 \end{figure}
 
-By combining the vector setup with the following equation:
-
+Using the vector setup above, the following equation can be derived for the
+total sum of reflection:
 \begin{equation}
   \frac{\rho_d}{pi} + \rho_s \frac{1}{\sqrt{\cos{\theta_i},\cos{\theta_r}}}
   \frac{exp[-\tan^2\delta(\cos^2\phi/\alpha_x^2 +
@@ -117,8 +118,8 @@ By combining the vector setup with the following equation:
 Where $\rho_d$ is the diffuse reflectance, $\rho_s$ is the specular
 reflectance, $\alpha_x$ is the standard deviation of the surface slope in the
 $\hat{x}$ direction. $\delta$ is the angle between the half vector $\hat{h}$
-and the surface normal $\hat{n}$ and $\phi$ is the angle between the projection
-of $\hat{h}$ projected into the plane and the $\hat{x}$ vector.
+and the surface normal $\hat{n}$ and $\phi$ is the angle between
+$\hat{h}$ projected into the plane and the $\hat{x}$ vector.
 \\
 
 By using normal the normalized vectors
@@ -134,7 +135,8 @@ the earlier formula can then be restated as:
 \end {equation}
 
 and since $\rho_s$,$\alpha_x$ and $\alpha_y$ are all constants related to the
-diffuse reflectance, they can be combined into the following equation:
+diffuse reflectance, the instances outside the exp function can be combined
+into the following equation:
 
 \begin{equation}
   k_{specular} \frac{1}{\sqrt{(\textbf{L}\cdot\textbf{N})(\textbf{V}\cdot\textbf{N})}}
@@ -143,47 +145,56 @@ diffuse reflectance, they can be combined into the following equation:
   %\sin^2\phi/\alpha_y^2)}{4\pi\alpha_x\alpha_y}
 \end {equation}
 
-\section{Written Report}
+\section{Implementation}
 
-The report should be handed in an PDF format. You can use any word processing software you like, but you need to generate a PDF for the final submission.
+When implementing the resulting equation in a shader it's important to remember
+that the result has to be multiplied with $max(\textbf{L}\cdot\textbf{N},0)$ for
+opaque materials to avoid seeing the highlights from the wrong side.
+\subsection{Textures}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{aniso_mul.jpg}
+    \caption{Tangent-map for several anisotropic patches.}
+    \label{figure}
+\end{figure}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{aniso_sin.jpg}
+    \caption{Tangent-map for single larger anisotropic patch.}
+    \label{figure}
+\end{figure}
+Since the model-data used in this project does not contain any tangents they
+are supplied to the shader by sampling the colorvalues from the textures displayed
+above. Fitting a combinations of these patterns to the model and using the textures rgb values as
+input for the \textbf{T} vector, the equation from earlier is implemented
+almost verbatim. The difference being replacing the first term with
+$sqrt(max(0, (\textbf{N}\cdot\textbf{L})(\textbf{N}\cdot\textbf{V})))$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{anisotropic_direction.jpg}
+    \caption{Creating a texture for the coffeepot from patterns.}
+    \label{figure}
+\end{figure}
+\section{Result}
 
-The typesetting for this paper was done using pdf\LaTeX. It is recommended that you
-use this as well, and therefore the ``source files'' for this very document are
-available on the course website. If you are not familiar with pdf\LaTeX, then
-you may use whatever other word processing program you like, as long as you mimic
-the general style in this paper (i.e., you paper should look similar to
-this paper).
+Applying everything mentioned above to the coffeepots in the scene results in
+the following effect.
 
-The source files consists of two style files: \texttt{acmsiggraph.bst}
-and \texttt{acmsiggraph.cls}, and these should be placed in the directory as the
-files \texttt{project.tex} and \texttt{project.bib}. There is also a PNG image called
-\texttt{lugg.png} that is shown later in this paper.
-It is in \texttt{project.tex}, where you should delete this document's text,
-and instead write your own text.
-
-You should write your report as a scientific paper. It should have (at least)
-the following sections:
-\begin{itemize}
-    \item Abstract [brief summary of key results]
-    \item Introduction [why do what we did? motivation]
-    \item Algorithms or Application [description of what you did, what algorithms you implemented]
-    \item Results [e.g., performance, \textbf{screenshots}, usefulness etc]
-    \item Discussion [what did not work, what worked well, what can be improved, optimizations you tried]
-    \item Conclusion [any concluding remarks -- skip if you do not have anything to say in addition to what you've already said]
-\end{itemize}
-Some groups may not have enough important material to write a ``Discussion''-section,
-and in such cases, that section can be omitted. Also, look at scientific papers,
-%e.g.,~\cite{Hakura97,Igehy98,RaganKelley2011,Doggett2012,Ganestam2015}, and try to follow their general style.
-When in doubt, come and ask us.
-If you need references not found in the file \texttt{project.bib}, simply add your reference to
-that file. The report should be 2--4 pages long.
-
-You can include screenshots as PNGs or illustrations in the PDF format.
-An example is shown in Figure~\ref{fig_lugg}. See the source file \texttt{project.tex}
-for how this is done in \LaTeX.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{result.png}
+    \caption{Result of applying shader on coffeepots.}
+    \label{figure}
+\end{figure}
 
 \section{Conclusion}
-Make a great project. You're clever. Surprise us (and the jury)!
+
+The texture-based approach results in a fairly convincing approximation of the
+anisotropic reflections. Extra visual enhancements would include bumpmapping on
+the brushed base texture as well as environmental cubemapping and lightning. \\
+
+Another conclusion is that writing OpenGL and program-code from scratch in C is super fun and
+rewarding, but it takes time.
 
 \bibliographystyle{acmsiggraph}
 \bibliography{project}

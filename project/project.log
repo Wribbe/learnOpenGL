@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  16 DEC 2015 16:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  17 DEC 2015 09:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -86,39 +86,59 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 (/usr/share/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
-) (./project.aux)
+)
+(/usr/share/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count95
+\float@exts=\toks17
+\float@box=\box27
+\@float@everytoks=\toks18
+\@floatcapt=\box28
+) (./project.aux
+
+LaTeX Warning: Label `figure' multiply defined.
+
+
+LaTeX Warning: Label `figure' multiply defined.
+
+
+LaTeX Warning: Label `figure' multiply defined.
+
+
+LaTeX Warning: Label `figure' multiply defined.
+
+)
 \openout1 = `project.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 34.
-
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 35.
+ (/usr/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count95
+\scratchcounter=\count96
 \scratchdimen=\dimen110
-\scratchbox=\box27
-\nofMPsegments=\count96
-\nofMParguments=\count97
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count98
+\scratchbox=\box29
+\nofMPsegments=\count97
+\nofMParguments=\count98
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count99
 \MPscratchDim=\dimen111
-\MPnumerator=\count99
-\makeMPintoPDFobject=\count100
-\everyMPtoPDFconversion=\toks18
+\MPnumerator=\count100
+\makeMPintoPDFobject=\count101
+\everyMPtoPDFconversion=\toks20
 ) (/usr/share/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -167,93 +187,87 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 43.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 44.
 
 (/usr/share/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 43.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 44.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 43.
+(Font)              <7> on input line 44.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 43.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 43.
+(Font)              <5> on input line 44.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 44.
 
 (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 43.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 44.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 43.
+(Font)              <8> on input line 44.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 43.
+(Font)              <6> on input line 44.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <6> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 43.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 44.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 45.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 46.
 
-Underfull \hbox (badness 1655) in paragraph at lines 46--50
+Underfull \hbox (badness 1655) in paragraph at lines 47--51
 \OT1/ptm/m/n/9 the pos-si-bil-i-ties and lim-i-ta-tions of do-ing low level Ope
 nGL
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--50
-
- []
-
-
-Underfull \hbox (badness 1394) in paragraph at lines 51--58
-\OT1/ptm/m/n/9 be com-pared to a more pro-ce-du-ral ap-proach in com-bi-na-tion
+Underfull \hbox (badness 10000) in paragraph at lines 47--51
 
  []
 
 <brushed.jpg, id=1, 120.45pt x 77.8107pt>
 File: brushed.jpg Graphic file (type jpg)
  <use brushed.jpg>
-Package pdftex.def Info: brushed.jpg used on input line 66.
+Package pdftex.def Info: brushed.jpg used on input line 67.
 (pdftex.def)             Requested size: 168.66075pt x 108.96509pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--75
+Underfull \hbox (badness 10000) in paragraph at lines 72--76
 
  []
 
 <highlight.jpg, id=2, 311.1625pt x 162.6075pt>
 File: highlight.jpg Graphic file (type jpg)
  <use highlight.jpg>
-Package pdftex.def Info: highlight.jpg used on input line 78.
+Package pdftex.def Info: highlight.jpg used on input line 79.
 (pdftex.def)             Requested size: 168.66075pt x 88.13922pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 84--86
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
 
  []
 
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 92.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 93.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 94.
+(Font)              <9> on input line 95.
 <figure.png, id=3, 237.7683pt x 170.5572pt>
 File: figure.png Graphic file (type png)
  <use figure.png>
-Package pdftex.def Info: figure.png used on input line 104.
+Package pdftex.def Info: figure.png used on input line 105.
 (pdftex.def)             Requested size: 168.66075pt x 120.98454pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--123
+Underfull \hbox (badness 10000) in paragraph at lines 118--124
 
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 125.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 126.
 
-Overfull \hbox (16.75687pt too wide) detected at line 134
+Overfull \hbox (16.75687pt too wide) detected at line 135
 \OML/cmm/m/it/9 ^^Z[][][]exp\OT1/cmr/m/n/9 (\OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2
 [])
  []
 
 
-Overfull \hbox (8.40839pt too wide) detected at line 144
+Overfull \hbox (8.40839pt too wide) detected at line 146
 \OML/cmm/m/it/9 k[][]exp\OT1/cmr/m/n/9 (\OMS/cmsy/m/n/9 ^^@\OT1/cmr/m/n/9 2[])
  []
 
@@ -261,40 +275,50 @@ Overfull \hbox (8.40839pt too wide) detected at line 144
 
 
  <./brushed.jpg> <./highlight.jpg> <./figure.png (PNG copy)>]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 157.
+<aniso_mul.jpg, id=22, 513.92pt x 513.92pt>
+File: aniso_mul.jpg Graphic file (type jpg)
+ <use aniso_mul.jpg>
+Package pdftex.def Info: aniso_mul.jpg used on input line 156.
+(pdftex.def)             Requested size: 120.47249pt x 120.47322pt.
+
+<aniso_sin.jpg, id=23, 513.92pt x 513.92pt>
+File: aniso_sin.jpg Graphic file (type jpg)
+ <use aniso_sin.jpg>
+Package pdftex.def Info: aniso_sin.jpg used on input line 162.
+(pdftex.def)             Requested size: 120.47249pt x 120.47322pt.
+
+<anisotropic_direction.jpg, id=24, 513.92pt x 513.92pt>
+File: anisotropic_direction.jpg Graphic file (type jpg)
+
+<use anisotropic_direction.jpg>
+Package pdftex.def Info: anisotropic_direction.jpg used on input line 174.
+(pdftex.def)             Requested size: 120.47249pt x 120.47322pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 157--163
-[]\OT1/ptm/m/n/9 The source files con-sists of two style files:
+<result.png, id=25, 974.64125pt x 796.9775pt>
+File: result.png Graphic file (type png)
+ <use result.png>
+Package pdftex.def Info: result.png used on input line 185.
+(pdftex.def)             Requested size: 168.66075pt x 137.91655pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 192--195
+
  []
 
+(./project.bbl) [2 <./aniso_mul.jpg> <./aniso_sin.jpg> <./anisotropic_direction
+.jpg> <./result.png>] (./project.aux)
 
-Underfull \hbox (badness 6608) in paragraph at lines 157--163
-\OT1/pcr/m/n/9 acmsiggraph.bst \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 acmsiggraph.cl
-s\OT1/ptm/m/n/9 , and these
- []
-
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 167.
-
-LaTeX Warning: Reference `fig_lugg' on page 2 undefined on input line 182.
-
-(./project.bbl) [2
-
-] (./project.aux)
-
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2057 strings out of 493054
- 28658 string characters out of 6140585
- 92644 words of memory out of 5000000
- 5541 multiletter control sequences out of 15000+600000
- 26502 words of font info for 51 fonts, out of 8000000 for 9000
+ 2098 strings out of 493054
+ 29266 string characters out of 6140585
+ 92061 words of memory out of 5000000
+ 5580 multiletter control sequences out of 15000+600000
+ 24909 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,12n,23p,235b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
@@ -305,14 +329,13 @@ share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></us
-r/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fo
-nts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/
-texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on project.pdf (2 pages, 456962 bytes).
+r/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/f
+onts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
+mr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on project.pdf (2 pages, 1420216 bytes).
 PDF statistics:
- 71 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 73 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
