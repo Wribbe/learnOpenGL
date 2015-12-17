@@ -497,10 +497,10 @@ int main(int argc, char* argv[]) {
     float r = 15.0f;
     float offset = -15.0f;
     float static_point_positions[POINT_LIGHTS][3] = {
-        {   r,  0.0f, offset},
-        {  -r,  0.0f, offset},
-        {0.0f,  0.0f, offset-r},
-        {0.0f,  0.0f, offset+r},
+        {   r,  -1.0f, offset},
+        {  -r,  5.0f, offset},
+        {0.0f,  -1.0f, offset-r},
+        {0.0f,  5.0f, offset+r},
     };
     float point_positions[POINT_LIGHTS][3];
 

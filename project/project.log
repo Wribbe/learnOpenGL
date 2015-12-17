@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  17 DEC 2015 09:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2015.12.12)  17 DEC 2015 09:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -214,12 +214,6 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <6> not available
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 46.
 
-Underfull \hbox (badness 1655) in paragraph at lines 47--51
-\OT1/ptm/m/n/9 the pos-si-bil-i-ties and lim-i-ta-tions of do-ing low level Ope
-nGL
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 47--51
 
  []
@@ -332,7 +326,7 @@ lic/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
 r/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/f
 onts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
 mr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on project.pdf (2 pages, 1420216 bytes).
+Output written on project.pdf (2 pages, 1420228 bytes).
 PDF statistics:
  73 PDF objects out of 1000 (max. 8388607)
  47 compressed objects within 1 object stream
